@@ -3,8 +3,8 @@
 
 <head>
   <title>HorangHill</title>
-  <link rel="stylesheet" href="post.css">
-  <link rel="icon" type="image/x-icon" href="HorangHill.png">
+  <link rel="stylesheet" href="../css/post.css">
+  <link rel="icon" type="image/x-icon" href="../css/HorangHill.png">
   <script src="https://kit.fontawesome.com/970a0290cd.js" crossorigin="anonymous"></script>
 </head>
 
@@ -99,7 +99,7 @@
             '<h3>' + game.title + '</h3>' +
             '<div class="author">' + game.createdBy + '</div>';
           card.onclick = function () {
-            window.location.href = ("details.html?id=" + gameId);
+            window.location.href = ("player/details.html?id=" + gameId);
           }
 
           gamescontainer.prepend(card);
