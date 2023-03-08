@@ -1,4 +1,7 @@
 const isFirebaseEnv = new URLSearchParams(window.location.search).get('online');
+window.alert(`
+This version of the client has been deprecated. If you want to preview on the latest client, update your editor.
+`)
 
 if (isFirebaseEnv == 'true') {
   // Initialize Firebase
