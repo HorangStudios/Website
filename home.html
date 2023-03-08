@@ -1,0 +1,112 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>HorangHill</title>
+  <link rel="stylesheet" href="post.css">
+  <link rel="icon" type="image/x-icon" href="HorangHill.png">
+  <script src="https://kit.fontawesome.com/970a0290cd.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <header>
+    <h1>HorangHill - Public Beta</h1><br>
+    <a class="navlink" href="home.html" style="color: white; text-decoration: none;">Home</a>
+    <a class="navlink" href="post.html" style="color: white; text-decoration: none;">Publish</a>
+    <a class="navlink" href="download.html" style="color: white; text-decoration: none;">Download</a>
+    <a class="navlink" href="https://horanghill.createaforum.com/index.php" style="color: white; text-decoration: none;">Forum</a>
+  </header>
+  <main>
+    <h1 id="greetings">Welcome Back!</h1>
+    <div style="display: flex; width: 100%; overflow: auto;">
+      <div class="quickcard">
+        <a href="post.html">
+          <h3>Publish</h3>
+        </a>
+        <div class="author">Publish a game</div>
+      </div>
+
+      <div class="quickcard">
+        <a href="download.html">
+          <h3>Download</h3>
+        </a>
+        <div class="author">Download the editor</div>
+      </div>
+
+      <div class="quickcard">
+        <a href="https://horanghill.createaforum.com/index.php">
+          <h3>Forum</h3>
+        </a>
+        <div class="author">Talk with the community</div>
+      </div>
+
+      <div class="quickcard">
+        <a href="#greetings" onclick="firebase.auth().signOut(); window.location.replace('index.html')">
+          <h3>Log out</h3>
+        </a>
+        <div class="author">Log out from your account</div>
+      </div>
+
+    </div>
+    <hr><br>
+    <h1><i class="fa-solid fa-gamepad"></i> Play Games</h1>
+    <div id="gamelist" class="cardholder"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-auth.js"></script>
+    <script>
+      // Initialize Firebase
+      const firebaseConfig = {
+        apiKey: "AIzaSyDE-mQcJoquJxLrHAcS1kZbpjUbHYQmzsE",
+        authDomain: "horanghill.firebaseapp.com",
+        databaseURL: "https://horanghill-default-rtdb.firebaseio.com",
+        projectId: "horanghill",
+        storageBucket: "horanghill.appspot.com",
+        messagingSenderId: "710235265347",
+        appId: "1:710235265347:web:37fb53fe0bb9c4ecdab7f6",
+        measurementId: "G-S1JMDFPGL0"
+      };
+      firebase.initializeApp(firebaseConfig);
+      var database = firebase.database();
+      var gamescontainer = document.getElementById('gamelist');
+
+      //greetings time
+      let today = new Date();
+      let hour = today.getHours();
+      let greetings
+      if (hour >= 5 && hour < 12) {
+        greetings = ("<i class='fa-solid fa-sun'></i> Good morning");
+      } else if (hour >= 12 && hour < 18) {
+        greetings = ("<i class='fa-regular fa-sun'></i> Good afternoon");
+      } else {
+        greetings = ("<i class='fa-solid fa-moon'></i> Good evening");
+      }
+
+      database.ref('games').on('value', function (snapshot) {
+        gamescontainer.innerHTML = '';
+        var displayName = firebase.auth().currentUser.displayName;
+        document.getElementById('greetings').innerHTML = `${greetings}, ${displayName}!`
+
+        let games = snapshot.val();
+
+        Object.keys(games).forEach(function (gameId) {
+          var game = games[gameId];
+          var card = document.createElement('div');
+          card.className = 'card';
+          card.innerHTML =
+            '<img src="' + game.thumbnail + '"><br><br>' +
+            '<h3>' + game.title + '</h3>' +
+            '<div class="author">' + game.createdBy + '</div>';
+          card.onclick = function () {
+            window.location.href = ("details.html?id=" + gameId);
+          }
+
+          gamescontainer.prepend(card);
+        });
+      });
+    </script>
+  </main>
+</body>
+
+</html>

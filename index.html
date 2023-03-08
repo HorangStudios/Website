@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>HorangHill</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-auth.js"></script>
+    <script src="script.js" defer></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="HorangHill.png">
+    <script src="https://kit.fontawesome.com/970a0290cd.js" crossorigin="anonymous"></script>
+</head>
+
+<body style="display: flex; place-items: center; justify-content: center; text-align: center;">
+    <form class="form" id="signupbox">
+        <img src="HorangHill.png" width="125"><br><br>
+        To continue, Create an account or sign in
+        <hr>
+        <input id="displayName" placeholder="User Name" required>
+        <br>
+        <input type="email" id="email" placeholder="Email" required>
+        <br>
+        <input type="password" id="password" placeholder="Password" required>
+        <hr>
+        <button id="submit" onclick="createacc()">Sign up</button>
+        <br><br>
+        <button onclick="showlogin()">Sign in instead</button>
+        <p id="error" style="color: red; text-align: center;"></p>
+    </form>
+
+    <form class="form" id="loginbox" style="display: none;">
+        <img src="HorangHill.png" width="125"><br><br>
+        To continue, Create an account or sign in
+        <hr>
+        <input type="email" id="emailLogin" placeholder="Email" required>
+        <br>
+        <input type="password" id="passwordLogin" placeholder="Password" required>
+        <hr>
+        <button onclick="loginacc()">Sign In</button><br><br>
+        <p id="error1" style="color: red; text-align: center;"></p>
+    </form>
+</body>
+
+</html>
