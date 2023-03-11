@@ -60,8 +60,8 @@ dirLight.shadow.camera.bottom = - d;
 dirLight.shadow.camera.far = 3500;
 dirLight.shadow.bias = - 0.0001;
 
-const light = new THREE.AmbientLight( 0x404040 ); // soft white light
-scene.add( light );
+const light = new THREE.AmbientLight(0x404040); // soft white light
+scene.add(light);
 
 //testing skybox
 const loader = new THREE.CubeTextureLoader();
@@ -109,6 +109,9 @@ function importJSON(jsonString) {
 
         if (mesh instanceof THREE.Mesh) {
             // Create a Cannon.js body for this mesh
+            const geometry = mesh.geometry;
+            const box = new THREE.Box3().setFromBufferAttribute(geometry.attributes.position);
+            const size = box.getSize(new THREE.Vector3());
             const shape = new CANNON.Box(new CANNON.Vec3(size.x / 2, size.y / 2, size.z / 2));
             var body = new CANNON.Body({ mass: 0 });
             body.addShape(shape);
