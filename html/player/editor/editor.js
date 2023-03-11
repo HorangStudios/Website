@@ -16,7 +16,7 @@ camera.lookAt(new THREE.Vector3(0, 0, 0));
 
 // Create the physics world
 var world = new CANNON.World();
-world.gravity.set(0, 0, 0);
+world.gravity.set(0, -9.85, 0);
 world.broadphase = new CANNON.NaiveBroadphase();
 world.solver.iterations = 10;
 const clock = new THREE.Clock();
@@ -59,6 +59,9 @@ dirLight.shadow.camera.bottom = - d;
 
 dirLight.shadow.camera.far = 3500;
 dirLight.shadow.bias = - 0.0001;
+
+const light = new THREE.AmbientLight( 0x404040 ); // soft white light
+scene.add( light );
 
 //testing skybox
 const loader = new THREE.CubeTextureLoader();
