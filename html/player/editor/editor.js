@@ -1,4 +1,4 @@
-let ver = "0.1.6";
+let ver = "0.1.7";
 console.log('HorangHill Client Version ' + ver);
 
 //editor debug
