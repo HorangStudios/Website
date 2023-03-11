@@ -1,3 +1,6 @@
+let ver = "0.1.5";
+console.log('HorangHill Client Version ' + ver);
+
 //editor debug
 function debug(text) {
     console.log('Message from game: ' + text)
