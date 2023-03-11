@@ -1,4 +1,4 @@
-let ver = "0.1.5";
+let ver = "0.1.6";
 console.log('HorangHill Client Version ' + ver);
 
 //editor debug
@@ -111,31 +111,37 @@ function importJSON(jsonString) {
         }
 
         if (mesh instanceof THREE.Mesh) {
-            // Create a Cannon.js body for this mesh
             const geometry = mesh.geometry;
-            const box = new THREE.Box3().setFromBufferAttribute(geometry.attributes.position);
-            const size = box.getSize(new THREE.Vector3());
-            const shape = new CANNON.Box(new CANNON.Vec3(size.x / 2, size.y / 2, size.z / 2));
-            var body = new CANNON.Body({ mass: 0 });
-            body.addShape(shape);
-            body.position.copy(mesh.position);
-            body.quaternion.copy(mesh.quaternion);
+            try {
+                if (geometry && geometry.attributes.position) { // Check if position attribute exists
+                    const box = new THREE.Box3().setFromBufferAttribute(geometry.attributes.position);
+                    const size = box.getSize(new THREE.Vector3());
+                    const shape = new CANNON.Box(new CANNON.Vec3(size.x / 2, size.y / 2, size.z / 2));
+                    var body = new CANNON.Body({ mass: 0 });
+                    body.addShape(shape);
+                    body.position.copy(mesh.position);
+                    body.quaternion.copy(mesh.quaternion);
 
-            // Add the body to the Cannon.js world
-            world.addBody(body);
-            bodies.push(body)
-            meshes.push(mesh)
+                    // Add the body to the Cannon.js world
+                    world.addBody(body);
+                    bodies.push(body)
+                    meshes.push(mesh)
 
-            if (mesh.userData.initscriptfunction) {
-                try {
-                    mesh.userData.initscriptfunction(mesh);
+                    if (mesh.userData.initscriptfunction) {
+                        try {
+                            mesh.userData.initscriptfunction(mesh);
+                        }
+                        catch (err) {
+                            debug("[ERR] " + err.message);
+                        }
+                    }
                 }
-                catch (err) {
-                    debug("[ERR] " + err.message);
-                }
+            } catch (error) {
+                debug("[ERR] " + error.message);
             }
         }
     });
+
     return scene;
 }
 
