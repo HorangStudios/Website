@@ -111,13 +111,13 @@ function importJSON(jsonString) {
         }
 
         if (mesh instanceof THREE.Mesh) {
-            const geometry = mesh.geometry;
             try {
+                const geometry = mesh.geometry;
                 if (geometry && geometry.attributes.position) { // Check if position attribute exists
                     const box = new THREE.Box3().setFromBufferAttribute(geometry.attributes.position);
                     const size = box.getSize(new THREE.Vector3());
                     const shape = new CANNON.Box(new CANNON.Vec3(size.x / 2, size.y / 2, size.z / 2));
-                    var body = new CANNON.Body({ mass: 0 });
+                    var body = new CANNON.Body({ mass: 1 });
                     body.addShape(shape);
                     body.position.copy(mesh.position);
                     body.quaternion.copy(mesh.quaternion);
@@ -126,18 +126,18 @@ function importJSON(jsonString) {
                     world.addBody(body);
                     bodies.push(body)
                     meshes.push(mesh)
-
-                    if (mesh.userData.initscriptfunction) {
-                        try {
-                            mesh.userData.initscriptfunction(mesh);
-                        }
-                        catch (err) {
-                            debug("[ERR] " + err.message);
-                        }
-                    }
                 }
             } catch (error) {
                 debug("[ERR] " + error.message);
+            }
+
+            if (mesh.userData.initscriptfunction) {
+                try {
+                    mesh.userData.initscriptfunction(mesh);
+                }
+                catch (err) {
+                    debug("[ERR] " + err.message);
+                }
             }
         }
     });
