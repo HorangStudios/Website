@@ -109,7 +109,7 @@ function importJSON(jsonString) {
 
         if (mesh instanceof THREE.Mesh) {
             // Create a Cannon.js body for this mesh
-            var shape = new CANNON.Box(new CANNON.Vec3(mesh.scale.x / 2, mesh.scale.y / 2, mesh.scale.z / 2));
+            const shape = new CANNON.Box(new CANNON.Vec3(size.x / 2, size.y / 2, size.z / 2));
             var body = new CANNON.Body({ mass: 0 });
             body.addShape(shape);
             body.position.copy(mesh.position);
