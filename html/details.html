@@ -4,8 +4,8 @@
 <head>
   <title>HorangHill</title>
   <link rel="stylesheet" href="../css/post.css">
-    <link rel="icon" type="image/x-icon" href="../css/HorangHill.png">
-    <script src="https://kit.fontawesome.com/970a0290cd.js" crossorigin="anonymous"></script>
+  <link rel="icon" type="image/x-icon" href="../css/HorangHill.png">
+  <script src="https://kit.fontawesome.com/970a0290cd.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -16,21 +16,25 @@
     <a class="navlink" href="download.html" style="color: white; text-decoration: none;">Download</a>
     <a class="navlink" href="https://horanghill.createaforum.com/index.php"
       style="color: white; text-decoration: none;">Forum</a>
+    <a class="navlink" href="account.html" style="color: white; text-decoration: none;">Account</a>
   </header>
   <main
-    style="display: flex; place-items: center; justify-content: center; height: calc(100vh - 130px); box-sizing: border-box;">
+    style="display: none; place-items: center; justify-content: center; height: calc(100vh - 130px); box-sizing: border-box;"
+    id="main">
     <div style="width: 60%; float: left;">
       <img id="img" src="" style="width: 100%; display: inline-block; border-radius: 10px;">
     </div>
     <div style="width: 40%; float: right; padding: 10px; box-sizing: border-box;">
-      <textarea id="title" readonly style="resize: none;"></textarea>
+      <input id="title" readonly style="resize: none;"></input>
       <h3 id="dev"></h3>
       <textarea id="desc" readonly style="resize: none;"></textarea>
       <button id="play"><i class="fa-solid fa-play"></i> Play</button><br><br>
       <input type="file" accept=".hhlx" id="file-input" onchange="importScene()" placeholder="HHLX File" required
         style="display: none;"></input>
-      <button id="edit" style="display: none;" onclick="document.getElementById('file-input').click()"><i class="fa-solid fa-upload"></i> Update
-        HHLX</button>
+      <button id="edit" style="display: none; width: fit-content;" onclick="document.getElementById('file-input').click()"><i
+          class="fa-solid fa-upload"></i></button>
+      <button id="download" style="display: none; width: fit-content;" onclick="downloadHHLX()"><i
+          class="fa-solid fa-download"></i></button>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js"></script>
@@ -66,10 +70,18 @@
         document.getElementById('play').onclick = function () {
           window.location.href = ("player/engine.html?id=" + id + "&online=true")
         };
+        document.getElementById('main').style.display = "flex"
+
+        function setHeight(fieldId) {
+          document.getElementById(fieldId).style.height = document.getElementById(fieldId).scrollHeight + 'px';
+        }
+        setHeight('desc');
+        setHeight('title');
 
         //if user is game owner
         if (item.uid == firebase.auth().currentUser.uid) {
-          document.getElementById('edit').style.display = "block"
+          document.getElementById('edit').style.display = "inline-block"
+          document.getElementById('download').style.display = "inline-block"
 
           document.getElementById('title').removeAttribute("readonly");
           document.getElementById('desc').removeAttribute("readonly");
@@ -90,6 +102,22 @@
           });
         }
       });
+
+      function downloadHHLX() {
+        // Convert scene to JSON format
+        const json = JSON.stringify(item.hhlx, null, 2);
+
+        // Create a new blob with the JSON data and custom file extension
+        const blob = new Blob([json], { type: "application/json" });
+        const fileName = `${item.title}.HHLX`;
+
+        // Use the browser's native save dialog to save the file
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = fileName;
+        link.click();
+      }
 
       function importScene() {
         if (item.uid == firebase.auth().currentUser.uid) {

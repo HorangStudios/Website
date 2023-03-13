@@ -21,7 +21,16 @@ header {
   text-align: center;
   margin: 10px;
   border-radius: 10px;
-  box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+  height: 110px;
+  box-sizing: border-box;
+}
+
+html {
+  background-image: url('../html/horanghillbg.png');
+  background-size: 7.5%;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 100vh;
 }
 
 header h1 {
@@ -33,6 +42,8 @@ main {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
+  background: white;
+  min-height: calc(100vh - 130px);
 }
 
 form {
@@ -43,6 +54,7 @@ form {
 
 label,
 textarea,
+button,
 input {
   font-size: 16px;
   margin-bottom: 10px;
@@ -136,4 +148,5 @@ button {
   font-weight: bold;
   border: none;
   padding: 0;
+  height: fit-content;
 }
