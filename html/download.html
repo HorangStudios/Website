@@ -37,8 +37,9 @@
   <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-database.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-auth.js"></script>
-  <script>
+  <script defer>
     (adsbygoogle = window.adsbygoogle || []).push({});
+
     // Initialize Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyDE-mQcJoquJxLrHAcS1kZbpjUbHYQmzsE",
@@ -51,39 +52,7 @@
       measurementId: "G-S1JMDFPGL0"
     };
     firebase.initializeApp(firebaseConfig);
-
     var database = firebase.database();
-
-    var form = document.getElementById('form');
-
-    form.addEventListener('submit', function (event) {
-      event.preventDefault();
-
-      var today = new Date();
-      var dd = String(today.getDate()).padStart(2, '0');
-      var mm = String(today.getMonth() + 1).padStart(2, '0');
-      var yyyy = today.getFullYear();
-
-      today = mm + '/' + dd + '/' + yyyy;
-
-      var title = document.getElementById('title-text').value;
-      var desc = document.getElementById('desc').value;
-      var thumbnail = document.getElementById('thumbnail').value;
-
-      var displayName = firebase.auth().currentUser.displayName;
-
-      var game = {
-        title: title,
-        desc: desc,
-        thumbnail: thumbnail,
-        createdAt: today,
-        createdBy: displayName
-      };
-
-      database.ref('games').push(game);
-
-      form.reset();
-    });
   </script>
 </body>
 
