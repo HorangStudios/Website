@@ -150,3 +150,7 @@ button {
   padding: 0;
   height: fit-content;
 }
+
+#adcontainer {
+  text-align: center;
+}
