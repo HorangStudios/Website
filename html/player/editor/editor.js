@@ -1,4 +1,4 @@
-let ver = "0.2.0";
+let ver = "0.2.1";
 console.log('HorangHill Client Version ' + ver);
 
 //editor debug
@@ -19,6 +19,7 @@ camera.lookAt(new THREE.Vector3(0, 0, 0));
 
 // Create the physics world
 var world = new CANNON.World();
+var worldmass = 0
 world.gravity.set(0, -9.85, 0);
 world.broadphase = new CANNON.NaiveBroadphase();
 world.solver.iterations = 10;
@@ -113,7 +114,7 @@ function importJSON(jsonString) {
         if (mesh instanceof THREE.Mesh) {
             try {
                 const shape = new CANNON.Box(new CANNON.Vec3(mesh.scale.x / 2, mesh.scale.y / 2, mesh.scale.z / 2));
-                const body = new CANNON.Body({ mass: 1 });
+                const body = new CANNON.Body({ mass: worldmass });
                 body.addShape(shape);
                 body.position.copy(mesh.position);
                 body.quaternion.copy(mesh.quaternion);
