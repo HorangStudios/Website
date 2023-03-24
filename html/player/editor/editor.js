@@ -1,4 +1,4 @@
-let ver = "0.1.8";
+let ver = "0.1.9";
 console.log('HorangHill Client Version ' + ver);
 
 //editor debug
@@ -112,19 +112,16 @@ function importJSON(jsonString) {
 
         if (mesh instanceof THREE.Mesh) {
             try {
-                const geometry = mesh.geometry;
-                if (geometry && geometry.attributes.position) { // Check if position attribute exists
-                    const shape = new CANNON.Box(new CANNON.Vec3(mesh.scale.x / 2, mesh.scale.y / 2, mesh.scale.z / 2));
-                    var body = new CANNON.Body({ mass: 1 });
-                    body.addShape(shape);
-                    body.position.copy(mesh.position);
-                    body.quaternion.copy(mesh.quaternion);
+                const shape = new CANNON.Box(new CANNON.Vec3(mesh.scale.x / 2, mesh.scale.y / 2, mesh.scale.z / 2));
+                var body = new CANNON.Body({ mass: 1 });
+                body.addShape(shape);
+                body.position.copy(mesh.position);
+                body.quaternion.copy(mesh.quaternion);
 
-                    // Add the body to the Cannon.js world
-                    world.addBody(body);
-                    bodies.push(body)
-                    meshes.push(mesh)
-                }
+                // Add the body to the Cannon.js world
+                world.addBody(body);
+                bodies.push(body)
+                meshes.push(mesh)
             } catch (error) {
                 debug("[ERR] " + error.message);
             }
