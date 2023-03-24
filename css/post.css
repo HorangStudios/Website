@@ -16,7 +16,7 @@
 header {
   background:rgba(0, 0, 0, .20) url('horanghillstartingplace.png');
   background-position: center;
-  color: white;
+  color: whitesmoke;
   padding: 20px;
   height: fit-content;
   background-blend-mode: darken;
@@ -43,7 +43,7 @@ main {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
-  background: white;
+  background: whitesmoke;
   min-height: calc(100vh - 130px);
 }
 
@@ -74,7 +74,7 @@ button {
   background: rgba(0, 0, 0, .20) url('horanghillstartingplace.png');
   background-blend-mode: darken;
   background-position: center;
-  color: white;
+  color: whitesmoke;
   border: none;
   border-radius: 10px;
   padding: 10px 20px;
@@ -155,4 +155,8 @@ button {
 
 #adcontainer {
   text-align: center;
+}
+
+body, html {
+  background: whitesmoke;
 }
