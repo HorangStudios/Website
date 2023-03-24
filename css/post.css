@@ -14,15 +14,16 @@
 }
 
 header {
-  background-image: url('horanghillstartingplace.png');
+  background:rgba(0, 0, 0, .20) url('horanghillstartingplace.png');
   background-position: center;
   color: white;
   padding: 20px;
-  text-align: center;
-  margin: 10px;
-  border-radius: 10px;
-  height: 110px;
+  height: fit-content;
+  background-blend-mode: darken;
   box-sizing: border-box;
+}
+header h1 {
+  padding: 0px 20px;
 }
 
 html {
@@ -70,7 +71,8 @@ input {
 }
 
 button {
-  background-image: url('horanghillstartingplace.png');
+  background: rgba(0, 0, 0, .20) url('horanghillstartingplace.png');
+  background-blend-mode: darken;
   background-position: center;
   color: white;
   border: none;
