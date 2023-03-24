@@ -1,4 +1,4 @@
-let ver = "0.2.1";
+let ver = "0.2.2";
 console.log('HorangHill Client Version ' + ver);
 
 //editor debug
@@ -111,29 +111,27 @@ function importJSON(jsonString) {
             mesh.userData.initscriptfunction = initscriptfunction;
         }
 
-        if (mesh instanceof THREE.Mesh) {
+        try {
+            const shape = new CANNON.Box(new CANNON.Vec3(mesh.scale.x / 2, mesh.scale.y / 2, mesh.scale.z / 2));
+            const body = new CANNON.Body({ mass: worldmass });
+            body.addShape(shape);
+            body.position.copy(mesh.position);
+            body.quaternion.copy(mesh.quaternion);
+
+            // Add the body to the Cannon.js world
+            world.addBody(body);
+            bodies.push(body)
+            meshes.push(mesh)
+        } catch (error) {
+            debug("[ERR] " + error.message);
+        }
+
+        if (mesh.userData.initscriptfunction) {
             try {
-                const shape = new CANNON.Box(new CANNON.Vec3(mesh.scale.x / 2, mesh.scale.y / 2, mesh.scale.z / 2));
-                const body = new CANNON.Body({ mass: worldmass });
-                body.addShape(shape);
-                body.position.copy(mesh.position);
-                body.quaternion.copy(mesh.quaternion);
-
-                // Add the body to the Cannon.js world
-                world.addBody(body);
-                bodies.push(body)
-                meshes.push(mesh)
-            } catch (error) {
-                debug("[ERR] " + error.message);
+                mesh.userData.initscriptfunction(mesh);
             }
-
-            if (mesh.userData.initscriptfunction) {
-                try {
-                    mesh.userData.initscriptfunction(mesh);
-                }
-                catch (err) {
-                    debug("[ERR] " + err.message);
-                }
+            catch (err) {
+                debug("[ERR] " + err.message);
             }
         }
     });
