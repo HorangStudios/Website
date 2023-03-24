@@ -1,4 +1,4 @@
-let ver = "0.1.7";
+let ver = "0.1.8";
 console.log('HorangHill Client Version ' + ver);
 
 //editor debug
@@ -114,9 +114,7 @@ function importJSON(jsonString) {
             try {
                 const geometry = mesh.geometry;
                 if (geometry && geometry.attributes.position) { // Check if position attribute exists
-                    const box = new THREE.Box3().setFromBufferAttribute(geometry.attributes.position);
-                    const size = box.getSize(new THREE.Vector3());
-                    const shape = new CANNON.Box(new CANNON.Vec3(size.x / 2, size.y / 2, size.z / 2));
+                    const shape = new CANNON.Box(new CANNON.Vec3(mesh.scale.x / 2, mesh.scale.y / 2, mesh.scale.z / 2));
                     var body = new CANNON.Body({ mass: 1 });
                     body.addShape(shape);
                     body.position.copy(mesh.position);
