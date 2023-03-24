@@ -21,6 +21,9 @@ header {
   height: fit-content;
   background-blend-mode: darken;
   box-sizing: border-box;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* add a box shadow to the header */
+  position: relative; /* set a position to create stacking context for the shadow */
+  z-index: 1;
 }
 header h1 {
   padding: 0px 20px;
