@@ -164,3 +164,10 @@ body, html {
 .author, #dev {
   color: #444444;
 }
+
+.notifBanner {
+  padding: 10px;
+  background-color: orangered;
+  color: white;
+  text-align: center;
+}
