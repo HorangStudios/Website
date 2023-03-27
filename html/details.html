@@ -7,7 +7,8 @@
   <link rel="stylesheet" href="../css/post.css">
   <link rel="icon" type="image/x-icon" href="../css/HorangHill.png">
   <script src="https://kit.fontawesome.com/970a0290cd.js" crossorigin="anonymous"></script>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9451295160532565" crossorigin="anonymous"></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9451295160532565"
+    crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -30,13 +31,23 @@
       <input id="title" readonly style="resize: none;"></input>
       <h3 id="dev"></h3>
       <textarea id="desc" readonly style="resize: none;"></textarea>
-      <button id="play"><i class="fa-solid fa-play"></i> Play</button>
-      <input type="file" accept=".hhlx" id="file-input" onchange="importScene()" placeholder="HHLX File" required
-        style="display: none;"></input>
-      <button id="edit" style="display: none; width: fit-content;" onclick="document.getElementById('file-input').click()"><i
-          class="fa-solid fa-upload"></i></button>
-      <button id="download" style="display: none; width: fit-content;" onclick="downloadHHLX()"><i
-          class="fa-solid fa-download"></i></button>
+      <button id="play" style="width: calc(100% - 99px); display: inline-block;"><i class="fa-solid fa-play"></i>
+        Play</button>
+      <button style="display: inline-block; width: fit-content;" onclick="contextMenu()"><i
+          class="fa-solid fa-bars"></i></button>
+
+      <div id="contextMenu" style="display: none; text-align: center;">
+        <input type="file" accept=".hhlx" id="file-input" onchange="importScene()" placeholder="HHLX File" required
+          style="display: none;"></input>
+        <button id="edit" style="display: none; width: fit-content;"
+          onclick="document.getElementById('file-input').click()"><i class="fa-solid fa-upload"></i></button>
+
+        <button id="download" style="display: none; width: fit-content;" onclick="downloadHHLX()"><i
+            class="fa-solid fa-download"></i></button>
+
+        <button style="display: inline-block; width: fit-content;" onclick="shareGame()"><i
+            class="fa-solid fa-share"></i></button>
+      </div>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js"></script>
@@ -137,6 +148,29 @@
           };
 
           reader.readAsText(file);
+        }
+      }
+
+      function shareGame() {
+        const shareData = {
+          title: "Try out " + item.title + " on Horanghill",
+          text: item.desc,
+          url: window.location.href,
+        };
+
+        try {
+          navigator.share(shareData);
+        } catch (err) {
+          console.log(`Error: ${err}`);
+        }
+      }
+
+      function contextMenu() {
+        var x = document.getElementById("contextMenu");
+        if (x.style.display == "none") {
+          x.style.display = "block";
+        } else {
+          x.style.display = "none";
         }
       }
     </script>

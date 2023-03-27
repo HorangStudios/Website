@@ -96,7 +96,7 @@
       } else if (hour >= 12 && hour < 18) {
         greetings = ("<i class='fa-regular fa-sun'></i> Good afternoon");
       } else {
-        greetings = ("<i class='fa-solid fa-moon'></i> Good evening");
+        greetings = ("<i class='fa-solid fa-sun'></i> Good evening");
       }
 
       database.ref('games').on('value', function (snapshot) {
@@ -114,7 +114,7 @@
           card.innerHTML =
             '<img src="' + game.thumbnail + '"><br><br>' +
             '<h3>' + game.title + '</h3>' +
-            '<div class="author">' + game.createdBy + '</div>';
+            '<div class="author"> By ' + game.createdBy + '</div>';
           card.onclick = function () {
             window.location.href = ("details.html?id=" + gameId);
           }
