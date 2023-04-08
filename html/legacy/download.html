@@ -4,8 +4,8 @@
 <head>
   <title>HorangHill</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../css/post.css">
-  <link rel="icon" type="image/x-icon" href="../css/HorangHill.png">
+  <link rel="stylesheet" href="../../css/post.css">
+  <link rel="icon" type="image/x-icon" href="../../css/HorangHill.png">
   <script src="https://kit.fontawesome.com/970a0290cd.js" crossorigin="anonymous"></script>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9451295160532565"
     crossorigin="anonymous"></script>
@@ -22,16 +22,15 @@
     <a class="navlink" href="account.html" style="color: white; text-decoration: none;">Account</a>
   </header>
   <main>
-    <h1><i class="fa-solid fa-upload"></i> Publish Game</h1>
-    <form id="form">
-      <input id="title-text" name="title-text" placeholder="Title" required></input>
-      <input id="thumbnail" name="thumbnail" placeholder="URL to thumbnail" required></input>
-      <input type="file" accept=".hhlx" id="file-input" onchange="importScene()" placeholder="HHLX File"
-        required></input>
-      <textarea id="descbox" placeholder="Description"></textarea>
-      <button type="submit">Publish</button><br>
-    </form>
+    <h1><i class="fa-solid fa-download"></i> Download HorangHill Editor</h1><br>
+    <iframe width="552" height="167" frameborder="0" src="https://itch.io/embed/1918089"><a
+        href="https://horangstudios.itch.io/horanghill-editor">HorangHill Editor by HorangStudios</a></iframe>
     <hr>
+    Other options:
+    <a href="https://github.com/HorangStudios/Editor">Source code</a>
+    <a href="https://app.circleci.com/pipelines/github/HorangStudios/Editor">CircleCI Builds</a>
+    <br>
+
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9451295160532565"
       crossorigin="anonymous"></script>
     <!-- horang-ad -->
@@ -48,22 +47,7 @@
   <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-database.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-auth.js"></script>
-  <script>
-    var gamejson
-    function importScene() {
-      var input = document.getElementById("file-input");
-      const file = input.files[0];
-
-      const reader = new FileReader();
-      reader.onload = function (event) {
-        const contents = event.target.result;
-        const json = JSON.parse(contents);
-        gamejson = json
-      };
-
-      reader.readAsText(file);
-    }
-
+  <script defer>
     // Initialize Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyDE-mQcJoquJxLrHAcS1kZbpjUbHYQmzsE",
@@ -76,43 +60,7 @@
       measurementId: "G-S1JMDFPGL0"
     };
     firebase.initializeApp(firebaseConfig);
-
     var database = firebase.database();
-
-    var form = document.getElementById('form');
-
-    form.addEventListener('submit', function (event) {
-      event.preventDefault();
-
-      var today = new Date();
-      var dd = String(today.getDate()).padStart(2, '0');
-      var mm = String(today.getMonth() + 1).padStart(2, '0');
-      var yyyy = today.getFullYear();
-
-      today = mm + '/' + dd + '/' + yyyy;
-
-      var title = document.getElementById('title-text').value;
-      var desc = document.getElementById('descbox').value;
-      var thumbnail = document.getElementById('thumbnail').value;
-
-      var displayName = firebase.auth().currentUser.displayName;
-
-      var userid = firebase.auth().currentUser.uid;
-
-      var game = {
-        title: title,
-        desc: desc,
-        thumbnail: thumbnail,
-        createdAt: today,
-        hhlx: gamejson,
-        createdBy: displayName,
-        uid: userid
-      };
-
-      database.ref('games').push(game);
-
-      form.reset();
-    });
   </script>
 </body>
 

@@ -27,21 +27,24 @@
 
 	<header>
 		<div>
-			<div id="form">
-				<h1 id="greetings"><i class="fa-solid fa-user"></i> Account Settings</h1>
+			<form id="form">
+				<h1>
+					<i class="fa-solid fa-upload"></i> Publish Game
+				</h1>
 
 				<br>
-				<h2 id="greetings">Display Name</h2>
-				<input id="displayName" name="displayName" placeholder="Display Name"></input><br>
-				<button onclick="updateDisplayName()">Change DisplayName</button><br><br>
 
-				<h2 id="greetings">Email And Password</h2>
-				<input id="passbox" name="passbox" placeholder="Password" type="password"></input><br>
-				<button onclick="updatePassWord()">Update Password</button><br><br>
-
-				<input id="mailbox" name="mailbox" placeholder="Email" type="email"></input><br>
-				<button onclick="updateMail()">Update Email</button>
-			</div>
+				<input id="title-text" name="title-text" placeholder="Title" required></input>
+				<br>
+				<input id="thumbnail" name="thumbnail" placeholder="URL to thumbnail" required></input>
+				<br>
+				<input type="file" accept=".hhlx" id="file-input" onchange="importScene()" placeholder="HHLX File"
+					required></input>
+				<br>
+				<textarea id="descbox" placeholder="Description"></textarea>
+				<br><br>
+				<button type="submit">Publish</button>
+			</form>
 		</div>
 	</header>
 
@@ -49,6 +52,21 @@
 	<script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-database.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-auth.js"></script>
 	<script>
+		var gamejson
+		function importScene() {
+			var input = document.getElementById("file-input");
+			const file = input.files[0];
+
+			const reader = new FileReader();
+			reader.onload = function (event) {
+				const contents = event.target.result;
+				const json = JSON.parse(contents);
+				gamejson = json
+			};
+
+			reader.readAsText(file);
+		}
+
 		// Initialize Firebase
 		const firebaseConfig = {
 			apiKey: "AIzaSyDE-mQcJoquJxLrHAcS1kZbpjUbHYQmzsE",
@@ -61,39 +79,43 @@
 			measurementId: "G-S1JMDFPGL0"
 		};
 		firebase.initializeApp(firebaseConfig);
+
 		var database = firebase.database();
 
-		function updateDisplayName() {
-			try {
-				firebase.auth().currentUser.updateProfile({
-					displayName: document.getElementById('displayName').value
-				});
-			} catch (error) {
-				alert(error.message);
-			}
-		}
+		var form = document.getElementById('form');
 
-		function updatePassWord() {
-			try {
-				firebase.auth().currentUser.updatePassword(document.getElementById('passbox').value)
-					.catch((error) => {
-						alert(error.message);
-					});
-			} catch (error) {
-				alert(error.message);
-			}
-		}
+		form.addEventListener('submit', function (event) {
+			event.preventDefault();
 
-		function updateMail() {
-			try {
-				firebase.auth().currentUser.updateEmail(document.getElementById('mailbox').value)
-					.catch((error) => {
-						alert(error.message);
-					});
-			} catch (error) {
-				alert(error.message);
-			}
-		}
+			var today = new Date();
+			var dd = String(today.getDate()).padStart(2, '0');
+			var mm = String(today.getMonth() + 1).padStart(2, '0');
+			var yyyy = today.getFullYear();
+
+			today = mm + '/' + dd + '/' + yyyy;
+
+			var title = document.getElementById('title-text').value;
+			var desc = document.getElementById('descbox').value;
+			var thumbnail = document.getElementById('thumbnail').value;
+
+			var displayName = firebase.auth().currentUser.displayName;
+
+			var userid = firebase.auth().currentUser.uid;
+
+			var game = {
+				title: title,
+				desc: desc,
+				thumbnail: thumbnail,
+				createdAt: today,
+				hhlx: gamejson,
+				createdBy: displayName,
+				uid: userid
+			};
+
+			database.ref('games').push(game);
+
+			form.reset();
+		});
 	</script>
 </body>
 

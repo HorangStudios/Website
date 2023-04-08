@@ -44,7 +44,7 @@ function loginacc() {
     var password = document.getElementById('passwordLogin').value;
 
     firebase.auth().signInWithEmailAndPassword(email, password)
-        .then(function (user) { window.location.href = "html/home.html"; })
+        .then(function (user) { window.location.href = "html/index.html"; })
         .catch(function (error) { document.getElementById('error1').innerText = error.message; });
 };
 

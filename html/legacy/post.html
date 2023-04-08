@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>HorangHill</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../../css/post.css">
+  <link rel="icon" type="image/x-icon" href="../../css/HorangHill.png">
+  <script src="https://kit.fontawesome.com/970a0290cd.js" crossorigin="anonymous"></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9451295160532565"
+    crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <header>
+    <h1>HorangHill</h1><br>
+    <a class="navlink" href="home.html" style="color: white; text-decoration: none;">Home</a>
+    <a class="navlink" href="post.html" style="color: white; text-decoration: none;">Publish</a>
+    <a class="navlink" href="download.html" style="color: white; text-decoration: none;">Download</a>
+    <a class="navlink" href="https://horanghill.createaforum.com/index.php"
+      style="color: white; text-decoration: none;">Forum</a>
+    <a class="navlink" href="account.html" style="color: white; text-decoration: none;">Account</a>
+  </header>
+  <main>
+    <h1><i class="fa-solid fa-upload"></i> Publish Game</h1>
+    <form id="form">
+      <input id="title-text" name="title-text" placeholder="Title" required></input>
+      <input id="thumbnail" name="thumbnail" placeholder="URL to thumbnail" required></input>
+      <input type="file" accept=".hhlx" id="file-input" onchange="importScene()" placeholder="HHLX File"
+        required></input>
+      <textarea id="descbox" placeholder="Description"></textarea>
+      <button type="submit">Publish</button><br>
+    </form>
+    <hr>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9451295160532565"
+      crossorigin="anonymous"></script>
+    <!-- horang-ad -->
+    <div id="adcontainer">
+      <ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px"
+      data-ad-client="ca-pub-9451295160532565" data-ad-slot="9073494877"></ins>  
+    </div>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+    <hr>
+  </main>
+
+  <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-auth.js"></script>
+  <script>
+    var gamejson
+    function importScene() {
+      var input = document.getElementById("file-input");
+      const file = input.files[0];
+
+      const reader = new FileReader();
+      reader.onload = function (event) {
+        const contents = event.target.result;
+        const json = JSON.parse(contents);
+        gamejson = json
+      };
+
+      reader.readAsText(file);
+    }
+
+    // Initialize Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyDE-mQcJoquJxLrHAcS1kZbpjUbHYQmzsE",
+      authDomain: "horanghill.firebaseapp.com",
+      databaseURL: "https://horanghill-default-rtdb.firebaseio.com",
+      projectId: "horanghill",
+      storageBucket: "horanghill.appspot.com",
+      messagingSenderId: "710235265347",
+      appId: "1:710235265347:web:37fb53fe0bb9c4ecdab7f6",
+      measurementId: "G-S1JMDFPGL0"
+    };
+    firebase.initializeApp(firebaseConfig);
+
+    var database = firebase.database();
+
+    var form = document.getElementById('form');
+
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      var today = new Date();
+      var dd = String(today.getDate()).padStart(2, '0');
+      var mm = String(today.getMonth() + 1).padStart(2, '0');
+      var yyyy = today.getFullYear();
+
+      today = mm + '/' + dd + '/' + yyyy;
+
+      var title = document.getElementById('title-text').value;
+      var desc = document.getElementById('descbox').value;
+      var thumbnail = document.getElementById('thumbnail').value;
+
+      var displayName = firebase.auth().currentUser.displayName;
+
+      var userid = firebase.auth().currentUser.uid;
+
+      var game = {
+        title: title,
+        desc: desc,
+        thumbnail: thumbnail,
+        createdAt: today,
+        hhlx: gamejson,
+        createdBy: displayName,
+        uid: userid
+      };
+
+      database.ref('games').push(game);
+
+      form.reset();
+    });
+  </script>
+</body>
+
+</html>
