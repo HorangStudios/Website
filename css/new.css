@@ -193,12 +193,6 @@ textarea,
 	opacity: 0;
 }
 
-.highlighted {
-	background: -webkit-linear-gradient(#ABDCFF, #0396FF);
-	-webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
-}
-
 .logo1 {
 	border-radius: 5px;
 }
