@@ -12,14 +12,14 @@
     <link rel="stylesheet" href="css/new.css">
     <link rel="icon" type="image/x-icon" href="css/HorangHill.png">
     <script src="https://kit.fontawesome.com/970a0290cd.js" crossorigin="anonymous"></script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9451295160532565" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9451295160532565"
+        crossorigin="anonymous"></script>
 </head>
 
 <header>
     <form class="form" id="signupbox">
-        <img src="css/HorangHill.png" width="125" style="border-radius: 5px;"><br><br>
-        To continue, Create an account or sign in to an existing one
-        <br><br>
+        <input value="To continue, Create an account or sign in to an existing one" disabled style="background: none;">
+        <br>
         <input id="displayName" placeholder="User Name" required>
         <br>
         <input type="email" id="email" placeholder="Email" required>
@@ -33,14 +33,13 @@
     </form>
 
     <form class="form" id="loginbox" style="display: none;">
-        <img src="css/HorangHill.png" width="125" style="border-radius: 5px;"><br><br>
-        To continue, Create an account or sign in to an existing one
-        <br><br>
+        <input value="To continue, Create an account or sign in to an existing one" disabled style="background: none;">
+        <br>
         <input type="email" id="emailLogin" placeholder="Email" required>
         <br>
         <input type="password" id="passwordLogin" placeholder="Password" required>
         <br><br>
-        <button onclick="loginacc()">Sign In</button><br><br>
+        <button onclick="loginacc()">Sign In</button>
         <p id="error1" style="color: red; text-align: center;"></p>
     </form>
 </header>
