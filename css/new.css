@@ -32,6 +32,10 @@ header {
 	background-repeat: no-repeat;
 	background-size: cover;
 	font-weight: bold;
+	background-attachment: fixed;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
 }
 
 header a {
