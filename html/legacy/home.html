@@ -107,7 +107,7 @@
       database.ref('games').on('value', function (snapshot) {
         document.getElementById('main').style.display = "block"
         gamescontainer.innerHTML = '';
-        var displayName = firebase.auth().currentUser.displayName;
+        var displayName = firebase.auth().currentUser.displayName || "Player";
         document.getElementById('greetings').innerHTML = `${greetings}, ${displayName}!`
 
         let games = snapshot.val();

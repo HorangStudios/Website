@@ -37,6 +37,16 @@ function createacc() {
         });
 }
 
+function guestacc() {
+    firebase.auth().signInAnonymously()
+        .then(() => {
+            window.location.href = "html/index.html";
+        })
+        .catch((error) => {
+            document.getElementById('error1').innerText = error.message;
+        });
+}
+
 function loginacc() {
     event.preventDefault();
 

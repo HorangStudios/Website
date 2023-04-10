@@ -26,9 +26,11 @@
         <br>
         <input type="password" id="password" placeholder="Password" required>
         <br><br>
-        <button id="submit" onclick="createacc()">Sign up</button>
+        <button id="submit" onclick="createacc(); this.disabled = true; this.innerText = 'Please Wait...'">Sign up</button>
         <br>
-        <button onclick="showlogin()">Sign in instead</button>
+        <button onclick="showlogin(); this.disabled = true; this.innerText = 'Please Wait...'">Sign in instead</button>
+        <br>
+        <button onclick="guestacc(); this.disabled = true; this.innerText = 'Please Wait...'">Try out HorangHill</button>
         <p id="error" style="color: red; text-align: center;"></p>
     </form>
 
@@ -39,7 +41,7 @@
         <br>
         <input type="password" id="passwordLogin" placeholder="Password" required>
         <br><br>
-        <button onclick="loginacc()">Sign In</button>
+        <button onclick="loginacc(); this.disabled = true; this.innerText = 'Please Wait...'">Sign In</button>
         <p id="error1" style="color: red; text-align: center;"></p>
     </form>
 </header>
