@@ -1,142 +1,205 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
 
 <head>
-	<title>HorangHill</title>
-	<link rel="stylesheet" href="../css/new.css">
-	<link rel="icon" type="image/x-icon" href="logo.png">
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<script src="fontawesome.js" defer></script>
+  <title>HorangHill</title>
+  <link rel="icon" type="image/x-icon" href="HorangHill.png">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-auth.js"></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9451295160532565"
+  crossorigin="anonymous"></script>
 
-	<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9451295160532565"
-		crossorigin="anonymous"></script>
-	<script>
-		(adsbygoogle = window.adsbygoogle || []).push({});
-	</script>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <script src="script.js" defer></script>
+  <script src="legacyv2/fontawesome.js" defer></script>
+  <link rel="icon" type="image/x-icon" href="../css/HorangHill.png">
+
+  <style>
+    body {
+      font-family: 'Segoe UI';
+      font-size: 10pt;
+      background: #2d2d2d;
+    }
+
+    #sidebar {
+      background: linear-gradient(rgba(0, 0, 0, 0.10), rgba(0, 0, 0, 1)), url('../css/horanghillstartingplace.png');
+      width: 20%;
+      background-color: #E3EDFA;
+      float: left;
+      height: 100vh;
+      background-size: cover;
+      padding: 25px;
+      box-sizing: border-box;
+      box-shadow: 0px 0px 15px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      color: white;
+    }
+
+    .header {
+      color: steelblue;
+      font-size: 12.5pt;
+    }
+
+    #main {
+      width: 80%;
+      float: right;
+      height: 100vh;
+      padding: 25px;
+      box-sizing: border-box;
+      overflow: auto;
+    }
+
+    #sidebar a {
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    a:hover {
+      color: blue;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    #game {
+      padding: 25px;
+      background-color: #1d1d1d;
+      color: white;
+      margin-top: 25px;
+      box-shadow: 200px -1px 136px 8px rgba(0, 0, 0, 1) inset;
+      -webkit-box-shadow: 200px -1px 136px 8px rgba(0, 0, 0, 1) inset;
+      -moz-box-shadow: 200px -1px 136px 8px rgba(0, 0, 0, 1) inset;
+      border-radius: 4px;
+      border: #4d4d4d solid 1px;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-family: Righteous;
+    }
+
+    input,
+    textarea,
+    button {
+      padding: 25px;
+      background-color: #1d1d1d;
+      border: none;
+      border: #4d4d4d solid 1px;
+      border-radius: 4px;
+      width: 100%;
+      box-sizing: border-box;
+      margin-top: 25px;
+    }
+
+    .gameThumbnail {
+      padding: 25px;
+      background-color: #1d1d1d;
+      border: none;
+      border: #4d4d4d solid 1px;
+      border-radius: 4px;
+      width: 100%;
+      box-sizing: border-box;
+      margin-bottom: 25px;
+    }
+  </style>
 </head>
 
 <body>
-	<nav>
-		<ul>
-			<a href="index.html" style="float: left;"><img class="logo1" src="../../css\HorangHill.png"></img></a>
-			<li style="float: left;"><a>HorangHill</a></li>
+  <div id="sidebar">
+    <img src="../css/HorangHill.png"
+      style="box-shadow: 0px 0px 15px 5px rgba(0, 0, 0, 0.1);width: 100%;border-radius: 4px;"><br><br>
+    <a class="tablinks" onclick="openTab(event, 'Home')" id="defaultOpen">Home</a>
+    <br><br>
+    <a class="tablinks" onclick="openTab(event, 'Publish')">Publish</a><br><br>
+    <a class="tablinks" onclick="openTab(event, 'Downloads')">Downloads</a><br><br>
+    <a class="tablinks" onclick="openTab(event, 'Account')">Account</a><br><br>
+    <a class="tablinks" onclick="openTab(event, 'Details')" id="gamedetailstabtogglebutton" hidden>game.details</a>
+    <hr><br>
+    <a class="tablinks" onclick="window.location.href = 'https://horanghill.createaforum.com/index.php'"><i
+        class="fa fa-up-right-from-square"></i> Forum</a><br><br>
+    <a class="tablinks" onclick="firebase.auth().signOut(); window.location.replace('../index.html')">Log Out</a>
+  </div>
+  <div id="main">
+    <div id="Home" class="tabcontent">
+      <h1 id="greetings">
+        <progress style="
+          width: 100%;
+        "></progress>
+      </h1>
+      <div id="gamelist"></div>
+    </div>
 
-			<li><a href="index.html"><i class="fa-solid fa-home"></i> Home</a></li>
-			<li><a href="publish.html"><i class="fa-solid fa-upload"></i> Publish</a></li>
-			<li><a href="download.html"><i class="fa-solid fa-download"></i> Download</a></li>
-			<li><a href="https://horanghill.createaforum.com/index.php"><i class="fa-solid fa-person"></i> Forum</a>
-			</li>
-			<li><a href="account.html"><i class="fa-solid fa-user"></i> Account</a></li>
-		</ul>
-	</nav>
+    <div id="Publish" class="tabcontent">
+      <h1><i class="fa-solid fa-upload"></i> Publish</h1>
+      <form id="publishForm">
+        <input id="title-text" name="title-text" placeholder="Title" required="">
+        <br>
+        <input id="thumbnail" name="thumbnail" placeholder="URL to thumbnail" required="">
+        <br>
+        <input type="file" accept=".hhlx" id="file-input" onchange="importScene()" placeholder="HHLX File" required="">
+        <br>
+        <textarea id="descbox" placeholder="Description"></textarea>
+        <br><br>
+        <button type="submit">Publish</button>
+      </form>
+    </div>
 
-	<header>
-		<div id="form">
-			<h1 style="text-shadow: 2px 2px 10px #000;" id="greetings">Loading games...</h1><br>
+    <div id="Downloads" class="tabcontent">
+      <h1><i class="fa-solid fa-download"></i> Downloads</h1>
+      <br>
+      <iframe style="border-radius: 5px;" width="552" height="167" frameborder="0"
+        src="https://itch.io/embed/1918089"><a href="https://horangstudios.itch.io/horanghill-editor">HorangHill Editor
+          by
+          HorangStudios</a></iframe>
+      <br><br>
+      Other options:
+      <a href="https://github.com/HorangStudios/Editor">Source code</a> |
+      <a href="https://app.circleci.com/pipelines/github/HorangStudios/Editor">CircleCI Builds</a>
+    </div>
 
-			<div style="display: flex; width: 100%; overflow: auto;">
-				<div class="quickcard">
-					<a href="publish.html">
-						<h3>Publish</h3>
-					</a>
-					<div class="author">Publish a game</div>
-				</div>
+    <div id="Account" class="tabcontent">
+      <h1><i class="fa-solid fa-user"></i> Account</h1>
+      <div id="form">
+        <br>
+        <h2 id="greetings">Display Name</h2>
+        <input id="displayName" name="displayName" placeholder="Display Name"><br>
+        <button onclick="updateDisplayName()">Change DisplayName</button><br><br>
 
-				<div class="quickcard">
-					<a href="download.html">
-						<h3>Download</h3>
-					</a>
-					<div class="author">Download the editor</div>
-				</div>
+        <h2 id="greetings">Email And Password</h2>
+        <input id="passbox" name="passbox" placeholder="Password" type="password"><br>
+        <button onclick="updatePassWord()">Update Password</button><br><br>
 
-				<div class="quickcard">
-					<a href="https://horanghill.createaforum.com/index.php">
-						<h3>Forum</h3>
-					</a>
-					<div class="author">Talk with the community</div>
-				</div>
+        <input id="mailbox" name="mailbox" placeholder="Email" type="email"><br>
+        <button onclick="updateMail()">Update Email</button><br><br>
 
-				<div class="quickcard">
-					<a href="#greetings" onclick="firebase.auth().signOut(); window.location.replace('../index.html')">
-						<h3>Log out</h3>
-					</a>
-					<div class="author">Log out from your account</div>
-				</div>
+        <h2 id="greetings">HorangHill Legacy</h2>
+        <button onclick="window.location.href = 'legacy/home.html'">Visit The Very First HorangHill Website</button><br>
+        <button onclick="window.location.href = 'legacyv2/index.html'">Visit The Legacy-v2 HorangHill
+          Website</button><br>
+      </div>
+    </div>
 
-			</div>
-		</div>
-	</header>
-
-	<section style="height: fit-content; display: none;" id="main">
-		<div id="gamelist" class="cardholder"></div>
-	</section>
-
-	<script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js"></script>
-	<script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-database.js"></script>
-	<script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-auth.js"></script>
-	<script>
-		// Initialize Firebase
-		const firebaseConfig = {
-			apiKey: "AIzaSyDE-mQcJoquJxLrHAcS1kZbpjUbHYQmzsE",
-			authDomain: "horanghill.firebaseapp.com",
-			databaseURL: "https://horanghill-default-rtdb.firebaseio.com",
-			projectId: "horanghill",
-			storageBucket: "horanghill.appspot.com",
-			messagingSenderId: "710235265347",
-			appId: "1:710235265347:web:37fb53fe0bb9c4ecdab7f6",
-			measurementId: "G-S1JMDFPGL0"
-		};
-		firebase.initializeApp(firebaseConfig);
-		var database = firebase.database();
-		var gamescontainer = document.getElementById('gamelist');
-
-		//greetings time
-		let today = new Date();
-		let hour = today.getHours();
-		let greetings
-		if (hour >= 5 && hour < 12) {
-			greetings = ("<i class='fa-solid fa-sun'></i> Good morning");
-		} else if (hour >= 12 && hour < 18) {
-			greetings = ("<i class='fa-regular fa-sun'></i> Good afternoon");
-		} else {
-			greetings = ("<i class='fa-solid fa-sun'></i> Good evening");
-		}
-
-		function truncate(str, num) {
-			if (str.length > num) {
-				return str.slice(0, num) + "...";
-			} else {
-				return str;
-			}
-		}
-
-		database.ref('games').on('value', function (snapshot) {
-			document.getElementById('main').style.display = "block"
-			gamescontainer.innerHTML = '';
-			var displayName = firebase.auth().currentUser.displayName || "Player";
-			document.getElementById('greetings').innerHTML = `${greetings}, ${displayName}!`
-
-			let games = snapshot.val();
-
-			Object.keys(games).forEach(function (gameId) {
-				var game = games[gameId];
-
-				var card = document.createElement('div');
-				card.id = 'game';
-				gamename = "<div id='gamecard1'><h4>" + game.title + "</h4>" + game.createdBy + "</div>";
-				gamedetails = "<div id='gamecard2'>" + truncate(game.desc, 100) + "</div>"
-				card.innerHTML = gamedetails + gamename;
-				card.style.backgroundImage = "url(" + game.thumbnail + ")";
-
-				card.onclick = function () {
-					window.location.href = ("details.html?id=" + gameId);
-				}
-
-				gamescontainer.prepend(card);
-			});
-		});
-	</script>
+    <div id="Details" class="tabcontent">
+      <h1 id="gameTitle">Game Title</h1>
+      <p id="gamePublisher">Game Publisher</p>
+      <br>
+      <p id="gameDescription">Game Description</p>
+      <button id="playButton"><i class="fa fa-play"></i> Play</button>
+      <button id="editButton" hidden><i class="fa fa-pencil"></i> Edit</button>
+    </div>
+  </div>
 </body>
 
 </html>
