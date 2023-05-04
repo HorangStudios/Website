@@ -19,8 +19,9 @@
 <header>
 
     <form class="form" id="signupbox">
-        <input value="To continue, Create an account or sign in to an existing one" disabled style="background: none;">
-        <br>
+        <img src="css/HorangHill.png" style="width: 25%; border-radius: 4px;"><br>
+        <input value="To continue, Create an account or sign in to an existing one" disabled style="background: none; text-align: center;">
+        <br><hr><br>
         <input id="displayName" placeholder="User Name" required>
         <br>
         <input type="email" id="email" placeholder="Email" required>
@@ -30,14 +31,15 @@
         <button id="submit" onclick="createacc(); this.disabled = true; this.innerText = 'Please Wait...'">Sign up</button>
         <br>
         <button onclick="showlogin(); this.disabled = true; this.innerText = 'Please Wait...'">Sign in instead</button>
-        <br>
+        <br><br><hr><br>
         <button onclick="guestacc(); this.disabled = true; this.innerText = 'Please Wait...'">Try out HorangHill as a Guest</button>
         <p id="error" style="color: red; text-align: center;"></p>
     </form>
 
     <form class="form" id="loginbox" style="display: none;">
-        <input value="To continue, Create an account or sign in to an existing one" disabled style="background: none;">
-        <br>
+        <img src="css/HorangHill.png" style="width: 25%; border-radius: 4px;"><br>
+        <input value="To continue, Create an account or sign in to an existing one" disabled style="background: none; text-align: center;">
+        <br><hr><br>
         <input type="email" id="emailLogin" placeholder="Email" required>
         <br>
         <input type="password" id="passwordLogin" placeholder="Password" required>

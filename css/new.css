@@ -9,7 +9,7 @@
 
 body,
 html {
-	font-family: horangfont !important;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 	height: 60%;
 	background-color: #000000;
 }
@@ -154,7 +154,7 @@ input,
 textarea,
 #form button,
 .form button {
-	font-family: horangfont;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 	box-sizing: border-box;
 	border-radius: 3px;
 	border: black solid 1px;
@@ -219,7 +219,7 @@ textarea,
 	background-color: #000000dd;
 	backdrop-filter: blur(10px);
 	padding: 20px;
-	border-radius: 5px;
+	height: 100%;
 }
 
 #title {
@@ -257,4 +257,8 @@ textarea,
 	margin: 5px;
 	text-align: left;
 	border-radius: 5px;
+}
+
+hr {
+	border: #333333 solid 1px;
 }
