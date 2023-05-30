@@ -17,7 +17,14 @@
 </head>
 
 <header>
-
+    <dialog open id="insanedialog" style="border: none; z-index: 99; width: 100vw; height: 100vh; background: #000000ab; display: flex; text-align: center; place-items: center; justify-content: center; display: none;">
+        <div style="background-color: black; padding: 20px;">
+            <br>
+            <p style="font-size: 19px;">Guest mode means limited features, do you want to continue?</p>
+            <br><br>
+            <button style="font-size: 17px;" onclick="closedialog()">Log in instead</button><button style="font-size: 17px;" onclick="guestacc(); this.disabled = true; this.innerText = 'Please Wait...'">Continue</button>
+        </div>
+    </dialog>
     <form class="form" id="signupbox">
         <img src="css/HorangHill.png" style="width: 25%; border-radius: 4px;"><br>
         <input value="To continue, Create an account or sign in to an existing one" disabled style="background: none; text-align: center;">
@@ -32,7 +39,7 @@
         <br>
         <button onclick="showlogin(); this.disabled = true; this.innerText = 'Please Wait...'">Sign in instead</button>
         <br><br><hr><br>
-        <button onclick="guestacc(); this.disabled = true; this.innerText = 'Please Wait...'">Try out HorangHill as a Guest</button>
+        <button onclick="opendialog();">Try out HorangHill as a Guest</button>
         <p id="error" style="color: red; text-align: center;"></p>
     </form>
 

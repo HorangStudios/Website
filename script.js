@@ -47,6 +47,13 @@ function guestacc() {
         });
 }
 
+function opendialog() {
+    document.getElementById("insanedialog").style.display = "flex";
+}
+function closedialog() {
+    document.getElementById("insanedialog").style.display = "none";
+}
+
 function loginacc() {
     event.preventDefault();
 
