@@ -133,7 +133,7 @@ li a:hover {
 	width: 250px !important;
 	height: 250px !important;
 	background-color: #1d1d1d;
-	border-radius: 5px;
+	border-radius: 10px;
 	text-align: center;
 	float: left;
 	margin: 15px;
@@ -216,10 +216,11 @@ textarea,
 
 #form,
 .form {
-	background-color: #000000dd;
-	backdrop-filter: blur(10px);
+	background-color: #1d1d1d;
+	border: #4d4d4d solid 1px;
 	padding: 20px;
-	height: 100%;
+	height: fit-content;
+	border-radius: 10px;
 }
 
 #title {

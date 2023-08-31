@@ -3,166 +3,57 @@
 
 <head>
   <title>HorangHill</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
   <link rel="icon" type="image/x-icon" href="HorangHill.png">
+  <link rel="stylesheet" href="../css/post.css">
+  <link rel="icon" type="image/x-icon" href="../css/HorangHill.png">
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-database.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-auth.js"></script>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9451295160532565"
-  crossorigin="anonymous"></script>
-
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    crossorigin="anonymous"></script>
   <script src="script.js" defer></script>
-  <script src="legacyv2/fontawesome.js" defer></script>
-  <link rel="icon" type="image/x-icon" href="../css/HorangHill.png">
-
-  <!-- Google tag (gtag.js) -->
+  <script src="https://kit.fontawesome.com/970a0290cd.js" crossorigin="anonymous"></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-S1JMDFPGL0"></script>
   <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
 
-  gtag('config', 'G-S1JMDFPGL0');
+    gtag('config', 'G-S1JMDFPGL0');
   </script>
-
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      font-size: 10pt;
-      background: #2d2d2d;
-    }
-
-    @font-face {
-      font-family: Righteous;
-      src: url("../css/Righteous-Regular.ttf");
-    }
-
-    #sidebar {
-      background: linear-gradient(rgba(0, 0, 0, 0.10), rgba(0, 0, 0, 1)), url('../css/horanghillstartingplace.png');
-      width: 20%;
-      background-color: #E3EDFA;
-      float: left;
-      height: 100vh;
-      background-size: cover;
-      padding: 25px;
-      box-sizing: border-box;
-      box-shadow: 0px 0px 15px 5px rgba(0, 0, 0, 0.1);
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      user-select: none;
-      color: white;
-    }
-
-    .header {
-      color: steelblue;
-      font-size: 12.5pt;
-    }
-
-    #main {
-      width: 80%;
-      float: right;
-      height: 100vh;
-      padding: 25px;
-      box-sizing: border-box;
-      overflow: auto;
-    }
-
-    #sidebar a {
-      padding: 10px;
-      cursor: pointer;
-    }
-
-    a:hover {
-      color: blue;
-      text-decoration: underline;
-      cursor: pointer;
-    }
-
-    #game {
-      padding: 25px;
-      background-color: #1d1d1d;
-      color: white;
-      margin-top: 25px;
-      box-shadow: 200px -1px 136px 8px rgba(0, 0, 0, 1) inset;
-      -webkit-box-shadow: 200px -1px 136px 8px rgba(0, 0, 0, 1) inset;
-      -moz-box-shadow: 200px -1px 136px 8px rgba(0, 0, 0, 1) inset;
-      border-radius: 4px;
-      border: #4d4d4d solid 1px;
-      background-repeat: no-repeat;
-      background-size: cover;
-    }
-
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-      font-family: Righteous;
-    }
-
-    input,
-    textarea,
-    button {
-      padding: 25px;
-      background-color: #1d1d1d;
-      border: none;
-      border: #4d4d4d solid 1px;
-      border-radius: 4px;
-      width: 100%;
-      box-sizing: border-box;
-      margin-top: 25px;
-    }
-
-    .gameThumbnail {
-      padding: 25px;
-      background-color: #1d1d1d;
-      border: none;
-      border: #4d4d4d solid 1px;
-      border-radius: 4px;
-      width: 100%;
-      box-sizing: border-box;
-      margin-bottom: 25px;
-    }
-
-    #migrationNotice {
-      background: darkred;
-      padding: 15px;
-      border-radius: 5px;
-      margin-bottom: 15px;
-    }
-  </style>
 </head>
 
 <body>
   <div id="sidebar">
-    <img src="../css/HorangHill.png"
-      style="box-shadow: 0px 0px 15px 5px rgba(0, 0, 0, 0.1);width: 100%;border-radius: 4px;"><br><br>
-    <a class="tablinks" onclick="openTab(event, 'Home')" id="defaultOpen">Home</a>
-    <br><br>
-    <a class="tablinks" onclick="openTab(event, 'Publish')">Publish</a><br><br>
-    <a class="tablinks" onclick="openTab(event, 'Downloads')">Downloads</a><br><br>
-    <a class="tablinks" onclick="openTab(event, 'Account')">Account</a><br><br>
+    <h1>HorangHill</h1>
+
+    <br>
+
+    <a class="tablinks" onclick="openTab(event, 'Home')" id="defaultOpen" style="padding-left: 0;">Home</a>
+    <a class="tablinks" onclick="openTab(event, 'Publish')">Publish</a>
+    <a class="tablinks" onclick="openTab(event, 'Downloads')">Editor</a>
+    <a class="tablinks" onclick="openTab(event, 'Account')">Account</a>
     <a class="tablinks" onclick="openTab(event, 'Details')" id="gamedetailstabtogglebutton" hidden>game.details</a>
-    <hr><br>
-    <a class="tablinks" onclick="window.location.href = 'https://horanghill.createaforum.com/index.php'"><i
-        class="fa fa-up-right-from-square"></i> Forum</a><br><br>
-    <a class="tablinks" onclick="firebase.auth().signOut(); window.location.replace('../index.html')">Log Out</a>
+    
+    <a class="tablinks rightNav" onclick="firebase.auth().signOut(); window.location.replace('../index.html')">Log Out</a>
+    <a class="tablinks rightNav" onclick="window.location.href = 'https://horanghill.createaforum.com/index.php'">Forum</a>
   </div>
   <div id="main">
     <div id="Home" class="tabcontent">
       <div id="migrationNotice">
         <i class="fa-solid fa-circle-info"></i>
-        Horanghill will be moving to the new LigmaForge engine, meaning the database will be cleared. Back up your games before its too late!
+        Horanghill will be moving to the new LigmaForge engine, meaning the database will be cleared. Back up your games
+        before its too late!
       </div>
       <h1 id="greetings">
-        <progress style="
-          width: 100%;
-        "></progress>
+        <center>
+          <i class="fa-solid fa-spinner fa-spin"></i>
+        </center>
       </h1>
       <div id="gamelist"></div>
     </div>
@@ -174,25 +65,27 @@
         <br>
         <input id="thumbnail" name="thumbnail" placeholder="URL to thumbnail" required="">
         <br>
-        <input type="file" accept=".hhlx" id="file-input" onchange="importScene()" placeholder="HHLX File" required="">
+        <input type="file" accept=".hhls" id="file-input" onchange="importScene()" placeholder="HHLS File" required="">
         <br>
         <textarea id="descbox" placeholder="Description"></textarea>
-        <br><br>
+        <br>
         <button type="submit">Publish</button>
       </form>
     </div>
 
     <div id="Downloads" class="tabcontent">
-      <h1><i class="fa-solid fa-download"></i> Downloads</h1>
-      <br>
-      <iframe style="border-radius: 5px;" width="552" height="167" frameborder="0"
-        src="https://itch.io/embed/1918089"><a href="https://horangstudios.itch.io/horanghill-editor">HorangHill Editor
-          by
-          HorangStudios</a></iframe>
-      <br><br>
-      Other options:
-      <a href="https://github.com/HorangStudios/Editor">Source code</a> |
-      <a href="https://app.circleci.com/pipelines/github/HorangStudios/Editor">CircleCI Builds</a>
+      <h1><i class="fa-solid fa-wrench"></i> HorangHill Editor (Web)</h1>
+      <button onclick="window.location.href = 'https://horangstudios.github.io/LigmaForge/'">
+        <i class="fa fa-plus"></i> New game
+      </button><br><br>
+      <h1><i class="fa-solid fa-download"></i> Legacy editor (Discontinued)</h1>
+      
+      <button onclick="window.location.href = 'https://github.com/HorangStudios/Editor'">
+        Download legacy editor
+      </button><br>
+      <button onclick="window.location.href = 'https://horangstudios.itch.io/horanghill-editor'">
+        Visit Itch.io page
+      </button>
     </div>
 
     <div id="Account" class="tabcontent">
@@ -201,7 +94,7 @@
         <br>
         <h2 id="greetings">Display Name</h2>
         <input id="displayName" name="displayName" placeholder="Display Name"><br>
-        <button onclick="updateDisplayName()">Change DisplayName</button><br><br>
+        <button onclick="updateDisplayName()">Change Display Name</button><br><br>
 
         <h2 id="greetings">Email And Password</h2>
         <input id="passbox" name="passbox" placeholder="Password" type="password"><br>
@@ -209,11 +102,6 @@
 
         <input id="mailbox" name="mailbox" placeholder="Email" type="email"><br>
         <button onclick="updateMail()">Update Email</button><br><br>
-
-        <h2 id="greetings">HorangHill Legacy</h2>
-        <button onclick="window.location.href = 'legacy/home.html'">Visit The Very First HorangHill Website</button><br>
-        <button onclick="window.location.href = 'legacyv2/index.html'">Visit The Legacy-v2 HorangHill
-          Website</button><br>
       </div>
     </div>
 

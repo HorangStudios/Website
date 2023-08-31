@@ -11,6 +11,12 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 
+firebase.auth().onAuthStateChanged(function(user) {
+    if (user.displayName) {
+        window.location.href = "html/index.html";
+    }
+});
+
 // Get the form element
 var form = document.getElementById('signup-form');
 
@@ -22,19 +28,23 @@ function createacc() {
     var password = document.getElementById('password').value;
     var displayName = document.getElementById('displayName').value;
 
-    firebase.auth().createUserWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-            userCredential.user.updateProfile({
-                displayName: displayName
+    if (displayName && email && password) {
+        firebase.auth().createUserWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+                userCredential.user.updateProfile({
+                    displayName: displayName
+                });
+
+                window.alert('Account created successfully!')
+
+                window.location.href = "html/index.html";
+            })
+            .catch((error) => {
+                document.getElementById('error').innerText = error.message;
             });
-
-            window.alert('Account created successfully!')
-
-            showlogin()
-        })
-        .catch((error) => {
-            document.getElementById('error').innerText = error.message;
-        });
+    } else {
+        document.getElementById('error').innerText = 'Error: Please fill all inputs to continue!';
+    }
 }
 
 function guestacc() {

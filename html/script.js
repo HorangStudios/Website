@@ -4,6 +4,9 @@ function openTab(evt, cityName) {
   for (i = 0; i < tabcontent.length; i++) {
     tabcontent[i].style.display = "none";
   }
+  if (cityName != 'Details') {
+    document.getElementById("sidebar").style.background = "rgba(0, 0, 0, .20) url('../css/horanghillstartingplace.png')";
+  }
   tablinks = document.getElementsByClassName("tablinks");
   for (i = 0; i < tablinks.length; i++) {
     tablinks[i].className = tablinks[i].className.replace(" active", "");
@@ -14,11 +17,6 @@ function openTab(evt, cityName) {
 
 // Get the element with id="defaultOpen" and click on it
 document.getElementById("defaultOpen").click();
-
-function openURLInDefaultBrowser(url) {
-  var shell = new ActiveXObject('WScript.Shell');
-  shell.run(url);
-}
 
 // ----------------------------------------------------------------------------------------------------------------------------
 
@@ -79,11 +77,11 @@ database.ref('games').on('value', function (snapshot) {
       document.getElementById('gameTitle').innerText = game.title;
       document.getElementById('gamePublisher').innerText = game.createdBy;
       document.getElementById('gameDescription').innerText = game.desc;
-      document.getElementById("sidebar").style.background = "linear-gradient(rgba(0, 0, 0, 0.10), rgba(0, 0, 0, 1)), url(" + game.thumbnail + ")";
+      document.getElementById("sidebar").style.background = "rgba(0, 0, 0, .20) url(" + game.thumbnail + ")";
       document.getElementById("gamedetailstabtogglebutton").click();
 
       document.getElementById("playButton").onclick = function () {
-        window.location.href = ("player/engine.html?id=" + gameId + "&online=true")
+        window.location.href = ("https://horangstudios.github.io/LigmaForge/player/engine.html?id=" + gameId + "&online=true")
       };
 
       //if user is game owner
@@ -167,33 +165,34 @@ function importScene() {
 
 form.addEventListener('submit', function (event) {
   event.preventDefault();
-
-  var today = new Date();
-  var dd = String(today.getDate()).padStart(2, '0');
-  var mm = String(today.getMonth() + 1).padStart(2, '0');
-  var yyyy = today.getFullYear();
-
-  today = mm + '/' + dd + '/' + yyyy;
-
   var title = document.getElementById('title-text').value;
   var desc = document.getElementById('descbox').value;
   var thumbnail = document.getElementById('thumbnail').value;
 
-  var displayName = firebase.auth().currentUser.displayName;
+  if (title && desc && thumbnail) {
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0');
+    var yyyy = today.getFullYear();
 
-  var userid = firebase.auth().currentUser.uid;
+    today = mm + '/' + dd + '/' + yyyy;
 
-  var game = {
-    title: title,
-    desc: desc,
-    thumbnail: thumbnail,
-    createdAt: today,
-    hhlx: gamejson,
-    createdBy: displayName,
-    uid: userid
-  };
+    var displayName = firebase.auth().currentUser.displayName;
 
-  database.ref('games').push(game);
+    var userid = firebase.auth().currentUser.uid;
 
-  form.reset();
+    var game = {
+      title: title,
+      desc: desc,
+      thumbnail: thumbnail,
+      createdAt: today,
+      hhls: gamejson,
+      createdBy: displayName,
+      uid: userid
+    };
+
+    database.ref('games').push(game);
+
+    form.reset();
+  }
 });
