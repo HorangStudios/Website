@@ -62,7 +62,12 @@
         <input type="email" id="email" placeholder="Email" required>
         <br>
         <input type="password" id="password" placeholder="Password" required>
-        <br><br>
+        <br><br><hr><br>
+        <div id="captchaContainer" onclick="generateCaptcha()">
+            <canvas id="captchaCanvas" width="2000" height="200"></canvas>
+        </div>
+        <input type="text" id="captchaInput" placeholder="Enter the code here.">
+        <br><br><hr><br>
         <button id="submit" onclick="createacc(); this.innerText = 'Please Wait...'">Sign
             up</button>
         <p id="error" style="color: red; text-align: center;"></p>

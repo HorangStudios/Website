@@ -263,3 +263,9 @@ textarea,
 hr {
 	border: #333333 solid 1px;
 }
+
+canvas {
+	width: 40vw;
+	background: #333333;
+	border-radius: 5px;
+}
