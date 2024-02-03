@@ -7,7 +7,7 @@
 	<link rel="icon" type="image/x-icon" href="logo.png">
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<script src="legacyv2/fontawesome.js" defer></script>
+	<script src="https://kit.fontawesome.com/970a0290cd.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -23,12 +23,12 @@
 					class="fa-solid fa-bars"></i></button>
 
 			<div id="contextMenu" style="display: none; text-align: center;">
-				<input type="file" accept=".hhlx" id="file-input" onchange="importScene()" placeholder="HHLX File"
+				<input type="file" accept=".hhls" id="file-input" onchange="importScene()" placeholder="HHLS File"
 					required style="display: none;"></input>
 				<button id="edit" style="display: none; width: fit-content;"
 					onclick="document.getElementById('file-input').click()"><i class="fa-solid fa-upload"></i></button>
 
-				<button id="download" style="display: none; width: fit-content;" onclick="downloadHHLX()"><i
+				<button id="download" style="display: none; width: fit-content;" onclick="downloadHHLS()"><i
 						class="fa-solid fa-download"></i></button>
 
 				<button style="display: inline-block; width: fit-content;" onclick="shareGame()"><i
@@ -102,13 +102,13 @@
 			}
 		});
 
-		function downloadHHLX() {
+		function downloadHHLS() {
 			// Convert scene to JSON format
-			const json = JSON.stringify(item.hhlx, null, 2);
+			const json = JSON.stringify(item.hhls, null, 2);
 
 			// Create a new blob with the JSON data and custom file extension
 			const blob = new Blob([json], { type: "application/json" });
-			const fileName = `${item.title}.HHLX`;
+			const fileName = `${item.title}.HHLS`;
 
 			// Use the browser's native save dialog to save the file
 			const url = URL.createObjectURL(blob);
@@ -129,7 +129,7 @@
 					const json = JSON.parse(contents);
 
 					ref.update({
-						hhlx: json,
+						hhls: json,
 					})
 				};
 
