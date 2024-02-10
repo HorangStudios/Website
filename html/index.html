@@ -62,9 +62,11 @@
       <form id="publishForm">
         <input id="title-text" name="title-text" placeholder="Title" required="">
         <br>
-        <input id="thumbnail" name="thumbnail" placeholder="URL to thumbnail" required="">
+        <input type="file" accept="image/*" id="thumbnail" onchange="importIMG()" placeholder="Game thumbnail" required="">
+        <label for="thumbnail" id="thumbnail-label"><i class="fa-solid fa-upload"></i> <b>Game thumbnail</b></label>
         <br>
-        <input type="file" accept=".hhls" id="file-input" onchange="importScene()" placeholder="HHLS File" required="">
+        <input type="file" accept=".hhls" id="file-input" onchange="importScene()" placeholder="HHLS File" required="" hidden>
+        <label for="file-input" id="hhls-label"><i class="fa-solid fa-upload"></i> <b>HHLS file</b></label>
         <br>
         <textarea id="descbox" placeholder="Description"></textarea>
         <br>

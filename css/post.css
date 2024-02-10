@@ -10,7 +10,7 @@ body {
 }
 
 #sidebar {
-  background:rgba(0, 0, 0, .20) url('horanghillstartingplace.png');
+  background: rgba(0, 0, 0, .20) url('horanghillstartingplace.png');
   background-position: center !important;
   height: fit-content;
   background-size: cover !important;
@@ -76,7 +76,8 @@ h6 {
 
 input,
 textarea,
-button {
+button,
+label {
   padding: 14px;
   background-color: #1d1d1d;
   border: none;
@@ -88,6 +89,11 @@ button {
   margin-top: 25px;
   font-size: 16px;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  display: inline-block;
+}
+
+input[type=file] {
+  display: none !important;
 }
 
 .rightNav {
@@ -117,7 +123,7 @@ button {
   body {
     background: whitesmoke;
   }
-  
+
   * {
     color: black;
   }
@@ -138,15 +144,20 @@ button {
     color: white;
   }
 
-  #gamecard1, #gamecard2, #gamecard1 h2 {
+  #gamecard1,
+  #gamecard2,
+  #gamecard1 h2 {
     color: white;
   }
 
-  #migrationNotice, #migrationNotice i {
+  #migrationNotice,
+  #migrationNotice i {
     color: white;
   }
 
-  #sidebar h1, #sidebar a, #sidebar i {
+  #sidebar h1,
+  #sidebar a,
+  #sidebar i {
     color: white;
   }
 

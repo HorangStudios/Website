@@ -151,6 +151,7 @@ var form = document.getElementById('publishForm');
 var gamejson
 function importScene() {
   var input = document.getElementById("file-input");
+  var label = document.getElementById("hhls-label");
   const file = input.files[0];
 
   const reader = new FileReader();
@@ -158,18 +159,36 @@ function importScene() {
     const contents = event.target.result;
     const json = JSON.parse(contents);
     gamejson = json
+    label.innerHTML = label.innerHTML + ` (${file.name})`
   };
 
   reader.readAsText(file);
+}
+
+var imagedataurl
+function importIMG() {
+  var input = document.getElementById("thumbnail");
+  var label = document.getElementById("thumbnail-label");
+  const file = input.files[0];
+
+  const reader = new FileReader();
+  reader.onload = function (event) {
+    imagedataurl = reader.result
+    label.innerHTML = label.innerHTML + ` (${file.name})`
+  };
+
+  reader.readAsDataURL(file);
 }
 
 form.addEventListener('submit', function (event) {
   event.preventDefault();
   var title = document.getElementById('title-text').value;
   var desc = document.getElementById('descbox').value;
-  var thumbnail = document.getElementById('thumbnail').value;
 
-  if (title && desc && thumbnail) {
+  if (title && desc) {
+    if (imagedataurl === undefined) return;
+    if (gamejson === undefined) return;
+
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0');
@@ -184,7 +203,7 @@ form.addEventListener('submit', function (event) {
     var game = {
       title: title,
       desc: desc,
-      thumbnail: thumbnail,
+      thumbnail: imagedataurl,
       createdAt: today,
       hhls: gamejson,
       createdBy: displayName,

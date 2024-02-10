@@ -76,6 +76,10 @@ p {
 	text-align: center;
 }
 
+a {
+	text-decoration: underline !important;
+}
+
 nav {
 	background-color: #000000dd;
 	backdrop-filter: blur(10px);
