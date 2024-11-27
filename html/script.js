@@ -81,7 +81,7 @@ database.ref('games').on('value', function (snapshot) {
       document.getElementById("gamedetailstabtogglebutton").click();
 
       document.getElementById("playButton").onclick = function () {
-        window.location.href = ("https://horangstudios.github.io/LigmaForge/player/engine.html?id=" + gameId + "&online=true")
+        window.location.href = ("https://horangstudios.github.io/LigmaForge/player/?id=" + gameId + "&online=true")
       };
 
       //if user is game owner
