@@ -7,54 +7,74 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
   <link rel="icon" type="image/x-icon" href="HorangHill.png">
-  <link rel="stylesheet" href="../css/post.css">
+  <link rel="stylesheet" href="../css/home.css">
   <link rel="icon" type="image/x-icon" href="../css/HorangHill.png">
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-database.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-auth.js"></script>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9451295160532565"
-    crossorigin="anonymous"></script>
   <script src="script.js" defer></script>
   <script src="https://kit.fontawesome.com/970a0290cd.js" crossorigin="anonymous"></script>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-S1JMDFPGL0"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
-
-    gtag('config', 'G-S1JMDFPGL0');
-  </script>
+  <script src="https://www.googletagmanager.com/gtag/js?id=G-S1JMDFPGL0" async></script>
 </head>
 
 <body>
   <div id="sidebar">
-    <h1>HorangHill</h1>
+    <div class="sidebar-contain">
+      <h1>HorangHill</h1>
 
-    <br>
+      <br>
 
-    <a class="tablinks" onclick="openTab(event, 'Home')" id="defaultOpen" style="padding-left: 0;">Home</a>
-    <a class="tablinks" onclick="openTab(event, 'Publish')">Publish</a>
-    <a class="tablinks" onclick="openTab(event, 'Downloads')">Editor</a>
-    <a class="tablinks" onclick="openTab(event, 'Account')">Account</a>
-    <a class="tablinks" onclick="openTab(event, 'Details')" id="gamedetailstabtogglebutton" hidden>game.details</a>
-    
-    <a class="tablinks rightNav" onclick="firebase.auth().signOut(); window.location.replace('../index.html')">Log Out</a>
-    <a class="tablinks rightNav" onclick="window.location.href = 'https://horanghill.createaforum.com/index.php'">Forum</a>
+      <a class="tablinks" onclick="openTab(event, 'Home')" id="defaultOpen">Home</a>
+      <a class="tablinks" onclick="openTab(event, 'Publish')">Publish</a>
+      <a class="tablinks" onclick="openTab(event, 'Downloads')">Editor</a>
+      <a class="tablinks" onclick="openTab(event, 'Account')">Account</a>
+      <a class="tablinks" onclick="openTab(event, 'Details')" id="gamedetailstabtogglebutton" hidden>game.details</a>
+
+      <a class="tablinks rightNav" onclick="firebase.auth().signOut(); window.location.replace('../index.html')"
+        style="padding-right: 0;">Log Out</a>
+      <a class="tablinks rightNav"
+        onclick="window.location.href = 'https://horanghill.createaforum.com/index.php'">Forum</a>
+    </div>
   </div>
   <div id="main">
     <div id="Home" class="tabcontent">
-      <div id="migrationNotice">
-        <i class="fa-solid fa-circle-info"></i>
-        Horanghill has moved to the new LigmaForge engine, meaning the database was cleared. You can download all the HHLX-Era games <a href="../horanghill-default-rtdb-games-export.json">here</a>!
-      </div>
       <h1 id="greetings">
+      </h1>
+      <div style="display: flex; width: 100%; overflow: auto;">
+        <div class="quickcard">
+          <a href="#greetings" onclick="openTab(event, 'Publish')">
+            <h3>Publish</h3>
+          </a>
+          <div class="author">Publish a game</div>
+        </div>
+        <div class="quickcard">
+          <a href="#greetings" onclick="openTab(event, 'Downloads')">
+            <h3>Create</h3>
+          </a>
+          <div class="author">Create with HorangHill editor</div>
+        </div>
+        <div class="quickcard">
+          <a href="https://horanghill.createaforum.com/index.php">
+            <h3>Forum</h3>
+          </a>
+          <div class="author">Talk with the community</div>
+        </div>
+        <div class="quickcard">
+          <a href="#greetings" onclick="firebase.auth().signOut(); window.location.replace('index.html')">
+            <h3>Log out</h3>
+          </a>
+          <div class="author">Log out from your account</div>
+        </div>
+      </div>
+      <hr>
+      <h1><i class="fa-solid fa-earth-americas"></i> Explore</h1>
+      <div id="gamelist">
         <center>
           <i class="fa-solid fa-spinner fa-spin"></i>
         </center>
-      </h1>
-      <div id="gamelist"></div>
+      </div>
     </div>
 
     <div id="Publish" class="tabcontent">
@@ -62,10 +82,12 @@
       <form id="publishForm">
         <input id="title-text" name="title-text" placeholder="Title" required="">
         <br>
-        <input type="file" accept="image/*" id="thumbnail" onchange="importIMG()" placeholder="Game thumbnail" required="">
+        <input type="file" accept="image/*" id="thumbnail" onchange="importIMG()" placeholder="Game thumbnail"
+          required="">
         <label for="thumbnail" id="thumbnail-label"><i class="fa-solid fa-upload"></i> <b>Game thumbnail</b></label>
         <br>
-        <input type="file" accept=".hhls" id="file-input" onchange="importScene()" placeholder="HHLS File" required="" hidden>
+        <input type="file" accept=".hhls" id="file-input" onchange="importScene()" placeholder="HHLS File" required=""
+          hidden>
         <label for="file-input" id="hhls-label"><i class="fa-solid fa-upload"></i> <b>HHLS file</b></label>
         <br>
         <textarea id="descbox" placeholder="Description"></textarea>
@@ -79,8 +101,13 @@
       <button onclick="window.location.href = 'https://horangstudios.github.io/LigmaForge/'">
         <i class="fa fa-plus"></i> New game
       </button><br><br>
+
       <h1><i class="fa-solid fa-download"></i> Legacy editor (Discontinued)</h1>
-      
+      <div id="migrationNotice">
+        <i class="fa-solid fa-circle-info"></i>
+        Horanghill has moved to the new LigmaForge engine, meaning the database was cleared. You can download all the
+        HHLX-Era games <a href="../horanghill-default-rtdb-games-export.json">here</a>!
+      </div>
       <button onclick="window.location.href = 'https://github.com/HorangStudios/Editor'">
         Download legacy editor
       </button><br>

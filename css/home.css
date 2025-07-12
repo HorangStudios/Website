@@ -1,6 +1,5 @@
 body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  font-size: 10pt;
   background: #2d2d2d;
 }
 
@@ -14,8 +13,6 @@ body {
   background-position: center !important;
   height: fit-content;
   background-size: cover !important;
-  padding: 25px;
-  box-sizing: border-box;
   box-shadow: 0px 0px 15px 5px rgba(0, 0, 0, 0.1);
   text-shadow: 0px 0px 10px #1d1d1d90;
 }
@@ -23,14 +20,10 @@ body {
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
   user-select: none;
   color: white;
   background-position: center center;
-}
-
-.header {
-  color: steelblue;
-  font-size: 12.5pt;
 }
 
 #main {
@@ -42,8 +35,12 @@ body {
 }
 
 #sidebar a {
-  padding: 10px;
+  padding: 10px 20px;
   cursor: pointer;
+}
+
+#sidebar a:first-of-type {
+  padding-left: 0;
 }
 
 a:hover {
@@ -55,7 +52,7 @@ a:hover {
   padding: 25px;
   background-color: #1d1d1d;
   color: white;
-  margin-top: 25px;
+  margin-top: 25px !important;
   box-shadow: 200px -1px 136px 8px rgba(0, 0, 0, 1) inset;
   -webkit-box-shadow: 200px -1px 136px 8px rgb(0 0 0) inset;
   -moz-box-shadow: 200px -1px 136px 8px rgba(0, 0, 0, 1) inset;
@@ -63,6 +60,12 @@ a:hover {
   border: #4d4d4d solid 1px;
   background-repeat: no-repeat;
   background-size: cover;
+  cursor: pointer;
+  margin: 10px;
+}
+
+h1 {
+  font-size: 24px;
 }
 
 h1,
@@ -70,7 +73,8 @@ h2,
 h3,
 h4,
 h5,
-h6 {
+h6,
+.tablinks {
   font-family: Righteous;
 }
 
@@ -101,6 +105,18 @@ input[type=file] {
   margin-top: -10px;
 }
 
+.quickcard {
+  border: 1px solid #6d6d6d;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px;
+  height: fit-content;
+  display: inline-block;
+  cursor: pointer;
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+
 .gameThumbnail {
   padding: 25px;
   background-color: #1d1d1d;
@@ -116,7 +132,27 @@ input[type=file] {
   background: darkred;
   padding: 15px;
   border-radius: 10px;
+  margin-top: 25px;
+}
+
+hr {
   margin-bottom: 25px;
+}
+
+.sidebar-contain {
+  width: 800px;
+  margin: auto;
+  padding: 25px;
+}
+
+button {
+  cursor: pointer;
+}
+
+@media (prefers-color-scheme: dark) {
+  hr {
+    border-color: #6d6d6d;
+  }
 }
 
 @media (prefers-color-scheme: light) {
@@ -163,5 +199,9 @@ input[type=file] {
 
   #migrationNotice a {
     color: white;
+  }
+
+  .quickcard {
+    border: 1px solid #ccc;
   }
 }

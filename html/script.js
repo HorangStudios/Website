@@ -46,6 +46,7 @@ if (hour >= 5 && hour < 12) {
 } else {
   greetings = ("<i class='fa-solid fa-sun'></i> Good evening");
 }
+document.getElementById('greetings').innerHTML = `${greetings}, Player!`
 
 function truncate(str, num) {
   if (str.length > num) {
