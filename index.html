@@ -6,77 +6,88 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
 
-    <link rel="stylesheet" href="css/old.css">
+    <link rel="stylesheet" href="css/home.css">
     <link rel="icon" type="image/x-icon" href="css/HorangHill.png">
 
     <title>HorangHill</title>
 
     <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-auth.js"></script>
-    <script src="script.js" defer></script>
-    <script src="https://kit.fontawesome.com/970a0290cd.js" crossorigin="anonymous"></script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9451295160532565"
-        crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/970a0290cd.js"></script>
+    <script src="pages/login.js" defer></script>
 </head>
 
-<header>
-    <dialog open id="insanedialog"
-        style="border: none; z-index: 99; width: 100vw; height: 100vh; background: #000000ab; display: flex; text-align: center; place-items: center; justify-content: center; display: none;">
-        <div style="background-color: black; padding: 20px;">
+<body>
+    <div id="sidebar">
+        <div class="sidebar-contain">
+            <h1>Horanghill</h1>
+        </div>
+    </div>
+    <div id="main">
+        <div id="loader" class="tabcontent">
+            <center>
+                <i class="fa-solid fa-spinner fa-spin"></i> Please Wait...
+            </center>
+        </div>
+        <div id="Login" class="tabcontent" style="display: none;">
+            <dialog open id="insanedialog"
+                style="border: none; z-index: 99; width: 100vw; height: 100vh; background: #000000ab; display: flex; text-align: center; place-items: center; justify-content: center; display: none;">
+                <div style="background-color: black; padding: 20px;">
+                    <br>
+                    <p style="font-size: 19px;">Guest mode means limited features, do you want to continue?</p>
+                    <br><br>
+                    <button style="font-size: 17px;" onclick="closedialog()">Log in instead</button><button
+                        style="font-size: 17px;"
+                        onclick="guestacc(); this.innerText = 'Please Wait...'">Continue</button>
+                </div>
+            </dialog>
+            <form class="form" id="signupbox">
+                <p>To continue, Create an account or sign in to an existing one</p>
+
+                <br>
+                <hr style="margin: 0;">
+
+                <input type="email" id="emailLogin" placeholder="Email" required>
+                <input type="password" id="passwordLogin" placeholder="Password" required>
+                <button onclick="loginacc(); this.disabled = true; this.innerText = 'Please Wait...'">Sign In</button>
+                <button onclick="showlogin(); this.disabled = true; this.innerText = 'Please Wait...'">New user? Sign up
+                    now!</button>
+                <p id="error1" style="color: red; text-align: center;"></p>
+            </form>
+
+            <form class="form" id="loginbox" style="display: none;">
+                <p>By clicking Sign Up, you are agreeing to our Terms of Use and our <a
+                        href="https://suitedcoder.github.io/Privacy/md.htm?src=Privacy.md">Privacy Policy</a>.</p>
+
+                <br>
+                <hr style="margin: 0;">
+
+                <input id="displayName" placeholder="User Name" required>
+                <input type="email" id="email" placeholder="Email" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <div id="captchaContainer" onclick="generateCaptcha()">
+                    <canvas id="captchaCanvas" width="2000" height="200"></canvas>
+                </div>
+                <input type="text" id="captchaInput" placeholder="Enter the code here.">
+                <button id="submit" onclick="createacc(); this.innerText = 'Please Wait...'">Sign
+                    up</button>
+                <p id="error" style="color: red; text-align: center;"></p>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <div class="sidebar-contain">
+            <h1>
+                Horang Studios •
+                <a href="https://x.com/HorangHill"><i class="fa-brands fa-x-twitter"></i></a>
+                <a href="https://discord.gg/MYzDy2JvgZ"><i class="fa-brands fa-discord"></i></a>
+                <a href="https://github.com/HorangStudios"><i class="fa-brands fa-github"></i></a>
+            </h1>
             <br>
-            <p style="font-size: 19px;">Guest mode means limited features, do you want to continue?</p>
-            <br><br>
-            <button style="font-size: 17px;" onclick="closedialog()">Log in instead</button><button
-                style="font-size: 17px;"
-                onclick="guestacc(); this.innerText = 'Please Wait...'">Continue</button>
+            &copy; 2025 HorangHill - Since 2022 - <a href="https://suitedcoder.github.io/Privacy/md.htm?src=Privacy.md">Privacy Policy</a>
         </div>
-    </dialog>
-    <form class="form" id="signupbox">
-        <img src="css/HorangHill.png" style="width: 25%; border-radius: 4px;"><br>
-        <input value="To continue, Create an account or sign in to an existing one" disabled
-            style="background: none; text-align: center;">
-        <br>
-        <hr><br>
-        <input type="email" id="emailLogin" placeholder="Email" required>
-        <br>
-        <input type="password" id="passwordLogin" placeholder="Password" required>
-        <br><br>
-        <button onclick="loginacc(); this.disabled = true; this.innerText = 'Please Wait...'">Sign In</button>
-        <br>
-        <p id="error1" style="color: red; text-align: center;"></p>
-        <br>
-        <hr><br>
-        <button onclick="showlogin(); this.disabled = true; this.innerText = 'Please Wait...'">New user? Sign up
-            now!</button>
-    </form>
-
-    <form class="form" id="loginbox" style="display: none;">
-        <img src="css/HorangHill.png" style="width: 25%; border-radius: 4px;"><br>
-        <input value="To continue, Create an account or sign in to an existing one" disabled
-            style="background: none; text-align: center;">
-        <br>
-        <hr><br>
-
-        <input id="displayName" placeholder="User Name" required>
-        <br>
-        <input type="email" id="email" placeholder="Email" required>
-        <br>
-        <input type="password" id="password" placeholder="Password" required>
-        <br>
-        <div id="captchaContainer" onclick="generateCaptcha()">
-            <canvas id="captchaCanvas" width="2000" height="200"></canvas>
-        </div>
-        <input type="text" id="captchaInput" placeholder="Enter the code here.">
-        <br><br><hr><br>
-        <button id="submit" onclick="createacc(); this.innerText = 'Please Wait...'">Sign
-            up</button>
-        <p id="error" style="color: red; text-align: center;"></p>
-        <br>
-        <p>By clicking Sign Up, you are agreeing to our Terms of Use and our <a href="https://suitedcoder.github.io/Privacy/md.htm?src=Privacy.md">Privacy Policy</a>.</p>
-        <!-- <br><hr><br>
-        <button onclick="opendialog();">Try out HorangHill as a Guest</button> -->
-    </form>
-
-</header>
+    </footer>
+</body>
 
 </html>

@@ -1,0 +1,213 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>HorangHill</title>
+
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+
+  <link rel="icon" type="image/x-icon" href="HorangHill.png">
+  <link rel="stylesheet" href="../css/home.css">
+  <link rel="icon" type="image/x-icon" href="../css/HorangHill.png">
+
+  <script src="https://horangstudios.github.io/LigmaForge/js/three/three.min.js"></script>
+  <script src="https://horangstudios.github.io/LigmaForge/js/three/OrbitControls.js"></script>
+  <script src="https://horangstudios.github.io/LigmaForge/js/three/sky.js"></script>
+  <script src="https://horangstudios.github.io/LigmaForge/player/js/playerModel.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-auth.js"></script>
+  <script src="https://kit.fontawesome.com/970a0290cd.js"></script>
+  <script src="script.js" defer></script>
+  <script src="userIntegrityCheck.js" defer></script>
+</head>
+
+<body>
+  <div id="sidebar">
+    <div class="sidebar-contain">
+      <h1>Horanghill</h1>
+
+      <br>
+
+      <a class="tablinks" onclick="openTab(event, 'Home')" id="defaultOpen">Home</a>
+      <a class="tablinks" onclick="openTab(event, 'Avatar')">Avatar</a>
+      <a class="tablinks" onclick="openTab(event, 'Catalog')">Catalog</a>
+      <a class="tablinks" onclick="openTab(event, 'Create')">Create</a>
+      <a class="tablinks" onclick="openTab(event, 'Account')">Account</a>
+      <a class="tablinks" onclick="openTab(event, 'Details')" id="gamedetailstabtogglebutton" hidden>game.details</a>
+      <a class="tablinks" onclick="openTab(event, 'ItemDetails')" id="itemdetailbutton" hidden>item.details</a>
+
+      <a class="tablinks rightNav">
+        <span id="myBits">0</span> <i class="fa-solid fa-coins"></i></a>
+    </div>
+  </div>
+  <div id="main">
+    <div id="Home" class="tabcontent">
+      <h1 id="greetings">
+      </h1>
+      <div style="display: flex; width: 100%; overflow: auto;">
+        <a href="#greetings" onclick="openTab(event, 'Avatar')">
+          <div class="quickcard">
+            <h3>Decorate</h3>
+            <div class="author">Decorate your avatar</div>
+          </div>
+        </a>
+        <a href="#greetings" onclick="openTab(event, 'Create')">
+          <div class="quickcard">
+            <h3>Create</h3>
+            <div class="author">Create with HorangHill editor</div>
+          </div>
+        </a>
+        <a href="https://horanghill.createaforum.com/index.php">
+          <div class="quickcard">
+            <h3>Forum</h3>
+            <div class="author">Talk with the community</div>
+          </div>
+        </a>
+        <a href="#greetings" onclick="firebase.auth().signOut(); window.location.replace('../index.html')">
+          <div class="quickcard">
+            <h3>Log out</h3>
+            <div class="author">Log out from your account</div>
+          </div>
+        </a>
+      </div>
+      <hr>
+      <h1><i class="fa-solid fa-earth-americas"></i> Explore</h1>
+      <div id="gamelist">
+        <center>
+          <i class="fa-solid fa-spinner fa-spin"></i>
+        </center>
+      </div>
+    </div>
+
+    <div id="Create" class="tabcontent">
+      <h1><i class="fa-solid fa-wrench"></i> HorangHill Editor (Web)</h1>
+      <button onclick="window.open('https://horangstudios.github.io/LigmaForge/')">
+        <i class="fa fa-plus"></i> New game
+      </button><br>
+      <button onclick="window.location.href = 'https://horangstudios.itch.io/horanghill-editor'">
+        Visit Itch.io page
+      </button><br><br>
+
+      <h1><i class="fa-solid fa-upload"></i> Publish</h1>
+      <form id="publishForm">
+        <input id="title-text" name="title-text" placeholder="Title" required="">
+        <br>
+        <input type="file" accept="image/*" id="thumbnail" onchange="importIMG()" placeholder="Game thumbnail"
+          required="">
+        <label for="thumbnail" id="thumbnail-label"><i class="fa-solid fa-upload"></i> <b>Game thumbnail</b></label>
+        <br>
+        <input type="file" accept=".hhls" id="file-input" onchange="importScene()" placeholder="HHLS File" required=""
+          hidden>
+        <label for="file-input" id="hhls-label"><i class="fa-solid fa-upload"></i> <b>HHLS file</b></label>
+        <br>
+        <textarea id="descbox" placeholder="Description"></textarea>
+        <br>
+        <button type="submit">Publish</button>
+      </form>
+    </div>
+
+    <div id="Avatar" class="tabcontent">
+      <div class="preview" id="preview">
+        <h1>Avatar</h1><br>
+
+        <div id="canvascontainer"></div>
+
+        <label for="head">
+          Head
+          <input type="color" id="headInput">
+        </label>
+
+        <label for="head">
+          Torso
+          <input type="color" id="torsoInput">
+        </label>
+
+        <label for="head">
+          Arms
+          <input type="color" id="leftArmInput">
+          <input type="color" id="rightArmInput">
+        </label>
+
+        <label for="head">
+          Legs
+          <input type="color" id="leftLegInput">
+          <input type="color" id="rightLegInput">
+        </label>
+      </div>
+      <div class="selector" id="selector">
+        <center>
+          <i class="fa-solid fa-spinner fa-spin"></i>
+        </center>
+      </div>
+    </div>
+
+    <div id="Catalog" class="tabcontent">
+      <h1>Catalog</h1>
+      <div id="cataloglist">
+        <center>
+          <i class="fa-solid fa-spinner fa-spin"></i>
+        </center>
+      </div>
+    </div>
+
+    <div id="Account" class="tabcontent">
+      <h1><i class="fa-solid fa-user"></i> Account</h1>
+      <div id="form">
+        <br>
+        <h2 id="greetings">Display Name</h2>
+        <input id="displayName" name="displayName" placeholder="Display Name"><br>
+        <button onclick="updateDisplayName()">Change Display Name</button><br><br>
+
+        <h2 id="greetings">Email</h2>
+        <input id="passbox" name="passbox" placeholder="Password" type="password"><br>
+        <button onclick="updatePassWord()">Update Password</button><br><br>
+
+        <h2 id="greetings">Password</h2>
+        <input id="mailbox" name="mailbox" placeholder="Email" type="email"><br>
+        <button onclick="updateMail()">Update Email</button><br><br>
+      </div>
+    </div>
+
+    <div id="Details" class="tabcontent">
+      <h1 id="gameTitle">Game Title</h1>
+      <p id="gamePublisher">Game Publisher</p>
+      <br>
+      <p id="gameDescription">Game Description</p>
+      <button id="playButton"><i class="fa fa-play"></i> Play</button>
+      <button id="editButton" hidden><i class="fa fa-pencil"></i> Edit</button>
+    </div>
+
+    <div id="ItemDetails" class="tabcontent">
+      <div class="catalogPrevLeft">
+        <img id="itemImage">
+      </div>
+      <div class="catalogPrevRight">
+        <h1 id="itemTitle">Catalog Item</h1>
+        <p id="itemPublisher">Item Creator</p>
+        <br>
+        <p id="itemDesc">Item Description</p>
+        <br>
+        <button id="buyButton">Buy</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="sidebar-contain">
+      <h1>
+        Horang Studios •
+        <a href="https://x.com/HorangHill"><i class="fa-brands fa-x-twitter"></i></a>
+        <a href="https://discord.gg/MYzDy2JvgZ"><i class="fa-brands fa-discord"></i></a>
+        <a href="https://github.com/HorangStudios"><i class="fa-brands fa-github"></i></a>
+      </h1>
+      <br>
+      &copy; 2025 HorangHill - Since 2022 - <a href="https://suitedcoder.github.io/Privacy/md.htm?src=Privacy.md">Privacy Policy</a>
+    </div>
+  </footer>
+</body>
+
+</html>

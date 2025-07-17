@@ -115,6 +115,7 @@ input[type=file] {
   cursor: pointer;
   margin-top: 25px;
   margin-bottom: 25px;
+  background: #3d3d3d;
 }
 
 .gameThumbnail {
@@ -149,6 +150,77 @@ button {
   cursor: pointer;
 }
 
+#cataloglist {
+  margin-top: 20px;
+}
+
+.catalogItem img {
+  width: 150px;
+  border-radius: 5px;
+}
+
+.catalogItem {
+  display: inline-block;
+  padding: 15px;
+  background: #3d3d3d;
+  border: #4d4d4d solid 1px;
+  border-radius: 10px;
+  margin: 5px;
+}
+
+.preview {
+  float: left;
+  width: 200px;
+}
+
+.selector {
+  float: right;
+  width: 550px;
+  padding: 25px;
+  padding-top: 0;
+}
+
+canvas {
+  border-radius: 10px;
+  border: #4d4d4d solid 1px;
+}
+
+input[type=color] {
+  height: 50px !important;
+}
+
+.catalogPrevLeft {
+  float: left;
+  margin-right: 25px;
+}
+
+.catalogPrevLeft img {
+  width: 250px;
+  border-radius: 15px;
+}
+
+.catalogPrevRight {
+  float: left;
+  padding: 22px;
+}
+
+.catalogPrevRight {
+  width: 475px;
+}
+
+#captchaCanvas {
+  width: 100%;
+  margin-top: 25px;
+}
+
+footer {
+  background: #3d3d3d;
+}
+
+.tabcontent {
+  min-height: 100vh;
+}
+
 @media (prefers-color-scheme: dark) {
   hr {
     border-color: #6d6d6d;
@@ -156,6 +228,22 @@ button {
 }
 
 @media (prefers-color-scheme: light) {
+  .quickcard,
+  .catalogItem {
+    background: lightgray;
+    border: 1px solid #ccc;
+  }
+
+  input,
+  textarea,
+  button,
+  label,
+  canvas {
+    background: lightgray;
+    border: 1px solid #ccc;
+    color: black;
+  }
+
   body {
     background: whitesmoke;
   }
@@ -174,9 +262,18 @@ button {
     background: rgba(0, 0, 0, .20) url('horanghillstartingplace.png');
     background-position: center;
     font-family: Righteous;
+    color: white;
   }
 
   button i {
+    color: white;
+  }
+
+  footer {
+    background: lightgray;
+  }
+
+  #myBits {
     color: white;
   }
 
@@ -199,9 +296,5 @@ button {
 
   #migrationNotice a {
     color: white;
-  }
-
-  .quickcard {
-    border: 1px solid #ccc;
   }
 }

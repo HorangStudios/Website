@@ -12,8 +12,11 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 firebase.auth().onAuthStateChanged(function (user) {
-    if (user.displayName) {
-        window.location.href = "html/index.html";
+    if (user) {
+        window.location.href = "pages/index.html";
+    } else {
+        document.getElementById("loader").style.display = 'none'
+        document.getElementById("Login").style.display = 'block'
     }
 });
 
@@ -44,7 +47,7 @@ function createacc() {
 
                 window.alert('Account created successfully!')
 
-                window.location.href = "html/index.html";
+                window.location.href = "pages/index.html";
             })
             .catch((error) => {
                 document.getElementById('error').innerText = error.message;
@@ -57,7 +60,7 @@ function createacc() {
 function guestacc() {
     firebase.auth().signInAnonymously()
         .then(() => {
-            window.location.href = "html/index.html";
+            window.location.href = "pages/index.html";
         })
         .catch((error) => {
             document.getElementById('error1').innerText = error.message;
@@ -78,7 +81,7 @@ function loginacc() {
     var password = document.getElementById('passwordLogin').value;
 
     firebase.auth().signInWithEmailAndPassword(email, password)
-        .then(function (user) { window.location.href = "html/index.html"; })
+        .then(function (user) { window.location.href = "pages/index.html"; })
         .catch(function (error) { document.getElementById('error1').innerText = error.message; });
 };
 
