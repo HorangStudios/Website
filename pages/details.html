@@ -2,51 +2,48 @@
 <html lang="en">
 
 <head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
+	<meta charset='utf-8'>
+	<meta http-equiv='X-UA-Compatible' content='IE=edge'>
+	<meta name='viewport' content='width=device-width, initial-scale=1'>
 
 	<title>HorangHill</title>
 
-	<link rel="stylesheet" href="../../css/old.css">
 	<link rel="icon" type="image/x-icon" href="logo.png">
-	
+
 	<script src="https://kit.fontawesome.com/970a0290cd.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
-	<header id="header">
-		<div id="form">
-			<input id="title" readonly style="resize: none;"></input>
-			<h3 id="dev"></h3>
-			<textarea id="desc" readonly style="resize: none;"></textarea>
-			<br>
-			<button id="play" style="width: calc(100% - 99px); display: inline-block;"><i class="fa-solid fa-play"></i>
-				Play</button>
-			<button style="display: inline-block; width: fit-content;" onclick="contextMenu()"><i
-					class="fa-solid fa-bars"></i></button>
+	<div id="loader">
+		Fetching game data...
+	</div>
+	<div id="form" style="display: none;">
+		<input type="file" accept=".hhls" id="file-input" onchange="importScene()" style="display: none;">
+		<input type="file" accept="image/*" id="thumbnail" onchange="importIMG()" style="display: none;">
 
-			<div id="contextMenu" style="display: none; text-align: center;">
-				<input type="file" accept=".hhls" id="file-input" onchange="importScene()" placeholder="HHLS File"
-					required style="display: none;"></input>
-				<button id="edit" style="display: none; width: fit-content;"
-					onclick="document.getElementById('file-input').click()"><i class="fa-solid fa-upload"></i></button>
+		<details>
+			<summary>See thumbnail</summary>
+			<img id="gamethumbnail">
+		</details>
+		<input id="title"></input><br>
+		<textarea id="desc"></textarea><br>
 
-				<button id="download" style="display: none; width: fit-content;" onclick="downloadHHLS()"><i
-						class="fa-solid fa-download"></i></button>
-
-				<button style="display: inline-block; width: fit-content;" onclick="shareGame()"><i
-						class="fa-solid fa-share"></i></button>
-			</div>
-		</div>
-	</header>
+		<button id="edit" style="width: fit-content;" onclick="document.getElementById('file-input').click()">
+			<i class="fa-solid fa-upload"></i> <span id="uploadUpdate">Upload update</span>
+		</button><br>
+		<button id="edit" style="width: fit-content;" onclick="document.getElementById('thumbnail').click()">
+			<i class="fa-solid fa-upload"></i> <span id="thumbnail-label">Upload thumbnail</span>
+		</button><br>
+		<button id="download" style="width: fit-content;" onclick="downloadHHLS()">
+			<i class="fa-solid fa-download"></i> Download game
+		</button>
+	</div>
 
 	<script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-database.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-auth.js"></script>
 	<script>
-		// Initialize Firebase
-		const firebaseConfig = {
+		var firebaseConfig = {
 			apiKey: "AIzaSyDE-mQcJoquJxLrHAcS1kZbpjUbHYQmzsE",
 			authDomain: "horanghill.firebaseapp.com",
 			databaseURL: "https://horanghill-default-rtdb.firebaseio.com",
@@ -57,40 +54,21 @@
 			measurementId: "G-S1JMDFPGL0"
 		};
 		firebase.initializeApp(firebaseConfig);
+
 		var database = firebase.database();
-
-		const id = new URLSearchParams(window.location.search).get('id');
-
-		const ref = firebase.database().ref(`games/${id}`);
+		var id = new URLSearchParams(window.location.search).get('id');
+		var ref = firebase.database().ref(`games/${id}`);
 		var item
+
 		ref.once('value', snapshot => {
 			item = snapshot.val();
-
-			//load game details
-			document.getElementById('header').style.backgroundImage = "url(" + item.thumbnail + ")";
+			document.getElementById('gamethumbnail').src = item.thumbnail;
 			document.getElementById('title').value = item.title;
 			document.getElementById('desc').value = item.desc;
-			document.getElementById('dev').innerText = "By " + item.createdBy;
-			document.getElementById('play').onclick = function () {
-				window.location.href = ("http://horangstudios.github.io/LigmaForge/player/?id=" + id + "&online=true")
-			};
 
-			function setHeight(fieldId) {
-				document.getElementById(fieldId).style.height = document.getElementById(fieldId).scrollHeight + 'px';
-			}
-			setHeight('desc');
-			setHeight('title');
-
-			//if user is game owner
 			if (item.uid == firebase.auth().currentUser.uid) {
-				document.getElementById('edit').style.display = "inline-block"
-				document.getElementById('download').style.display = "inline-block"
-
-				document.getElementById('title').removeAttribute("readonly");
-				document.getElementById('desc').removeAttribute("readonly");
-
-				document.getElementById('title').style.resize = "vertical";
-				document.getElementById('desc').style.resize = "vertical";
+				document.getElementById('loader').style.display = "none";
+				document.getElementById('form').style.display = "block";
 
 				document.getElementById('title').addEventListener("input", function () {
 					ref.update({
@@ -107,16 +85,12 @@
 		});
 
 		function downloadHHLS() {
-			// Convert scene to JSON format
 			const json = JSON.stringify(item.hhls, null, 2);
-
-			// Create a new blob with the JSON data and custom file extension
 			const blob = new Blob([json], { type: "application/json" });
 			const fileName = `${item.title}.HHLS`;
-
-			// Use the browser's native save dialog to save the file
 			const url = URL.createObjectURL(blob);
 			const link = document.createElement("a");
+
 			link.href = url;
 			link.download = fileName;
 			link.click();
@@ -125,6 +99,7 @@
 		function importScene() {
 			if (item.uid == firebase.auth().currentUser.uid) {
 				var input = document.getElementById("file-input");
+				var label = document.getElementById("uploadUpdate");
 				const file = input.files[0];
 
 				const reader = new FileReader();
@@ -133,35 +108,31 @@
 					const json = JSON.parse(contents);
 
 					ref.update({
-						hhls: json,
+						hhls: json
 					})
+					
+					label.innerText = 'Thumbnail Uploaded!'
 				};
 
 				reader.readAsText(file);
 			}
 		}
 
-		function shareGame() {
-			const shareData = {
-				title: "Try out " + item.title + " on Horanghill",
-				text: item.desc,
-				url: window.location.href,
+
+		function importIMG() {
+			var input = document.getElementById("thumbnail");
+			var label = document.getElementById("thumbnail-label");
+			const file = input.files[0];
+
+			const reader = new FileReader();
+			reader.onload = function (event) {
+				ref.update({
+					thumbnail: reader.result
+				})
+				label.innerText = 'Thumbnail Uploaded!'
 			};
 
-			try {
-				navigator.share(shareData);
-			} catch (err) {
-				console.log(`Error: ${err}`);
-			}
-		}
-
-		function contextMenu() {
-			var x = document.getElementById("contextMenu");
-			if (x.style.display == "none") {
-				x.style.display = "block";
-			} else {
-				x.style.display = "none";
-			}
+			reader.readAsDataURL(file);
 		}
 	</script>
 </body>

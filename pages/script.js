@@ -90,7 +90,7 @@ database.ref('games').on('value', function (snapshot) {
       if (game.uid == firebase.auth().currentUser.uid) {
         document.getElementById('editButton').removeAttribute("hidden");
         document.getElementById("editButton").onclick = function () {
-          window.location.href = ("details.html?id=" + gameId);
+          window.open(("details.html?id=" + gameId), "editorWindow", "width=400,height=300,resizable=yes,scrollbars=yes");
         };
       } else {
         document.getElementById('editButton').setAttribute("hidden", "")
