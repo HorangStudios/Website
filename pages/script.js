@@ -63,7 +63,7 @@ database.ref('games').on('value', function (snapshot) {
   document.getElementById('main').style.display = "block"
   gamescontainer.innerHTML = '';
   var displayName = firebase.auth().currentUser.displayName || "Player";
-  document.getElementById('greetings').innerHTML = `${greetings}, ${displayName}!`
+  document.getElementById('greetings').innerHTML = `${greetings}, ${sanitizeHtml(displayName)}!`
 
   let games = snapshot.val();
 
@@ -72,8 +72,8 @@ database.ref('games').on('value', function (snapshot) {
 
     var card = document.createElement('div');
     card.id = 'game';
-    gamedetails = "<div id='gamecard1'><h2>" + game.title + "</h2>" + game.createdBy + "</div>";
-    gamename = "<br><div id='gamecard2'>" + truncate(game.desc, 100) + "</div>"
+    gamedetails = "<div id='gamecard1'><h2>" + sanitizeHtml(game.title) + "</h2>" + sanitizeHtml(game.createdBy) + "</div>";
+    gamename = "<br><div id='gamecard2'>" + sanitizeHtml(truncate(game.desc, 100)) + "</div>"
     card.innerHTML = gamedetails + gamename;
     card.style.backgroundImage = "url(" + game.thumbnail + ")";
     card.onclick = function () {
@@ -118,9 +118,9 @@ database.ref('catalog').on('value', function (snapshot) {
     var card = document.createElement('div');
     card.className = 'catalogItem';
     card.innerHTML = `
-      <img src="${item.asset}"><br>
-      <b>${item.name}</b><br>
-      ${item.type.charAt(0).toUpperCase() + item.type.slice(1)} - ${priceString}
+      <img src="${sanitizeHtml(item.asset)}"><br>
+      <b>${sanitizeHtml(item.name)}</b><br>
+      ${sanitizeHtml(item.type.charAt(0).toUpperCase() + item.type.slice(1))} - ${sanitizeHtml(priceString)}
     `
 
     card.onclick = async function () {
@@ -189,9 +189,9 @@ function procInventory(items, skinCLR) {
     var card = document.createElement('div');
     card.className = 'catalogItem';
     card.innerHTML = `
-      <img src="${itemdata.asset}"><br>
-      <b>${itemdata.name}</b><br>
-      By ${(await firebaseFetch('/players/' + itemdata.uid)).displayName}
+      <img src="${sanitizeHtml(itemdata.asset)}"><br>
+      <b>${sanitizeHtml(itemdata.name)}</b><br>
+      By ${sanitizeHtml((await firebaseFetch('/players/' + itemdata.uid)).displayName)}
     `
 
     card.onclick = () => {
@@ -220,7 +220,7 @@ function procInventory(items, skinCLR) {
       unapplyButton.className = 'catalogItem'
       unapplyButton.innerHTML = `
         <img src="../css/nouse.png"><br>
-        <b>No ${itemdata.type}</b><br>
+        <b>No ${sanitizeHtml(itemdata.type)}</b><br>
         Use solid color
       `
       document.getElementById(itemdata.type + "-avatar-inventory-category").append(unapplyButton)
@@ -321,7 +321,7 @@ function importScene() {
     const contents = event.target.result;
     const json = JSON.parse(contents);
     gamejson = json
-    label.innerHTML = label.innerHTML + ` (${file.name})`
+    label.innerHTML = label.innerHTML + sanitizeHtml(` (${file.name})`)
   };
 
   reader.readAsText(file);
@@ -336,7 +336,7 @@ function importIMG() {
   const reader = new FileReader();
   reader.onload = function (event) {
     imagedataurl = reader.result
-    label.innerHTML = label.innerHTML + ` (${file.name})`
+    label.innerHTML = label.innerHTML + sanitizeHtml(` (${file.name})`)
   };
 
   reader.readAsDataURL(file);
