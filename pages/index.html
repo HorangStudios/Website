@@ -85,30 +85,67 @@
     </div>
 
     <div id="Create" class="tabcontent">
-      <h1><i class="fa-solid fa-wrench"></i> HorangHill Editor (Web)</h1>
-      <button onclick="window.open('https://horangstudios.github.io/LigmaForge/')">
-        <i class="fa fa-plus"></i> New game
-      </button><br>
-      <button onclick="window.location.href = 'https://horangstudios.itch.io/horanghill-editor'">
-        Visit Itch.io page
-      </button><br><br>
+      <h1>
+        I want to
+        <select onchange="updateCreate()" id="createorsubmit">
+          <option value="create" selected>Create</option>
+          <option value="submit">Submit</option>
+        </select>
+        <select onchange="updateCreate()" id="creationtype">
+          <option value="game" selected>A Game</option>
+          <option value="shirt">A Shirt</option>
+          <option value="pants">A Pair of Pants</option>
+        </select>
+      </h1><br>
 
-      <h1><i class="fa-solid fa-upload"></i> Publish</h1>
-      <form id="publishForm">
-        <input id="title-text" name="title-text" placeholder="Title" required="">
-        <br>
-        <input type="file" accept="image/*" id="thumbnail" onchange="importIMG()" placeholder="Game thumbnail"
-          required="">
-        <label for="thumbnail" id="thumbnail-label"><i class="fa-solid fa-upload"></i> <b>Game thumbnail</b></label>
-        <br>
-        <input type="file" accept=".hhls" id="file-input" onchange="importScene()" placeholder="HHLS File" required=""
-          hidden>
-        <label for="file-input" id="hhls-label"><i class="fa-solid fa-upload"></i> <b>HHLS file</b></label>
-        <br>
-        <textarea id="descbox" placeholder="Description"></textarea>
-        <br>
-        <button type="submit">Publish</button>
-      </form>
+      <div id="create-game" class="createmenuts">
+        <h1><i class="fa-solid fa-wrench"></i> HorangHill Editor (Web)</h1>
+        <button onclick="window.open('https://horangstudios.github.io/LigmaForge/')">
+          <i class="fa fa-plus"></i> New game
+        </button><br>
+        <button onclick="window.location.href = 'https://horangstudios.itch.io/horanghill-editor'">
+          Visit Itch.io page
+        </button><br><br>
+      </div>
+
+      <div id="create-shirt" class="createmenuts" style="display: none;">
+        <h1><i class="fa-solid fa-wrench"></i> Download Template</h1><br>
+        <img src="https://horangstudios.github.io/LigmaForge/resources/Shirt%20Template.png">
+      </div>
+
+      <div id="create-pants" class="createmenuts" style="display: none;">
+        <h1><i class="fa-solid fa-wrench"></i> Download Template</h1><br>
+        <img src="https://horangstudios.github.io/LigmaForge/resources/Pants%20Template.png">
+      </div>
+      
+      <div id="submit-shirt" class="createmenuts" style="display: none;">
+        <h1><i class="fa-solid fa-upload"></i> Coming Soon!</h1>
+        We are still working on it! Trust us vro
+      </div>
+
+       <div id="submit-pants" class="createmenuts" style="display: none;">
+        <h1><i class="fa-solid fa-upload"></i> Coming Soon!</h1>
+        We are still working on it! Trust us vro
+      </div>
+
+      <div id="submit-game" class="createmenuts" style="display: none;">
+        <h1><i class="fa-solid fa-upload"></i> Publish</h1>
+        <form id="publishForm">
+          <input id="title-text" name="title-text" placeholder="Title" required="">
+          <br>
+          <input type="file" accept="image/*" id="thumbnail" onchange="importIMG()" placeholder="Game thumbnail"
+            required="">
+          <label for="thumbnail" id="thumbnail-label"><i class="fa-solid fa-upload"></i> <b>Game thumbnail</b></label>
+          <br>
+          <input type="file" accept=".hhls" id="file-input" onchange="importScene()" placeholder="HHLS File" required=""
+            hidden>
+          <label for="file-input" id="hhls-label"><i class="fa-solid fa-upload"></i> <b>HHLS file</b></label>
+          <br>
+          <textarea id="descbox" placeholder="Description"></textarea>
+          <br>
+          <button type="submit">Publish</button>
+        </form>
+      </div>
     </div>
 
     <div id="Avatar" class="tabcontent">
@@ -206,7 +243,8 @@
         <a href="https://github.com/HorangStudios"><i class="fa-brands fa-github"></i></a>
       </h1>
       <br>
-      &copy; 2025 HorangHill - Since 2022 - <a href="https://suitedcoder.github.io/Privacy/md.htm?src=Privacy.md">Privacy Policy</a>
+      &copy; 2025 HorangHill - Since 2022 - <a
+        href="https://suitedcoder.github.io/Privacy/md.htm?src=Privacy.md">Privacy Policy</a>
     </div>
   </footer>
 </body>

@@ -234,6 +234,17 @@ function procInventory(items, skinCLR) {
   })
 }
 
+function updateCreate() {
+  const createorsubmit = document.getElementById("createorsubmit")
+  const creationtype = document.getElementById("creationtype")
+
+  Object.values(document.getElementsByClassName('createmenuts')).forEach((item) => {
+    item.style.display = 'none'
+  })
+
+  document.getElementById(`${createorsubmit.value}-${creationtype.value}`).style.display = 'block'
+}
+
 async function setAvatarPreview(avatarData) {
   scene.remove.apply(scene, scene.child)
 

@@ -24,6 +24,7 @@ body {
   user-select: none;
   color: white;
   background-position: center center;
+  outline: none;
 }
 
 #main {
@@ -76,6 +77,15 @@ h5,
 h6,
 .tablinks {
   font-family: Righteous;
+}
+
+h1 select {
+  font-size: 24px;
+  background: #2d2d2d;
+  font-family: 'Righteous';
+  border: none;
+  font-weight: bold;
+  border-bottom: #4d4d4d solid 2px;
 }
 
 input,
@@ -228,6 +238,7 @@ footer {
 }
 
 @media (prefers-color-scheme: light) {
+
   .quickcard,
   .catalogItem {
     background: lightgray;
