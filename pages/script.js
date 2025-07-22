@@ -132,16 +132,17 @@ database.ref('catalog').on('value', function (snapshot) {
       document.getElementById("buyButton").innerText = priceString;
 
       document.getElementById("buyButton").onclick = async function () {
-        if (item.price <= (await firebaseFetch('/players/' + firebase.auth().currentUser.uid)).bits) {
+        if (item.price <= realBits) {
           const currentUser = firebase.auth().currentUser;
           const playerData = await firebaseFetch('/players/' + currentUser.uid);
 
-          if (playerData.inventory && Object.values(playerData.inventory).includes(parseInt(itemId))) {
+          if (playerData.inventoryandbits && Object.values(playerData.inventoryandbits).some(entry => entry.product === parseInt(itemId))) {
             document.getElementById("buyButton").innerText = "You already have it!"
           } else {
-            const inventory = (await firebaseFetch('/players/' + item.uid)).inventory || {};
-            firebase.database().ref(`players/${firebase.auth().currentUser.uid}/inventory/${inventory.length || 0}`).set(parseInt(itemId))
-            firebase.database().ref(`players/${firebase.auth().currentUser.uid}/bits`).set(parseInt((await firebaseFetch('/players/' + firebase.auth().currentUser.uid)).bits - item.price))
+            firebase.database().ref(`players/${firebase.auth().currentUser.uid}/inventoryandbits/${Date.now()}`).set({
+              product: parseInt(itemId),
+              price: item.price
+            })
             document.getElementById("buyButton").innerText = "Bought!"
           }
         } else {
@@ -156,12 +157,39 @@ database.ref('catalog').on('value', function (snapshot) {
 });
 
 function userCheckLoop() {
-  database.ref(`players/${firebase.auth().currentUser.uid}`).on('value', function (snapshot) {
+  database.ref(`players/${firebase.auth().currentUser.uid}`).on('value', async function (snapshot) {
     let items = snapshot.val();
 
     setAvatarPreview(items.avatar);
-    procInventory(items.inventory, items.avatar.colors);
-    procBalance();
+    procInventory(items.inventoryandbits || [], items.avatar.colors);
+    //procBalance();
+
+    const inventoryObj = items.inventoryandbits || {};
+    const inventoryEntries = Object.entries(inventoryObj);
+
+    const catalog = await firebaseFetch('catalog');
+
+    for (const [key, entry] of inventoryEntries) {
+      const catalogItem = catalog && catalog[entry.product];
+      if (!catalogItem || catalogItem.price !== entry.price) {
+        firebase.database().ref(`players/${firebase.auth().currentUser.uid}/inventoryandbits/${key}`).remove();
+      }
+    }
+
+    const bitsSpent = inventoryEntries.reduce((sum, [_, entry]) => sum + (entry.price || 0), 0);
+    let maxBits = 100;
+
+    if (bitsSpent > maxBits && inventoryEntries.length > 0) {
+      const latestKey = inventoryEntries.reduce((maxKey, [key]) => Math.max(maxKey, Number(key)), 0).toString();
+      firebase.database().ref(`players/${firebase.auth().currentUser.uid}/inventoryandbits/${latestKey}`).remove();
+    }
+
+    realBits = maxBits - bitsSpent
+
+    const bitsSpentElem = document.getElementById("myBits");
+    if (bitsSpentElem) {
+      bitsSpentElem.innerText = realBits;
+    }
   })
 }
 
@@ -182,9 +210,11 @@ function procInventory(items, skinCLR) {
     }
   });
 
-  Object.keys(items).forEach(async key => {
-    var item = items[key]
-    var itemdata = await firebaseFetch(`catalog/${item}`)
+  const itemsArray = Array.isArray(items) ? items : Object.values(items || {});
+
+  itemsArray.forEach(async (itemObj, key) => {
+    var itemId = itemObj.product;
+    var itemdata = await firebaseFetch(`catalog/${itemId}`)
 
     var card = document.createElement('div');
     card.className = 'catalogItem';
