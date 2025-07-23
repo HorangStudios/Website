@@ -22,8 +22,8 @@ firebase.auth().onAuthStateChanged(function (user) {
         database.ref(`players/${firebase.auth().currentUser.uid}`).once('value', function (snapshot) {
             if (snapshot.exists()) {
                 let items = snapshot.val();
-
                 let updated = false;
+                
                 for (let key in userDataTemplate) {
                     if (!(key in items)) {
                         items[key] = userDataTemplate[key];
@@ -44,10 +44,7 @@ firebase.auth().onAuthStateChanged(function (user) {
 
                 userCheckLoop()
             } else {
-                database.ref(`players/${firebase.auth().currentUser.uid}`).set(userDataTemplate)
-                    .then(() => {
-                        userCheckLoop()
-                    });
+                database.ref(`players/${firebase.auth().currentUser.uid}`).set(userDataTemplate).then(userCheckLoop);
             }
         });
     }

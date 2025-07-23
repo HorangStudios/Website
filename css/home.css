@@ -176,6 +176,7 @@ button {
   border: #4d4d4d solid 1px;
   border-radius: 10px;
   margin: 5px;
+  cursor: pointer;
 }
 
 .preview {
@@ -229,6 +230,17 @@ footer {
 
 .tabcontent {
   min-height: 100vh;
+}
+
+input[type=radio] {
+  margin: 0;
+  display: inline-block;
+  width: fit-content;
+  margin-right: 10px;
+}
+
+input, button {
+  cursor: pointer;
 }
 
 @media (prefers-color-scheme: dark) {

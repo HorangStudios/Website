@@ -15,12 +15,10 @@ function openTab(evt, cityName) {
   evt.currentTarget.className += " active";
 }
 
-// Get the element with id="defaultOpen" and click on it
 document.getElementById("defaultOpen").click();
 
 // ----------------------------------------------------------------------------------------------------------------------------
 
-// Initialize Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyDE-mQcJoquJxLrHAcS1kZbpjUbHYQmzsE",
   authDomain: "horanghill.firebaseapp.com",
@@ -38,7 +36,6 @@ var gamescontainer = document.getElementById('gamelist');
 var catalogcontainer = document.getElementById('cataloglist');
 var inventorycontainer = document.getElementById('selector');
 
-//greetings time
 let today = new Date();
 let hour = today.getHours();
 let greetings
@@ -132,7 +129,7 @@ database.ref('catalog').on('value', function (snapshot) {
       document.getElementById("buyButton").innerText = priceString;
 
       document.getElementById("buyButton").onclick = async function () {
-        if (item.price <= realBits) {
+        if (item.price <= calculatedBits) {
           const currentUser = firebase.auth().currentUser;
           const playerData = await firebaseFetch('/players/' + currentUser.uid);
 
@@ -140,8 +137,8 @@ database.ref('catalog').on('value', function (snapshot) {
             document.getElementById("buyButton").innerText = "You already have it!"
           } else {
             firebase.database().ref(`players/${firebase.auth().currentUser.uid}/checkbook/${Date.now()}`).set({
-              product: parseInt(itemId),
-              price: item.price
+              type: "catalogPurchase",
+              product: parseInt(itemId)
             })
             document.getElementById("buyButton").innerText = "Bought!"
           }
@@ -151,43 +148,86 @@ database.ref('catalog').on('value', function (snapshot) {
       };
     }
 
-    if (!item.moderated && item.uid != firebase.auth().currentUser.uid) return;
-    catalogcontainer.prepend(card);
+    if (document.getElementById(item.type + "-avatar-catalog-category")) {
+      if (!item.moderated && item.uid != firebase.auth().currentUser.uid) return;
+      document.getElementById(item.type + "-avatar-catalog-category").appendChild(card)
+    } else {
+      var createcategory = document.createElement("div")
+      createcategory.id = item.type + "-avatar-catalog-category"
+      createcategory.className = 'catalogitemcategory'
+      document.getElementById("cataloglist").appendChild(createcategory)
+
+      var label = document.createElement('label')
+      label.innerText = item.type
+      label.style.textTransform = 'capitalize'
+      document.getElementById("catalogSidebar").appendChild(label)
+
+      var createcategoryinput = document.createElement("input")
+      createcategoryinput.type = 'radio'
+      createcategoryinput.name = 'category-selector'
+      createcategoryinput.id = item.type + "-avatar-catalog-category-input"
+      label.prepend(createcategoryinput)
+
+      createcategoryinput.onchange = function () {
+        Object.values(document.getElementsByClassName("catalogitemcategory")).forEach((item) => {
+          item.style.display = 'none'
+        })
+        createcategory.style.display = 'block'
+      }
+
+      if (item.type == 'shirt') {
+        createcategory.style.display = 'block'
+        createcategoryinput.checked = true
+      } else {
+        createcategory.style.display = 'none'
+      }
+
+      if (!item.moderated && item.uid != firebase.auth().currentUser.uid) return;
+      createcategory.appendChild(card)
+    }
   });
 });
 
+var calculatedBits = 0;
 function userCheckLoop() {
   database.ref(`players/${firebase.auth().currentUser.uid}`).on('value', async function (snapshot) {
-    let items = snapshot.val();
-
-    setAvatarPreview(items.avatar);
-    procInventory(items.checkbook || [], items.avatar.colors);
-
+    const items = snapshot.val();
     const inventoryObj = items.checkbook || {};
-    const inventoryEntries = Object.entries(inventoryObj);
-    const catalog = await firebaseFetch('catalog');
+    const bitsSpentElem = document.getElementById("myBits")
 
-    for (const [key, entry] of inventoryEntries) {
-      const catalogItem = catalog && catalog[entry.product];
-      if (!catalogItem || catalogItem.price !== entry.price) {
-        firebase.database().ref(`players/${firebase.auth().currentUser.uid}/checkbook/${key}`).remove();
+    var bits = 100;
+    var inventory = [];
+
+    Object.keys(inventoryObj).forEach(async (key, i) => {
+      const item = inventoryObj[key]
+      switch (item.type) {
+        case "catalogPurchase":
+          const catalogItem = await firebaseFetch(`catalog/${item.product}`);
+          if ((bits - catalogItem.price) < 0) {
+            firebase.database().ref(`players/${firebase.auth().currentUser.uid}/checkbook/${key}`).remove();
+          } else {
+            bits -= catalogItem.price
+            inventory.push(item.product);
+          }
+          break;
+        case "loginBonus":
+          bits += 10;
+          break;
+        case "purchaseBits":
+          bits += item.val;
+          break;
       }
-    }
 
-    const bitsSpent = inventoryEntries.reduce((sum, [_, entry]) => sum + (entry.price || 0), 0);
-    let bitsBeforeSpent = 100;
+      if (i == (Object.keys(inventoryObj).length - 1)) {
+        setAvatarPreview(items.avatar);
+        procInventory(inventory, items.avatar.colors);
 
-    if (bitsSpent > bitsBeforeSpent && inventoryEntries.length > 0) {
-      const latestKey = inventoryEntries.reduce((maxKey, [key]) => Math.max(maxKey, Number(key)), 0).toString();
-      firebase.database().ref(`players/${firebase.auth().currentUser.uid}/checkbook/${latestKey}`).remove();
-    }
-
-    realBits = bitsBeforeSpent - bitsSpent
-
-    const bitsSpentElem = document.getElementById("myBits");
-    if (bitsSpentElem) {
-      bitsSpentElem.innerText = realBits;
-    }
+        calculatedBits = bits
+        if (bitsSpentElem) {
+          bitsSpentElem.innerText = bits;
+        };
+      }
+    })
   })
 }
 
@@ -201,11 +241,8 @@ function procInventory(items, skinCLR) {
     }
   });
 
-  const itemsArray = Array.isArray(items) ? items : Object.values(items || {});
-
-  itemsArray.forEach(async (itemObj, key) => {
-    var itemId = itemObj.product;
-    var itemdata = await firebaseFetch(`catalog/${itemId}`)
+  items.forEach(async (itemObj, key) => {
+    var itemdata = await firebaseFetch(`catalog/${itemObj}`)
 
     var card = document.createElement('div');
     card.className = 'catalogItem';
@@ -232,10 +269,10 @@ function procInventory(items, skinCLR) {
       var header = document.createElement("h1")
       header.innerText = itemdata.type
       header.style.textTransform = 'capitalize'
-      document.getElementById(itemdata.type + "-avatar-inventory-category").append(header)
+      categoryElem.append(header)
 
       var br = document.createElement("br")
-      document.getElementById(itemdata.type + "-avatar-inventory-category").append(br)
+      categoryElem.append(br)
 
       var unapplyButton = document.createElement("div")
       unapplyButton.className = 'catalogItem'
@@ -244,13 +281,13 @@ function procInventory(items, skinCLR) {
         <b>No ${sanitizeHtml(itemdata.type)}</b><br>
         Use solid color
       `
-      document.getElementById(itemdata.type + "-avatar-inventory-category").append(unapplyButton)
+      categoryElem.append(unapplyButton)
 
       unapplyButton.onclick = () => {
         firebase.database().ref(`players/${firebase.auth().currentUser.uid}/avatar/${itemdata.type}`).set(false)
       }
 
-      document.getElementById(itemdata.type + "-avatar-inventory-category").append(card)
+      categoryElem.append(card)
     }
   })
 }
