@@ -136,10 +136,10 @@ database.ref('catalog').on('value', function (snapshot) {
           const currentUser = firebase.auth().currentUser;
           const playerData = await firebaseFetch('/players/' + currentUser.uid);
 
-          if (playerData.inventoryandbits && Object.values(playerData.inventoryandbits).some(entry => entry.product === parseInt(itemId))) {
+          if (playerData.checkbook && Object.values(playerData.checkbook).some(entry => entry.product === parseInt(itemId))) {
             document.getElementById("buyButton").innerText = "You already have it!"
           } else {
-            firebase.database().ref(`players/${firebase.auth().currentUser.uid}/inventoryandbits/${Date.now()}`).set({
+            firebase.database().ref(`players/${firebase.auth().currentUser.uid}/checkbook/${Date.now()}`).set({
               product: parseInt(itemId),
               price: item.price
             })
@@ -161,16 +161,16 @@ function userCheckLoop() {
     let items = snapshot.val();
 
     setAvatarPreview(items.avatar);
-    procInventory(items.inventoryandbits || [], items.avatar.colors);
+    procInventory(items.checkbook || [], items.avatar.colors);
 
-    const inventoryObj = items.inventoryandbits || {};
+    const inventoryObj = items.checkbook || {};
     const inventoryEntries = Object.entries(inventoryObj);
     const catalog = await firebaseFetch('catalog');
 
     for (const [key, entry] of inventoryEntries) {
       const catalogItem = catalog && catalog[entry.product];
       if (!catalogItem || catalogItem.price !== entry.price) {
-        firebase.database().ref(`players/${firebase.auth().currentUser.uid}/inventoryandbits/${key}`).remove();
+        firebase.database().ref(`players/${firebase.auth().currentUser.uid}/checkbook/${key}`).remove();
       }
     }
 
@@ -179,7 +179,7 @@ function userCheckLoop() {
 
     if (bitsSpent > bitsBeforeSpent && inventoryEntries.length > 0) {
       const latestKey = inventoryEntries.reduce((maxKey, [key]) => Math.max(maxKey, Number(key)), 0).toString();
-      firebase.database().ref(`players/${firebase.auth().currentUser.uid}/inventoryandbits/${latestKey}`).remove();
+      firebase.database().ref(`players/${firebase.auth().currentUser.uid}/checkbook/${latestKey}`).remove();
     }
 
     realBits = bitsBeforeSpent - bitsSpent

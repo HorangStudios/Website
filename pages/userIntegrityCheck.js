@@ -15,7 +15,7 @@ firebase.auth().onAuthStateChanged(function (user) {
                 }
             },
             "bio": "HorangHill Player",
-            "inventoryandbits": [],
+            "checkbook": [],
             "uid": firebase.auth().currentUser.uid,
         };
 
