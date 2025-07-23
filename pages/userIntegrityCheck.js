@@ -15,10 +15,8 @@ firebase.auth().onAuthStateChanged(function (user) {
                 }
             },
             "bio": "HorangHill Player",
-            "inventory": [0, 1],
             "inventoryandbits": [],
             "uid": firebase.auth().currentUser.uid,
-            "bits": 100
         };
 
         database.ref(`players/${firebase.auth().currentUser.uid}`).once('value', function (snapshot) {

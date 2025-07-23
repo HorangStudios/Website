@@ -162,11 +162,9 @@ function userCheckLoop() {
 
     setAvatarPreview(items.avatar);
     procInventory(items.inventoryandbits || [], items.avatar.colors);
-    //procBalance();
 
     const inventoryObj = items.inventoryandbits || {};
     const inventoryEntries = Object.entries(inventoryObj);
-
     const catalog = await firebaseFetch('catalog');
 
     for (const [key, entry] of inventoryEntries) {
@@ -177,27 +175,20 @@ function userCheckLoop() {
     }
 
     const bitsSpent = inventoryEntries.reduce((sum, [_, entry]) => sum + (entry.price || 0), 0);
-    let maxBits = 100;
+    let bitsBeforeSpent = 100;
 
-    if (bitsSpent > maxBits && inventoryEntries.length > 0) {
+    if (bitsSpent > bitsBeforeSpent && inventoryEntries.length > 0) {
       const latestKey = inventoryEntries.reduce((maxKey, [key]) => Math.max(maxKey, Number(key)), 0).toString();
       firebase.database().ref(`players/${firebase.auth().currentUser.uid}/inventoryandbits/${latestKey}`).remove();
     }
 
-    realBits = maxBits - bitsSpent
+    realBits = bitsBeforeSpent - bitsSpent
 
     const bitsSpentElem = document.getElementById("myBits");
     if (bitsSpentElem) {
       bitsSpentElem.innerText = realBits;
     }
   })
-}
-
-function procBalance() {
-  database.ref(`players/${firebase.auth().currentUser.uid}/bits`).once('value', function (snapshot) {
-    let val = snapshot.val();
-    document.getElementById("myBits").innerText = val;
-  });
 }
 
 function procInventory(items, skinCLR) {
