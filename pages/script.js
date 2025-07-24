@@ -34,6 +34,7 @@ firebase.initializeApp(firebaseConfig);
 var database = firebase.database();
 var gamescontainer = document.getElementById('gamelist');
 var catalogcontainer = document.getElementById('cataloglist');
+var catalogSidebar = document.getElementById('catalogSidebar');
 var inventorycontainer = document.getElementById('selector');
 
 let today = new Date();
@@ -101,6 +102,7 @@ database.ref('games').on('value', function (snapshot) {
 database.ref('catalog').on('value', function (snapshot) {
   let items = snapshot.val();
   catalogcontainer.innerHTML = ''
+  catalogSidebar.innerHTML = ''
 
   Object.keys(items).forEach(function (itemId) {
     var item = items[itemId];
@@ -198,36 +200,46 @@ function userCheckLoop() {
     var bits = 100;
     var inventory = [];
 
-    Object.keys(inventoryObj).forEach(async (key, i) => {
-      const item = inventoryObj[key]
-      switch (item.type) {
-        case "catalogPurchase":
-          const catalogItem = await firebaseFetch(`catalog/${item.product}`);
-          if ((bits - catalogItem.price) < 0) {
-            firebase.database().ref(`players/${firebase.auth().currentUser.uid}/checkbook/${key}`).remove();
-          } else {
-            bits -= catalogItem.price
-            inventory.push(item.product);
-          }
-          break;
-        case "loginBonus":
-          bits += 10;
-          break;
-        case "purchaseBits":
-          bits += item.val;
-          break;
-      }
+    if (Object.keys(inventoryObj).length == 0) {
+      setAvatarPreview(items.avatar);
+      procInventory(inventory, items.avatar.colors);
 
-      if (i == (Object.keys(inventoryObj).length - 1)) {
-        setAvatarPreview(items.avatar);
-        procInventory(inventory, items.avatar.colors);
+      calculatedBits = bits
+      if (bitsSpentElem) {
+        bitsSpentElem.innerText = bits;
+      };
+    } else {
+      Object.keys(inventoryObj).forEach(async (key, i) => {
+        const item = inventoryObj[key]
+        switch (item.type) {
+          case "catalogPurchase":
+            const catalogItem = await firebaseFetch(`catalog/${item.product}`);
+            if ((bits - catalogItem.price) < 0) {
+              firebase.database().ref(`players/${firebase.auth().currentUser.uid}/checkbook/${key}`).remove();
+            } else {
+              bits -= catalogItem.price
+              inventory.push(item.product);
+            }
+            break;
+          case "loginBonus":
+            bits += 10;
+            break;
+          case "purchaseBits":
+            bits += item.val;
+            break;
+        }
 
-        calculatedBits = bits
-        if (bitsSpentElem) {
-          bitsSpentElem.innerText = bits;
-        };
-      }
-    })
+        if (i == (Object.keys(inventoryObj).length - 1)) {
+          setAvatarPreview(items.avatar);
+          procInventory(inventory, items.avatar.colors);
+
+          calculatedBits = bits
+          if (bitsSpentElem) {
+            bitsSpentElem.innerText = bits;
+          };
+        }
+      })
+    }
   })
 }
 
@@ -241,55 +253,59 @@ function procInventory(items, skinCLR) {
     }
   });
 
-  items.forEach(async (itemObj, key) => {
-    var itemdata = await firebaseFetch(`catalog/${itemObj}`)
+  if (items.length == 0) {
+    inventorycontainer.innerHTML = '<h1>Empty!</h1><br>You have nothing inside your inventory. Start by exploring the catalog.'
+  } else {
+    items.forEach(async (itemObj, key) => {
+      var itemdata = await firebaseFetch(`catalog/${itemObj}`)
 
-    var card = document.createElement('div');
-    card.className = 'catalogItem';
-    card.innerHTML = `
-      <img src="${sanitizeHtml(itemdata.asset)}"><br>
-      <b>${sanitizeHtml(itemdata.name)}</b><br>
-      By ${sanitizeHtml((await firebaseFetch('/players/' + itemdata.uid)).displayName)}
-    `
+      var card = document.createElement('div');
+      card.className = 'catalogItem';
+      card.innerHTML = `
+        <img src="${sanitizeHtml(itemdata.asset)}"><br>
+        <b>${sanitizeHtml(itemdata.name)}</b><br>
+        By ${sanitizeHtml((await firebaseFetch('/players/' + itemdata.uid)).displayName)}
+      `
 
-    card.onclick = () => {
-      firebase.database().ref(`players/${firebase.auth().currentUser.uid}/avatar/${itemdata.type}`).set(parseInt(key))
-    }
+      card.onclick = () => {
+        firebase.database().ref(`players/${firebase.auth().currentUser.uid}/avatar/${itemdata.type}`).set(parseInt(key))
+      }
 
-    if (!itemdata.moderated && itemdata.uid != firebase.auth().currentUser.uid) return;
+      if (!itemdata.moderated && itemdata.uid != firebase.auth().currentUser.uid) return;
 
-    if (document.getElementById(itemdata.type + "-avatar-inventory-category")) {
-      document.getElementById(itemdata.type + "-avatar-inventory-category").append(card)
-    } else {
-      var categoryElem = document.createElement('div')
-      categoryElem.id = itemdata.type + "-avatar-inventory-category"
-      inventorycontainer.appendChild(categoryElem);
-      inventorycontainer.appendChild(document.createElement('br'));
+      if (document.getElementById(itemdata.type + "-avatar-inventory-category")) {
+        document.getElementById(itemdata.type + "-avatar-inventory-category").append(card)
+      } else {
+        var categoryElem = document.createElement('div')
+        categoryElem.id = itemdata.type + "-avatar-inventory-category"
+        inventorycontainer.appendChild(categoryElem);
+        inventorycontainer.appendChild(document.createElement('br'));
 
-      var header = document.createElement("h1")
-      header.innerText = itemdata.type
-      header.style.textTransform = 'capitalize'
-      categoryElem.append(header)
+        var header = document.createElement("h1")
+        header.innerText = itemdata.type
+        header.style.textTransform = 'capitalize'
+        categoryElem.append(header)
 
-      var br = document.createElement("br")
-      categoryElem.append(br)
+        var br = document.createElement("br")
+        categoryElem.append(br)
 
-      var unapplyButton = document.createElement("div")
-      unapplyButton.className = 'catalogItem'
-      unapplyButton.innerHTML = `
+        var unapplyButton = document.createElement("div")
+        unapplyButton.className = 'catalogItem'
+        unapplyButton.innerHTML = `
         <img src="../css/nouse.png"><br>
         <b>No ${sanitizeHtml(itemdata.type)}</b><br>
         Use solid color
       `
-      categoryElem.append(unapplyButton)
+        categoryElem.append(unapplyButton)
 
-      unapplyButton.onclick = () => {
-        firebase.database().ref(`players/${firebase.auth().currentUser.uid}/avatar/${itemdata.type}`).set(false)
+        unapplyButton.onclick = () => {
+          firebase.database().ref(`players/${firebase.auth().currentUser.uid}/avatar/${itemdata.type}`).set(false)
+        }
+
+        categoryElem.append(card)
       }
-
-      categoryElem.append(card)
-    }
-  })
+    })
+  }
 }
 
 function updateCreate() {
