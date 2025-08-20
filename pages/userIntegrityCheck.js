@@ -5,13 +5,15 @@ firebase.auth().onAuthStateChanged(function (user) {
             "avatar": {
                 "shirt": false,
                 "pants": false,
+                "face": false,
                 "colors": {
                     "head": 0xffffff,
                     "torso": 0x1e90ff,
                     "rightArm": 0xffffff,
                     "leftArm": 0xffffff,
                     "rightLeg": 0x808080,
-                    "leftLeg": 0x808080
+                    "leftLeg": 0x808080,
+                    "eyeColor": 0xffffff
                 }
             },
             "bio": "HorangHill Player",
