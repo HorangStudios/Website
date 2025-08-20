@@ -13,7 +13,7 @@ firebase.auth().onAuthStateChanged(function (user) {
                     "leftArm": 0xffffff,
                     "rightLeg": 0x808080,
                     "leftLeg": 0x808080,
-                    "eyeColor": 0xffffff
+                    "eye": 0xffffff
                 }
             },
             "bio": "HorangHill Player",
