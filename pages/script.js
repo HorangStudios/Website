@@ -327,19 +327,24 @@ async function setAvatarPreview(avatarData) {
   scene.add(hemiLight);
   scene.add(sky);
 
-  var shirt = false;
-  var pants = false;
-  var colors = avatarData.colors || false;
+  let avatarData2 = {}
+  let avatarKeys = Object.keys(avatarData);
 
-  if (avatarData.shirt !== false) {
-    var shirt = (await firebaseFetch(`catalog/${avatarData.shirt}`)).asset
+  for (let i = 0; i < avatarKeys.length; i++) {
+    const avatarkey = avatarKeys[i];
+    const avatarvalue = avatarData[avatarkey];
+    if (avatarkey == "colors") {
+      avatarData2["colors"] = avatarData.colors;
+    } else {
+      if (avatarvalue === false) {
+        avatarData2[avatarkey] = false;
+      } else {
+        avatarData2[avatarkey] = (await firebaseFetch(`catalog/${avatarvalue}`)).asset;
+      }
+    }
   }
 
-  if (avatarData.pants !== false) {
-    var pants = (await firebaseFetch(`catalog/${avatarData.pants}`)).asset
-  }
-
-  var createPlayer = await playerModel(0x800000, { "shirt": shirt, "pants": pants, "colors": colors })
+  var createPlayer = await playerModel(0x800000, avatarData2)
   scene.add(createPlayer[0])
 
   controls.target.copy(createPlayer[0].position);
