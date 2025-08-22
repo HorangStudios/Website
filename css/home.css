@@ -165,7 +165,7 @@ button {
 }
 
 .catalogItem img {
-  width: 150px;
+  width: 100%;
   border-radius: 5px;
   aspect-ratio: 1/1;
 }
@@ -178,6 +178,7 @@ button {
   border-radius: 10px;
   margin: 5px;
   cursor: pointer;
+  width: calc(33% - 9px);
 }
 
 .preview {
