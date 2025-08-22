@@ -247,9 +247,9 @@ function procInventory(items, skinCLR) {
   inventorycontainer.innerHTML = ''
 
   Object.keys(skinCLR).forEach(async element => {
-    document.getElementById(element + "Input").value = `#${skinCLR[element].toString(16)}`
+    document.getElementById(element + "Input").value = skinCLR[element];
     document.getElementById(element + "Input").onchange = function (e) {
-      firebase.database().ref(`players/${firebase.auth().currentUser.uid}/avatar/colors/${element}`).set(parseInt(document.getElementById(element + "Input").value.replace("#", "0x")))
+      firebase.database().ref(`players/${firebase.auth().currentUser.uid}/avatar/colors/${element}`).set(document.getElementById(element + "Input").value)
     }
   });
 
