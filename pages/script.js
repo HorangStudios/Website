@@ -320,7 +320,9 @@ function updateCreate() {
 }
 
 async function setAvatarPreview(avatarData) {
-  scene.remove.apply(scene, scene.child)
+  while (scene.children.length > 0) {
+    scene.remove(scene.children[0]);
+  }
 
   scene.add(dirLight);
   scene.add(light);
