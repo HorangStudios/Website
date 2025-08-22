@@ -7,13 +7,13 @@ firebase.auth().onAuthStateChanged(function (user) {
                 "pants": false,
                 "face": false,
                 "colors": {
-                    "head": 0xffffff,
-                    "torso": 0x1e90ff,
-                    "rightArm": 0xffffff,
-                    "leftArm": 0xffffff,
-                    "rightLeg": 0x808080,
-                    "leftLeg": 0x808080,
-                    "eye": 0xffffff
+                    "head": `#ffffff`,
+                    "torso": `#1e90ff`,
+                    "rightArm": `#ffffff`,
+                    "leftArm": `#ffffff`,
+                    "rightLeg": `#808080`,
+                    "leftLeg": `#808080`,
+                    "eye": `#ffffff`
                 }
             },
             "bio": "HorangHill Player",
