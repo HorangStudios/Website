@@ -120,13 +120,33 @@
       </div>
 
       <div id="submit-shirt" class="createmenuts" style="display: none;">
-        <h1><i class="fa-solid fa-upload"></i> Coming Soon!</h1>
-        We are still working on it! Trust us vro
+        <h1><i class="fa-solid fa-upload"></i> Submit Shirt</h1>
+        <form id="shirtPublishForm">
+          <input id="name-shirt" name="name-shirt" placeholder="Name" required="">
+          <br>
+          <input min="0" type="number" id="price-shirt" name="price-shirt" placeholder="Price" required="">
+          <br>
+          <input type="file" accept="image/*" id="shirtimg" onchange="importShirt()" placeholder="Shirt Image"
+            required="">
+          <label for="shirtimg" id="shirtimg-label"><i class="fa-solid fa-upload"></i> <b>Shirt Image</b></label>
+          <br>
+          <button type="submit">Publish</button>
+        </form>
       </div>
 
       <div id="submit-pants" class="createmenuts" style="display: none;">
-        <h1><i class="fa-solid fa-upload"></i> Coming Soon!</h1>
-        We are still working on it! Trust us vro
+        <h1><i class="fa-solid fa-upload"></i> Submit Pants</h1>
+        <form id="pantsPublishForm">
+          <input id="name-pants" name="name-pants" placeholder="Name" required="">
+          <br>
+          <input min="0" type="number" id="price-pants" name="price-pants" placeholder="Price" required="">
+          <br>
+          <input type="file" accept="image/*" id="pantsimg" onchange="importPants()" placeholder="Pants Image"
+            required="">
+          <label for="pantsimg" id="pantsimg-label"><i class="fa-solid fa-upload"></i> <b>Pants Image</b></label>
+          <br>
+          <button type="submit">Publish</button>
+        </form>
       </div>
 
       <div id="submit-game" class="createmenuts" style="display: none;">

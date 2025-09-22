@@ -401,6 +401,8 @@ function updateMail() {
 // ----------------------------------------------------------------------------------------------------------------------------
 
 var form = document.getElementById('publishForm');
+var shirtform = document.getElementById('shirtPublishForm');
+var pantsform = document.getElementById('pantsPublishForm');
 
 var gamejson
 function importScene() {
@@ -428,6 +430,36 @@ function importIMG() {
   const reader = new FileReader();
   reader.onload = function (event) {
     imagedataurl = reader.result
+    label.innerHTML = label.innerHTML + sanitizeHtml(` (${file.name})`)
+  };
+
+  reader.readAsDataURL(file);
+}
+
+var shirtdataurl
+function importShirt() {
+  var input = document.getElementById("shirtimg");
+  var label = document.getElementById("shirtimg-label");
+  const file = input.files[0];
+
+  const reader = new FileReader();
+  reader.onload = function (event) {
+    shirtdataurl = reader.result;
+    label.innerHTML = label.innerHTML + sanitizeHtml(` (${file.name})`)
+  };
+
+  reader.readAsDataURL(file);
+}
+
+var pantsdataurl
+function importPants() {
+  var input = document.getElementById("pantsimg");
+  var label = document.getElementById("pantsimg-label");
+  const file = input.files[0];
+
+  const reader = new FileReader();
+  reader.onload = function (event) {
+    pantsdataurl = reader.result;
     label.innerHTML = label.innerHTML + sanitizeHtml(` (${file.name})`)
   };
 
@@ -467,6 +499,52 @@ form.addEventListener('submit', function (event) {
     database.ref('games').push(game);
 
     form.reset();
+  }
+});
+
+shirtform.addEventListener('submit', async function (event) {
+  var name = document.getElementById('name-shirt').value;
+  var price = document.getElementById('price-shirt').value;
+  event.preventDefault();
+
+  if (name && price && typeof shirtdataurl !== undefined) {
+    firebase.database().ref('catalog/').once('value')
+      .then(function (snapshot) {
+        var shirt = {
+          name: name,
+          price: price,
+          asset: shirtdataurl,
+          type: 'shirt',
+          moderated: false,
+          uid: firebase.auth().currentUser.uid
+        };
+
+        database.ref(`catalog/${Object.keys(snapshot.val()).length}`).set(shirt);
+        shirtform.reset();
+      });
+  }
+});
+
+pantsform.addEventListener('submit', function (event) {
+  var name = document.getElementById('name-pants').value;
+  var price = document.getElementById('price-pants').value;
+  event.preventDefault();
+
+  if (name && price && typeof pantsdataurl !== undefined) {
+    firebase.database().ref('catalog/').once('value')
+      .then(function (snapshot) {
+        var pants = {
+          name: name,
+          price: price,
+          asset: pantsdataurl,
+          type: 'pants',
+          moderated: false,
+          uid: firebase.auth().currentUser.uid
+        };
+
+        database.ref(`catalog/${Object.keys(snapshot.val()).length}`).set(pants);
+        pantsform.reset();
+      });
   }
 });
 
