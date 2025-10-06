@@ -1,7 +1,14 @@
-firebase.auth().onAuthStateChanged(function (user) {
+firebase.auth().onAuthStateChanged(async function (user) {
+    // if logged in, make sure user data on player db exists (also fill missing data)
     if (user) {
+        if (typeof ISILOP !== 'undefined') {
+            displayNameData = ISILOP
+        } else {
+            displayNameData = firebase.auth().currentUser.displayName
+        }
+
         const userDataTemplate = {
-            "displayName": firebase.auth().currentUser.displayName,
+            "displayName": displayNameData,
             "avatar": {
                 "shirt": false,
                 "pants": false,
@@ -21,11 +28,11 @@ firebase.auth().onAuthStateChanged(function (user) {
             "uid": firebase.auth().currentUser.uid,
         };
 
-        database.ref(`players/${firebase.auth().currentUser.uid}`).once('value', function (snapshot) {
+        database.ref(`players/${firebase.auth().currentUser.uid}`).once('value', async function (snapshot) {
             if (snapshot.exists()) {
                 let items = snapshot.val();
                 let updated = false;
-                
+
                 for (let key in userDataTemplate) {
                     if (!(key in items)) {
                         items[key] = userDataTemplate[key];
@@ -41,13 +48,22 @@ firebase.auth().onAuthStateChanged(function (user) {
                 }
 
                 if (updated) {
-                    database.ref(`players/${firebase.auth().currentUser.uid}`).update(items);
+                    await database.ref(`players/${firebase.auth().currentUser.uid}`).update(items);
                 }
 
-                userCheckLoop()
+                if (typeof isLoginPage == 'undefined') {
+                    userCheckLoop()
+                }
             } else {
-                database.ref(`players/${firebase.auth().currentUser.uid}`).set(userDataTemplate).then(userCheckLoop);
+                await database.ref(`players/${firebase.auth().currentUser.uid}`).set(userDataTemplate).then(userCheckLoop);
+            }
+
+            if (typeof isLoginPage !== 'undefined') {
+                window.location.href = "pages/index.html";
             }
         });
+    } else if (typeof isLoginPage !== 'undefined') {
+        document.getElementById("loader").style.display = 'none'
+        document.getElementById("Login").style.display = 'block'
     }
 });

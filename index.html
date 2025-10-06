@@ -13,8 +13,10 @@
 
     <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-database.js"></script>
     <script src="https://kit.fontawesome.com/970a0290cd.js"></script>
     <script src="pages/login.js" defer></script>
+    <script src="pages/userIntegrityCheck.js" defer></script>
 </head>
 
 <body>
@@ -24,23 +26,10 @@
         </div>
     </div>
     <div id="main">
-        <div id="loader" class="tabcontent">
-            <center>
-                <i class="fa-solid fa-spinner fa-spin"></i> Please Wait...
-            </center>
+        <div id="loader" class="tabcontent loginloader">
+            <i class="fa-solid fa-spinner fa-spin"></i> Please Wait...
         </div>
         <div id="Login" class="tabcontent" style="display: none;">
-            <dialog open id="insanedialog"
-                style="border: none; z-index: 99; width: 100vw; height: 100vh; background: #000000ab; display: flex; text-align: center; place-items: center; justify-content: center; display: none;">
-                <div style="background-color: black; padding: 20px;">
-                    <br>
-                    <p style="font-size: 19px;">Guest mode means limited features, do you want to continue?</p>
-                    <br><br>
-                    <button style="font-size: 17px;" onclick="closedialog()">Log in instead</button><button
-                        style="font-size: 17px;"
-                        onclick="guestacc(); this.innerText = 'Please Wait...'">Continue</button>
-                </div>
-            </dialog>
             <form class="form" id="signupbox">
                 <p>To continue, Create an account or sign in to an existing one</p>
 
@@ -49,28 +38,32 @@
 
                 <input type="email" id="emailLogin" placeholder="Email" required>
                 <input type="password" id="passwordLogin" placeholder="Password" required>
-                <button onclick="loginacc(); this.disabled = true; this.innerText = 'Please Wait...'">Sign In</button>
-                <button onclick="showlogin(); this.disabled = true; this.innerText = 'Please Wait...'">New user? Sign up
-                    now!</button>
+
+                <button onclick="loginacc(); this.disabled = true;" id="loginbtn">Sign In</button>
+                <button onclick="showlogin();">New user? Sign up now!</button><br><br>
                 <p id="error1" style="color: red; text-align: center;"></p>
             </form>
 
             <form class="form" id="loginbox" style="display: none;">
-                <p>By clicking Sign Up, you are agreeing to our Terms of Use and our <a
-                        href="https://suitedcoder.github.io/Privacy/md.htm?src=Privacy.md">Privacy Policy</a>.</p>
+                <p>
+                    By clicking Sign Up, you are agreeing to our Terms of Use and our
+                    <a href="https://suitedcoder.github.io/Privacy/md.htm?src=Privacy.md">Privacy Policy</a>.
+                </p>
 
                 <br>
                 <hr style="margin: 0;">
 
-                <input id="displayName" placeholder="User Name" required>
-                <input type="email" id="email" placeholder="Email" required>
-                <input type="password" id="password" placeholder="Password" required>
-                <div id="captchaContainer" onclick="generateCaptcha()">
+                <input id="displayName" placeholder="User Name" autocomplete="one-time-code">
+                <input type="email" id="email" placeholder="Email" autocomplete="one-time-code">
+                <input type="password" id="password" placeholder="Password" autocomplete="one-time-code">
+
+                <div id="captchaContainer" onclick="captcha.generate()">
                     <canvas id="captchaCanvas" width="2000" height="200"></canvas>
                 </div>
-                <input type="text" id="captchaInput" placeholder="Enter the code here.">
-                <button id="submit" onclick="createacc(); this.innerText = 'Please Wait...'">Sign
-                    up</button>
+
+                <input type="text" id="captchaInput" placeholder="Enter the code here." autocomplete="one-time-code">
+
+                <button onclick="createacc();" id="signupbtn">Sign up</button><br><br>
                 <p id="error" style="color: red; text-align: center;"></p>
             </form>
         </div>
@@ -85,7 +78,8 @@
                 <a href="https://github.com/HorangStudios"><i class="fa-brands fa-github"></i></a>
             </h1>
             <br>
-            &copy; 2025 HorangHill - Since 2022 - <a href="https://suitedcoder.github.io/Privacy/md.htm?src=Privacy.md">Privacy Policy</a>
+            &copy; 2025 HorangHill - Since 2022 - <a
+                href="https://suitedcoder.github.io/Privacy/md.htm?src=Privacy.md">Privacy Policy</a>
         </div>
     </footer>
 </body>

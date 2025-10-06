@@ -246,6 +246,10 @@ button {
   cursor: pointer;
 }
 
+.loginloader {
+  text-align: center;
+}
+
 @media (prefers-color-scheme: dark) {
   hr {
     border-color: #6d6d6d;
