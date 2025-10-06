@@ -1,10 +1,17 @@
 firebase.auth().onAuthStateChanged(async function (user) {
     // if logged in, make sure user data on player db exists (also fill missing data)
     if (user) {
+        let displayNameData
+
         if (typeof ISILOP !== 'undefined') {
             displayNameData = ISILOP
         } else {
             displayNameData = firebase.auth().currentUser.displayName
+            if (typeof isLoginPage == 'undefined') {
+                document.getElementById('main').style.display = "block"
+                gamescontainer.innerHTML = '';
+                document.getElementById('greetings').innerHTML = `${greetings}, ${sanitizeHtml(displayNameData)}!`
+            }
         }
 
         const userDataTemplate = {
@@ -55,7 +62,17 @@ firebase.auth().onAuthStateChanged(async function (user) {
                     userCheckLoop()
                 }
             } else {
-                await database.ref(`players/${firebase.auth().currentUser.uid}`).set(userDataTemplate).then(userCheckLoop);
+                await database.ref(`players/${firebase.auth().currentUser.uid}`).set(userDataTemplate);
+
+                if (typeof ISILOP !== 'undefined') {
+                    await firebase.auth().currentUser.updateProfile({
+                        displayName: ISILOP
+                    });
+                }
+
+                if (typeof isLoginPage == 'undefined') {
+                    userCheckLoop()
+                }
             }
 
             if (typeof isLoginPage !== 'undefined') {

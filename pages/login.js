@@ -38,12 +38,7 @@ function createacc() {
 
     if ((displayName && email && password) && (displayName.length >= 3)) {
         firebase.auth().createUserWithEmailAndPassword(email, password)
-            .then((userCredential) => {
-                userCredential.user.updateProfile({
-                    displayName: displayName
-                });
-                window.location.href = "pages/index.html";
-            })
+            .then((userCredential) => {})
             .catch((error) => {
                 errorMsg.innerText = error.message;
                 signupbtn.innerText = "Sign Up";

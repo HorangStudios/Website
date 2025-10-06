@@ -40,6 +40,7 @@ var inventorycontainer = document.getElementById('selector');
 let today = new Date();
 let hour = today.getHours();
 let greetings
+
 if (hour >= 5 && hour < 12) {
   greetings = ("<i class='fa-solid fa-sun'></i> Good morning");
 } else if (hour >= 12 && hour < 18) {
@@ -58,15 +59,53 @@ function truncate(str, num) {
 }
 
 database.ref('games').on('value', function (snapshot) {
-  document.getElementById('main').style.display = "block"
-  gamescontainer.innerHTML = '';
-  var displayName = firebase.auth().currentUser.displayName || "Player";
-  document.getElementById('greetings').innerHTML = `${greetings}, ${sanitizeHtml(displayName)}!`
-
   let games = snapshot.val();
 
   Object.keys(games).forEach(function (gameId) {
     var game = games[gameId];
+
+    var card = document.createElement('div');
+    card.id = 'game';
+
+    gamedetails = "<div id='gamecard1'><h2>" + sanitizeHtml(game.title) + "</h2>" + sanitizeHtml(game.createdBy) + "</div>";
+    gamename = "<br><div id='gamecard2'>" + sanitizeHtml(truncate(game.desc, 100)) + "</div>"
+
+    card.innerHTML = gamedetails + gamename;
+    card.style.backgroundImage = "url(" + game.thumbnail + ")";
+
+    card.onclick = function () {
+      document.getElementById('gameTitle').innerText = game.title;
+      document.getElementById('gamePublisher').innerText = game.createdBy;
+      document.getElementById('gameDescription').innerText = game.desc;
+      document.getElementById("sidebar").style.background = "rgba(0, 0, 0, .20) url(" + game.thumbnail + ")";
+      document.getElementById("gamedetailstabtogglebutton").click();
+
+      document.getElementById("playButton").onclick = function () {
+        window.location.href = ("https://horangstudios.github.io/LigmaForge/player/?id=" + gameId + "&online=true")
+      };
+
+      if (game.uid == firebase.auth().currentUser.uid) {
+        document.getElementById('editButton').removeAttribute("hidden");
+        document.getElementById("editButton").onclick = function () {
+          window.open(("details.html?id=" + gameId), "editorWindow", "width=400,height=300,resizable=yes,scrollbars=yes");
+        };
+      } else {
+        document.getElementById('editButton').setAttribute("hidden", "")
+      }
+    }
+
+    gamescontainer.prepend(card);
+  });
+});
+
+database.ref('players').on('value', function (snapshot) {
+  let players = snapshot.val();
+  console.log(players)
+
+  return
+
+  Object.keys(players).forEach(function (playerId) {
+    var game = players[playerId];
 
     var card = document.createElement('div');
     card.id = 'game';
