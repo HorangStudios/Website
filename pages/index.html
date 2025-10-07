@@ -37,6 +37,7 @@
       <a class="tablinks" onclick="openTab(event, 'Home')" id="defaultOpen">Home</a>
       <a class="tablinks" onclick="openTab(event, 'Avatar')">Avatar</a>
       <a class="tablinks" onclick="openTab(event, 'Catalog')">Catalog</a>
+      <a class="tablinks" onclick="openTab(event, 'Players')">Players</a>
       <a class="tablinks" onclick="openTab(event, 'Create')">Create</a>
       <a class="tablinks" onclick="openTab(event, 'Account')">Account</a>
       <a class="tablinks" onclick="openTab(event, 'Details')" id="gamedetailstabtogglebutton" hidden>game.details</a>
@@ -211,8 +212,26 @@
 
     <div id="Catalog" class="tabcontent">
       <h1>Catalog</h1>
-      <div class="preview" id="catalogSidebar"></div>
-      <div class="selector" id="cataloglist"></div>
+      <div class="preview" id="catalogSidebar">
+        <center>
+          <br>
+          <i class="fa-solid fa-spinner fa-spin"></i>
+        </center>
+      </div>
+      <div class="selector" id="cataloglist">
+        <center>
+          <i class="fa-solid fa-spinner fa-spin"></i>
+        </center>
+      </div>
+    </div>
+
+    <div id="Players" class="tabcontent">
+      <h1>Players</h1>
+      <div id="playerlist">
+        <center>
+          <i class="fa-solid fa-spinner fa-spin"></i>
+        </center>
+      </div>
     </div>
 
     <div id="Account" class="tabcontent">

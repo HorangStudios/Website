@@ -9,7 +9,6 @@ firebase.auth().onAuthStateChanged(async function (user) {
             displayNameData = firebase.auth().currentUser.displayName
             if (typeof isLoginPage == 'undefined') {
                 document.getElementById('main').style.display = "block"
-                gamescontainer.innerHTML = '';
                 document.getElementById('greetings').innerHTML = `${greetings}, ${sanitizeHtml(displayNameData)}!`
             }
         }
