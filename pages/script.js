@@ -115,6 +115,19 @@ database.ref('players').on('value', function (snapshot) {
     card.innerHTML = gamedetails + gamename;
 
     playercontainer.prepend(card);
+
+    card.onclick = async function () {
+      document.getElementById("playerProfileLeft").innerHTML = '';
+      document.getElementById("playerdetailbutton").click();
+
+      const username = document.createElement("h2");
+      username.innerText = player.displayName;
+      document.getElementById("playerProfileLeft").appendChild(username)
+      
+      const bio = document.createElement("span");
+      bio.innerText = player.bio;
+      document.getElementById("playerProfileLeft").appendChild(bio)
+    }
   });
 });
 
@@ -311,7 +324,7 @@ function procInventory(items, skinCLR) {
         var unapplyButton = document.createElement("div")
         unapplyButton.className = 'catalogItem'
         unapplyButton.innerHTML = `
-        <img src="../css/nouse.png"><br>
+        <img src="../css/none.png"><br>
         <b>No ${sanitizeHtml(itemdata.type)}</b><br>
         Use solid color
       `

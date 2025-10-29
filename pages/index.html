@@ -40,8 +40,9 @@
       <a class="tablinks" onclick="openTab(event, 'Players')">Players</a>
       <a class="tablinks" onclick="openTab(event, 'Create')">Create</a>
       <a class="tablinks" onclick="openTab(event, 'Account')">Account</a>
-      <a class="tablinks" onclick="openTab(event, 'Details')" id="gamedetailstabtogglebutton" hidden>game.details</a>
-      <a class="tablinks" onclick="openTab(event, 'ItemDetails')" id="itemdetailbutton" hidden>item.details</a>
+      <a class="tablinks hidden" onclick="openTab(event, 'Details')" id="gamedetailstabtogglebutton">game.details</a>
+      <a class="tablinks hidden" onclick="openTab(event, 'ItemDetails')" id="itemdetailbutton">item.details</a>
+      <a class="tablinks hidden" onclick="openTab(event, 'playerDetails')" id="playerdetailbutton">player.details</a>
 
       <a class="tablinks rightNav">
         <span id="myBits">0</span> <i class="fa-solid fa-coins"></i></a>
@@ -51,30 +52,23 @@
     <div id="Home" class="tabcontent">
       <h1 id="greetings">
       </h1>
-      <div style="display: flex; width: 100%; overflow: auto;">
-        <a href="#greetings" onclick="openTab(event, 'Avatar')">
-          <div class="quickcard">
-            <h3>Decorate</h3>
-            <div class="author">Decorate your avatar</div>
-          </div>
+      <div class="quickcards">
+        <a href="#greetings" onclick="openTab(event, 'Avatar')" class="quickcard">
+          <h3>Decorate</h3>
+          <div class="author">Decorate your avatar</div>
         </a>
-        <a href="#greetings" onclick="openTab(event, 'Create')">
-          <div class="quickcard">
-            <h3>Create</h3>
-            <div class="author">Create with HorangHill editor</div>
-          </div>
+        <a href="#greetings" onclick="openTab(event, 'Create')" class="quickcard">
+          <h3>Create</h3>
+          <div class="author">Create with HorangHill editor</div>
         </a>
-        <a href="https://horanghill.createaforum.com/index.php">
-          <div class="quickcard">
-            <h3>Forum</h3>
-            <div class="author">Talk with the community</div>
-          </div>
+        <a href="https://horanghill.createaforum.com/index.php" class="quickcard">
+          <h3>Forum</h3>
+          <div class="author">Talk with the community</div>
         </a>
-        <a href="#greetings" onclick="firebase.auth().signOut(); window.location.replace('../index.html')">
-          <div class="quickcard">
-            <h3>Log out</h3>
-            <div class="author">Log out from your account</div>
-          </div>
+        <a href="#greetings" onclick="firebase.auth().signOut(); window.location.replace('../index.html')"
+          class="quickcard">
+          <h3>Log out</h3>
+          <div class="author">Log out from your account</div>
         </a>
       </div>
       <hr>
@@ -98,10 +92,9 @@
           <option value="shirt">A Shirt</option>
           <option value="pants">A Pair of Pants</option>
         </select>
-      </h1><br>
+      </h1>
 
       <div id="create-game" class="createmenuts">
-        <h1><i class="fa-solid fa-wrench"></i> HorangHill Editor (Web)</h1>
         <button onclick="window.open('https://horangstudios.github.io/LigmaForge/')">
           <i class="fa fa-plus"></i> New game
         </button><br>
@@ -111,17 +104,14 @@
       </div>
 
       <div id="create-shirt" class="createmenuts" style="display: none;">
-        <h1><i class="fa-solid fa-wrench"></i> Download Template</h1><br>
         <img src="https://horangstudios.github.io/LigmaForge/resources/Shirt%20Template.png">
       </div>
 
       <div id="create-pants" class="createmenuts" style="display: none;">
-        <h1><i class="fa-solid fa-wrench"></i> Download Template</h1><br>
         <img src="https://horangstudios.github.io/LigmaForge/resources/Pants%20Template.png">
       </div>
 
       <div id="submit-shirt" class="createmenuts" style="display: none;">
-        <h1><i class="fa-solid fa-upload"></i> Submit Shirt</h1>
         <form id="shirtPublishForm">
           <input id="name-shirt" name="name-shirt" placeholder="Name" required="">
           <br>
@@ -136,7 +126,6 @@
       </div>
 
       <div id="submit-pants" class="createmenuts" style="display: none;">
-        <h1><i class="fa-solid fa-upload"></i> Submit Pants</h1>
         <form id="pantsPublishForm">
           <input id="name-pants" name="name-pants" placeholder="Name" required="">
           <br>
@@ -151,7 +140,6 @@
       </div>
 
       <div id="submit-game" class="createmenuts" style="display: none;">
-        <h1><i class="fa-solid fa-upload"></i> Publish</h1>
         <form id="publishForm">
           <input id="title-text" name="title-text" placeholder="Title" required="">
           <br>
@@ -272,6 +260,13 @@
         <p id="itemDesc">Item Description</p>
         <br>
         <button id="buyButton">Buy</button>
+      </div>
+    </div>
+
+    <div id="playerDetails" class="tabcontent">
+      <div class="catalogPrevLeft" id="playerProfileLeft">
+      </div>
+      <div class="catalogPrevRight" id="playerProfileRight">
       </div>
     </div>
   </div>
