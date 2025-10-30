@@ -272,7 +272,49 @@ button {
   border: #4d4d4d solid 1px;
 }
 
+#toggle:checked+#nav {
+  display: block;
+}
+
+#nav {
+  display: none;
+}
+
+#mobiletoggle {
+  display: none;
+  text-decoration: none;
+  float: right;
+  padding: 0px !important;
+}
+
 @media (max-width: 800px) {
+  #sidebar a:first-of-type {
+    padding: 10px 0px;
+  }
+
+  .rightNav {
+    float: unset;
+    margin-top: 0;
+  }
+
+  #sidebar a {
+    display: inline-block;
+    padding-right: 0;
+  }
+
+  #toggle:checked+#nav {
+    display: none;
+  }
+
+  #nav {
+    display: block;
+    text-align: right;
+  }
+
+  #mobiletoggle {
+    display: block;
+  }
+
   .tablinks {
     display: inline-block;
   }

@@ -30,22 +30,28 @@
 <body>
   <div id="sidebar">
     <div class="sidebar-contain">
-      <h1>HorangHill</h1>
+      <h1>
+        HorangHill
+        <span onclick="document.getElementById('toggle').click()" id="mobiletoggle">☰</span>
+      </h1>
 
-      <br>
+      <input type="checkbox" id="toggle" class="hidden" checked>
+      <div id="nav">
+        <br>
+        <a class="tablinks" onclick="openTab(event, 'Home')" id="defaultOpen">Home</a>
+        <a class="tablinks" onclick="openTab(event, 'Avatar')">Avatar</a>
+        <a class="tablinks" onclick="openTab(event, 'Catalog')">Catalog</a>
+        <a class="tablinks" onclick="openTab(event, 'Players')">Players</a>
+        <a class="tablinks" onclick="openTab(event, 'Create')">Create</a>
+        <a class="tablinks" onclick="openTab(event, 'Account')">Account</a>
+        <a class="tablinks hidden" onclick="openTab(event, 'Details')" id="gamedetailstabtogglebutton">game.details</a>
+        <a class="tablinks hidden" onclick="openTab(event, 'ItemDetails')" id="itemdetailbutton">item.details</a>
+        <a class="tablinks hidden" onclick="openTab(event, 'playerDetails')" id="playerdetailbutton">player.details</a>
 
-      <a class="tablinks" onclick="openTab(event, 'Home')" id="defaultOpen">Home</a>
-      <a class="tablinks" onclick="openTab(event, 'Avatar')">Avatar</a>
-      <a class="tablinks" onclick="openTab(event, 'Catalog')">Catalog</a>
-      <a class="tablinks" onclick="openTab(event, 'Players')">Players</a>
-      <a class="tablinks" onclick="openTab(event, 'Create')">Create</a>
-      <a class="tablinks" onclick="openTab(event, 'Account')">Account</a>
-      <a class="tablinks hidden" onclick="openTab(event, 'Details')" id="gamedetailstabtogglebutton">game.details</a>
-      <a class="tablinks hidden" onclick="openTab(event, 'ItemDetails')" id="itemdetailbutton">item.details</a>
-      <a class="tablinks hidden" onclick="openTab(event, 'playerDetails')" id="playerdetailbutton">player.details</a>
-
-      <a class="tablinks rightNav">
-        <span id="myBits">0</span> <i class="fa-solid fa-coins"></i></a>
+        <a class="tablinks rightNav">
+          <span id="myBits">0</span> <i class="fa-solid fa-coins"></i>
+        </a>
+      </div>
     </div>
   </div>
   <div id="main">
