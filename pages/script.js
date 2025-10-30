@@ -69,17 +69,17 @@ database.ref('games').on('value', function (snapshot) {
     var card = document.createElement('div');
     card.id = 'game';
 
-    gamedetails = "<div id='gamecard1'><h2>" + sanitizeHtml(game.title) + "</h2>" + sanitizeHtml(game.createdBy) + "</div>";
+    gamedetails = "<div id='gamecard1'><h3>" + sanitizeHtml(game.title) + "</h3>" + sanitizeHtml(game.createdBy) + "</div>";
     gamename = "<br><div id='gamecard2'>" + sanitizeHtml(truncate(game.desc, 100)) + "</div>"
 
     card.innerHTML = gamedetails + gamename;
-    card.style.backgroundImage = "url(" + game.thumbnail + ")";
+    card.style.backgroundImage = `url(${game.thumbnail})`;
 
     card.onclick = function () {
       document.getElementById('gameTitle').innerText = game.title;
       document.getElementById('gamePublisher').innerText = game.createdBy;
       document.getElementById('gameDescription').innerText = game.desc;
-      document.getElementById("sidebar").style.background = "rgba(0, 0, 0, .20) url(" + game.thumbnail + ")";
+      document.getElementById("gamethumbnail").style.backgroundImage = `url(${game.thumbnail})`;
       document.getElementById("gamedetailstabtogglebutton").click();
 
       document.getElementById("playButton").onclick = function () {
@@ -110,8 +110,8 @@ database.ref('players').on('value', function (snapshot) {
     var card = document.createElement('div');
     card.id = 'game';
 
-    gamedetails = "<div id='gamecard1'><h2>" + sanitizeHtml(player.displayName) + "</h2>" + sanitizeHtml(player.uid) + "</div>";
-    gamename = "<br><div id='gamecard2'>" + sanitizeHtml(truncate(player.bio, 100)) + "</div>"
+    gamedetails = "<div id='gamecard1'><h2>" + sanitizeHtml(player.displayName) + "</h2></div>";
+    gamename = "<div id='gamecard2'>" + sanitizeHtml(truncate(player.bio, 100)) + "</div>"
     card.innerHTML = gamedetails + gamename;
 
     playercontainer.prepend(card);
@@ -122,7 +122,7 @@ database.ref('players').on('value', function (snapshot) {
 
       const username = document.createElement("h2");
       username.innerText = player.displayName;
-      document.getElementById("playerProfileLeft").appendChild(username)
+      document.getElementById("playerProfileLeft").appendChild(username);
       
       const bio = document.createElement("span");
       bio.innerText = player.bio;

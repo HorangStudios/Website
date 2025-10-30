@@ -63,6 +63,9 @@ a:hover {
   background-size: cover;
   cursor: pointer;
   margin: 10px;
+  width: calc(33% - 18px);
+  aspect-ratio: 1/1;
+  float: left;
 }
 
 h1 {
@@ -94,7 +97,6 @@ button,
 label {
   padding: 14px;
   background-color: #1d1d1d;
-  border: none;
   border: #4d4d4d solid 1px;
   border-radius: 10px;
   width: 100%;
@@ -261,6 +263,15 @@ button {
   display: none !important;
 }
 
+#gamethumbnail {
+  height: 50dvh;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-color: #1d1d1d;
+  border-radius: 10px;
+  border: #4d4d4d solid 1px;
+}
+
 @media (max-width: 800px) {
   .tablinks {
     display: inline-block;
@@ -285,9 +296,15 @@ button {
   .preview,
   .selector,
   #cataloglist,
-  #catalogSidebar{
+  #catalogSidebar {
     width: 100%;
     text-align: center;
+  }
+
+  #game {
+    width: auto;
+    aspect-ratio: unset;
+    float: unset;
   }
 }
 
@@ -298,6 +315,7 @@ button {
 }
 
 @media (prefers-color-scheme: light) {
+
   .quickcard,
   .catalogItem {
     background: lightgray;
