@@ -22,7 +22,6 @@ body {
   padding: 0;
   box-sizing: border-box;
   user-select: none;
-  color: white;
   background-position: center center;
   outline: none;
 }
@@ -55,7 +54,7 @@ a:hover {
   color: white;
   margin-top: 25px !important;
   box-shadow: 200px -1px 136px 8px rgba(0, 0, 0, 1) inset;
-  -webkit-box-shadow: 200px -1px 136px 8px rgb(0 0 0) inset;
+  -webkit-box-shadow: 200px -1px 136px 8px rgb(0, 0, 0) inset;
   -moz-box-shadow: 200px -1px 136px 8px rgba(0, 0, 0, 1) inset;
   border-radius: 10px;
   border: #4d4d4d solid 1px;
@@ -354,23 +353,23 @@ button {
   hr {
     border-color: #6d6d6d;
   }
+
+  * {
+    color: white;
+  }
 }
 
 @media (prefers-color-scheme: light) {
-
   .quickcard,
-  .catalogItem {
-    background: lightgray;
-    border: 1px solid #ccc;
-  }
-
+  .catalogItem,
+  h1 select,
   input,
   textarea,
   button,
   label,
   canvas {
-    background: lightgray;
-    border: 1px solid #ccc;
+    background: #e7e7e7;
+    border: 1px solid #a8a8a8;
     color: black;
   }
 
@@ -378,14 +377,12 @@ button {
     background: whitesmoke;
   }
 
-  * {
+  div, h1, h2, h3, h4, h5, h6 {
     color: black;
   }
 
-  input,
-  textarea {
-    background: none;
-    border: gray solid 1px;
+  h1 i {
+    color: black;
   }
 
   button {
@@ -409,7 +406,7 @@ button {
 
   #gamecard1,
   #gamecard2,
-  #gamecard1 h2 {
+  #gamecard1 b {
     color: white;
   }
 
@@ -422,6 +419,10 @@ button {
   #sidebar a,
   #sidebar i {
     color: white;
+  }
+
+  footer a {
+    color: black;
   }
 
   #migrationNotice a {

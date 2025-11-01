@@ -9,34 +9,36 @@
 	<title>HorangHill</title>
 
 	<link rel="icon" type="image/x-icon" href="logo.png">
-
+	<link rel="stylesheet" href="../css/home.css">
 	<script src="https://kit.fontawesome.com/970a0290cd.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
-	<div id="loader">
-		Fetching game data...
+	<div id="sidebar">
+		<div class="sidebar-contain">
+			<h1 id="gamename">
+				<i class="fa-solid fa-spinner fa-spin"></i> Fetching game data...
+			</h1>
+		</div>
 	</div>
-	<div id="form" style="display: none;">
-		<input type="file" accept=".hhls" id="file-input" onchange="importScene()" style="display: none;">
-		<input type="file" accept="image/*" id="thumbnail" onchange="importIMG()" style="display: none;">
+	<div id="main">
+		<div id="form" style="display: none;">
+			<input type="file" accept=".hhls" id="file-input" onchange="importScene()" style="display: none;">
+			<input type="file" accept="image/*" id="thumbnail" onchange="importIMG()" style="display: none;">
 
-		<details>
-			<summary>See thumbnail</summary>
-			<img id="gamethumbnail">
-		</details>
-		<input id="title"></input><br>
-		<textarea id="desc"></textarea><br>
+			<input id="title" style="cursor: text;"><br>
+			<textarea id="desc"></textarea><br>
 
-		<button id="edit" style="width: fit-content;" onclick="document.getElementById('file-input').click()">
-			<i class="fa-solid fa-upload"></i> <span id="uploadUpdate">Upload update</span>
-		</button><br>
-		<button id="edit" style="width: fit-content;" onclick="document.getElementById('thumbnail').click()">
-			<i class="fa-solid fa-upload"></i> <span id="thumbnail-label">Upload thumbnail</span>
-		</button><br>
-		<button id="download" style="width: fit-content;" onclick="downloadHHLS()">
-			<i class="fa-solid fa-download"></i> Download game
-		</button>
+			<button id="edit" style="width: fit-content;" onclick="document.getElementById('file-input').click()">
+				<i class="fa-solid fa-upload"></i> <span id="uploadUpdate">Upload update</span>
+			</button>
+			<button id="edit" style="width: fit-content;" onclick="document.getElementById('thumbnail').click()">
+				<i class="fa-solid fa-upload"></i> <span id="thumbnail-label">Upload thumbnail</span>
+			</button>
+			<button id="download" style="width: fit-content;" onclick="downloadHHLS()">
+				<i class="fa-solid fa-download"></i> Download game
+			</button>
+		</div>
 	</div>
 
 	<script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js"></script>
@@ -62,12 +64,11 @@
 
 		ref.once('value', snapshot => {
 			item = snapshot.val();
-			document.getElementById('gamethumbnail').src = item.thumbnail;
+			document.getElementById('gamename').innerText = item.title;
 			document.getElementById('title').value = item.title;
 			document.getElementById('desc').value = item.desc;
 
 			if (item.uid == firebase.auth().currentUser.uid) {
-				document.getElementById('loader').style.display = "none";
 				document.getElementById('form').style.display = "block";
 
 				document.getElementById('title').addEventListener("input", function () {
@@ -110,8 +111,8 @@
 					ref.update({
 						hhls: json
 					})
-					
-					label.innerText = 'Thumbnail Uploaded!'
+
+					label.innerText = 'Updated!'
 				};
 
 				reader.readAsText(file);

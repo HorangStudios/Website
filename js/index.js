@@ -69,7 +69,7 @@ database.ref('games').on('value', function (snapshot) {
     var card = document.createElement('div');
     card.id = 'game';
 
-    gamedetails = "<div id='gamecard1'><h3>" + sanitizeHtml(game.title) + "</h3>" + sanitizeHtml(game.createdBy) + "</div>";
+    gamedetails = "<div id='gamecard1'><b>" + sanitizeHtml(game.title) + "</b><br>" + sanitizeHtml(game.createdBy) + "</div>";
     gamename = "<br><div id='gamecard2'>" + sanitizeHtml(truncate(game.desc, 100)) + "</div>"
 
     card.innerHTML = gamedetails + gamename;
@@ -89,7 +89,7 @@ database.ref('games').on('value', function (snapshot) {
       if (game.uid == firebase.auth().currentUser.uid) {
         document.getElementById('editButton').removeAttribute("hidden");
         document.getElementById("editButton").onclick = function () {
-          window.open(("details.html?id=" + gameId), "editorWindow", "width=400,height=300,resizable=yes,scrollbars=yes");
+          window.open(("details.html?id=" + gameId), "_blank").focus();
         };
       } else {
         document.getElementById('editButton').setAttribute("hidden", "")
@@ -110,7 +110,7 @@ database.ref('players').on('value', function (snapshot) {
     var card = document.createElement('div');
     card.id = 'game';
 
-    gamedetails = "<div id='gamecard1'><h2>" + sanitizeHtml(player.displayName) + "</h2></div>";
+    gamedetails = "<div id='gamecard1'><b>" + sanitizeHtml(player.displayName) + "</b><br></div>";
     gamename = "<div id='gamecard2'>" + sanitizeHtml(truncate(player.bio, 100)) + "</div>"
     card.innerHTML = gamedetails + gamename;
 
