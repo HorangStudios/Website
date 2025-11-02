@@ -120,9 +120,10 @@
 
       <div id="submit-shirt" class="createmenuts" style="display: none;">
         <form id="shirtPublishForm">
-          <input id="name-shirt" name="name-shirt" placeholder="Name" required="">
+          <input id="name-shirt" name="name-shirt" placeholder="Name" required="" autocomplete="one-time-code">
           <br>
-          <input min="0" type="number" id="price-shirt" name="price-shirt" placeholder="Price" required="">
+          <input min="0" type="number" id="price-shirt" name="price-shirt" placeholder="Price" required=""
+            autocomplete="one-time-code">
           <br>
           <input type="file" accept="image/*" id="shirtimg" onchange="importShirt()" placeholder="Shirt Image"
             required="">
@@ -134,9 +135,10 @@
 
       <div id="submit-pants" class="createmenuts" style="display: none;">
         <form id="pantsPublishForm">
-          <input id="name-pants" name="name-pants" placeholder="Name" required="">
+          <input id="name-pants" name="name-pants" placeholder="Name" required="" autocomplete="one-time-code">
           <br>
-          <input min="0" type="number" id="price-pants" name="price-pants" placeholder="Price" required="">
+          <input min="0" type="number" id="price-pants" name="price-pants" placeholder="Price" required=""
+            autocomplete="one-time-code">
           <br>
           <input type="file" accept="image/*" id="pantsimg" onchange="importPants()" placeholder="Pants Image"
             required="">
@@ -148,7 +150,7 @@
 
       <div id="submit-game" class="createmenuts" style="display: none;">
         <form id="publishForm">
-          <input id="title-text" name="title-text" placeholder="Title" required="">
+          <input id="title-text" name="title-text" placeholder="Title" required="" autocomplete="one-time-code">
           <br>
           <input type="file" accept="image/*" id="thumbnail" onchange="importIMG()" placeholder="Game thumbnail"
             required="">
@@ -233,17 +235,23 @@
       <h1><i class="fa-solid fa-user"></i> Account</h1>
       <div id="form">
         <br>
-        <h2 id="greetings">Display Name</h2>
-        <input id="displayName" name="displayName" placeholder="Display Name"><br>
-        <button onclick="updateDisplayName()">Change Display Name</button><br><br>
-
-        <h2 id="greetings">Email</h2>
-        <input id="passbox" name="passbox" placeholder="Password" type="password"><br>
-        <button onclick="updatePassWord()">Update Password</button><br><br>
-
-        <h2 id="greetings">Password</h2>
-        <input id="mailbox" name="mailbox" placeholder="Email" type="email"><br>
-        <button onclick="updateMail()">Update Email</button><br><br>
+        <details>
+          <summary>Display Name</summary>
+          <input id="displayName" name="displayName" placeholder="Display Name" autocomplete="one-time-code"><br>
+          <button onclick="updateDisplayName()">Change Display Name</button><br>
+        </details>
+        <br>
+        <details>
+          <summary>Password</summary>
+          <input id="passbox" name="passbox" placeholder="Password" type="password" autocomplete="one-time-code"><br>
+          <button onclick="updatePassWord()">Update Password</button><br>
+        </details>
+        <br>
+        <details>
+          <summary>Email</summary>
+          <input id="mailbox" name="mailbox" placeholder="Email" type="email" autocomplete="one-time-code"><br>
+          <button onclick="updateMail()">Update Email</button><br>
+        </details>
       </div>
     </div>
 

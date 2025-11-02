@@ -53,9 +53,9 @@ a:hover {
   background-color: #1d1d1d;
   color: white;
   margin-top: 25px !important;
-  box-shadow: 200px -1px 136px 8px rgba(0, 0, 0, 1) inset;
-  -webkit-box-shadow: 200px -1px 136px 8px rgb(0, 0, 0) inset;
-  -moz-box-shadow: 200px -1px 136px 8px rgba(0, 0, 0, 1) inset;
+  box-shadow: 200px -1px 136px 8px rgba(0, 0, 0, 0.67) inset;
+  -webkit-box-shadow: 200px -1px 136px 8px rgb(0 0 0 / 67%) inset;
+  -moz-box-shadow: 200px -1px 136px 8px rgba(0, 0, 0, 0.7) inset;
   border-radius: 10px;
   border: #4d4d4d solid 1px;
   background-repeat: no-repeat;
@@ -286,6 +286,10 @@ button {
   padding: 0px !important;
 }
 
+details {
+  margin-left: 5px;
+}
+
 @media (max-width: 800px) {
   #sidebar a:first-of-type {
     padding: 10px 0px;
@@ -360,6 +364,7 @@ button {
 }
 
 @media (prefers-color-scheme: light) {
+
   .quickcard,
   .catalogItem,
   h1 select,
@@ -377,7 +382,13 @@ button {
     background: whitesmoke;
   }
 
-  div, h1, h2, h3, h4, h5, h6 {
+  div,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     color: black;
   }
 

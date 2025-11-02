@@ -1,3 +1,4 @@
+// tab system
 function openTab(evt, cityName) {
   var i, tabcontent, tablinks;
   tabcontent = document.getElementsByClassName("tabcontent");
@@ -38,10 +39,10 @@ var catalogcontainer = document.getElementById('cataloglist');
 var catalogSidebar = document.getElementById('catalogSidebar');
 var inventorycontainer = document.getElementById('selector');
 
+//greeting in homescreen
 let today = new Date();
 let hour = today.getHours();
 let greetings
-
 if (hour >= 5 && hour < 12) {
   greetings = ("<i class='fa-solid fa-sun'></i> Good morning");
 } else if (hour >= 12 && hour < 18) {
@@ -49,8 +50,8 @@ if (hour >= 5 && hour < 12) {
 } else {
   greetings = ("<i class='fa-solid fa-sun'></i> Good evening");
 }
-document.getElementById('greetings').innerHTML = `${greetings}, Player!`
 
+//shorten
 function truncate(str, num) {
   if (str.length > num) {
     return str.slice(0, num) + "...";
@@ -59,6 +60,7 @@ function truncate(str, num) {
   }
 }
 
+// load games
 database.ref('games').on('value', function (snapshot) {
   let games = snapshot.val();
   gamescontainer.innerHTML = '';
@@ -100,11 +102,12 @@ database.ref('games').on('value', function (snapshot) {
   });
 });
 
+// load players
 database.ref('players').on('value', function (snapshot) {
   let players = snapshot.val();
   playercontainer.innerHTML = '';
 
-  Object.keys(players).forEach(function (playerId) {
+  Object.keys(players).forEach(async function (playerId) {
     var player = players[playerId];
 
     var card = document.createElement('div');
@@ -113,6 +116,7 @@ database.ref('players').on('value', function (snapshot) {
     gamedetails = "<div id='gamecard1'><b>" + sanitizeHtml(player.displayName) + "</b><br></div>";
     gamename = "<div id='gamecard2'>" + sanitizeHtml(truncate(player.bio, 100)) + "</div>"
     card.innerHTML = gamedetails + gamename;
+    card.style.backgroundImage = `url(${await generateAvatarPicture(player.avatar)})`;
 
     playercontainer.prepend(card);
 
@@ -123,7 +127,7 @@ database.ref('players').on('value', function (snapshot) {
       const username = document.createElement("h2");
       username.innerText = player.displayName;
       document.getElementById("playerProfileLeft").appendChild(username);
-      
+
       const bio = document.createElement("span");
       bio.innerText = player.bio;
       document.getElementById("playerProfileLeft").appendChild(bio)
@@ -131,6 +135,7 @@ database.ref('players').on('value', function (snapshot) {
   });
 });
 
+// load catalog
 database.ref('catalog').on('value', function (snapshot) {
   let items = snapshot.val();
   catalogcontainer.innerHTML = ''
@@ -222,6 +227,7 @@ database.ref('catalog').on('value', function (snapshot) {
   });
 });
 
+//checkbook system
 var calculatedBits = 0;
 function userCheckLoop() {
   database.ref(`players/${firebase.auth().currentUser.uid}`).on('value', async function (snapshot) {
@@ -275,6 +281,7 @@ function userCheckLoop() {
   })
 }
 
+// avatar loader
 function procInventory(items, skinCLR) {
   inventorycontainer.innerHTML = ''
 
@@ -340,6 +347,7 @@ function procInventory(items, skinCLR) {
   }
 }
 
+//create tab selector
 function updateCreate() {
   const createorsubmit = document.getElementById("createorsubmit")
   const creationtype = document.getElementById("creationtype")
@@ -351,6 +359,7 @@ function updateCreate() {
   document.getElementById(`${createorsubmit.value}-${creationtype.value}`).style.display = 'block'
 }
 
+// avatar preview in avatar tab
 async function setAvatarPreview(avatarData) {
   while (scene.children.length > 0) {
     scene.remove(scene.children[0]);
@@ -387,16 +396,69 @@ async function setAvatarPreview(avatarData) {
   camera.position.set(0.05475227571965991, 1.6306183051229506, -2.7743932860393827);
   camera.rotation.set(-2.8109962781697724, 0.020066732838869047, 3.134706495521198);
   controls.update();
+};
+
+// player avatar picture in players tab
+async function generateAvatarPicture(avatarData) {
+  var previewScene = new THREE.Scene();
+  var previewCamera = new THREE.PerspectiveCamera(75, 1, 0.1, 700);
+  previewScene.add(dirLight.clone());
+  previewScene.add(light.clone());
+  previewScene.add(hemiLight.clone());
+  previewScene.add(sky.clone());
+
+  let previewAvatar = {};
+  let avatarKeys = Object.keys(avatarData);
+
+  for (let i = 0; i < avatarKeys.length; i++) {
+    const avatarkey = avatarKeys[i];
+    const avatarvalue = avatarData[avatarkey];
+    if (avatarkey == "colors") {
+      previewAvatar["colors"] = avatarData.colors;
+    } else {
+      if (avatarvalue === false) {
+        previewAvatar[avatarkey] = false;
+      } else {
+        previewAvatar[avatarkey] = (await firebaseFetch(`catalog/${avatarvalue}`)).asset;
+      }
+    }
+  }
+
+  let createPlayer = await playerModel(0x800000, previewAvatar);
+  previewScene.add(createPlayer[0]);
+  previewCamera.position.set(0.05475227571965991, 1.6306183051229506, -2.7743932860393827);
+  previewCamera.rotation.set(-2.8109962781697724, 0.020066732838869047, 3.134706495521198);
+
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      previewRenderer.render(previewScene, previewCamera);
+      resolve(previewRenderer.domElement.toDataURL());
+    }, 1000);
+  });
 }
 
 // ----------------------------------------------------------------------------------------------------------------------------
 
+// renderer for generateAvatarPicture()
+var previewRenderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+previewRenderer.setSize(256, 256);
+previewRenderer.setPixelRatio(window.devicePixelRatio);
+previewRenderer.outputEncoding = THREE.sRGBEncoding;
+previewRenderer.toneMapping = THREE.ACESFilmicToneMapping;
+previewRenderer.toneMappingExposure = 0.5;
+previewRenderer.shadowMap.enabled = true;
+previewRenderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+// ----------------------------------------------------------------------------------------------------------------------------
+
+// fetch from firebase
 async function firebaseFetch(dir) {
   var ref = firebase.database().ref(dir);
   const snapshot = await ref.once('value');
   return snapshot.val();
 }
 
+// change display name
 function updateDisplayName() {
   try {
     firebase.auth().currentUser.updateProfile({
@@ -408,6 +470,7 @@ function updateDisplayName() {
   }
 }
 
+// change password
 function updatePassWord() {
   try {
     firebase.auth().currentUser.updatePassword(document.getElementById('passbox').value)
@@ -419,6 +482,7 @@ function updatePassWord() {
   }
 }
 
+// change email
 function updateMail() {
   try {
     firebase.auth().currentUser.updateEmail(document.getElementById('mailbox').value)
@@ -436,6 +500,7 @@ var form = document.getElementById('publishForm');
 var shirtform = document.getElementById('shirtPublishForm');
 var pantsform = document.getElementById('pantsPublishForm');
 
+// hhls file input
 var gamejson
 function importScene() {
   var input = document.getElementById("file-input");
@@ -453,6 +518,7 @@ function importScene() {
   reader.readAsText(file);
 }
 
+//game thumbnail file input
 var imagedataurl
 function importIMG() {
   var input = document.getElementById("thumbnail");
@@ -468,6 +534,7 @@ function importIMG() {
   reader.readAsDataURL(file);
 }
 
+// shirt file input
 var shirtdataurl
 function importShirt() {
   var input = document.getElementById("shirtimg");
@@ -483,6 +550,7 @@ function importShirt() {
   reader.readAsDataURL(file);
 }
 
+// pants file input
 var pantsdataurl
 function importPants() {
   var input = document.getElementById("pantsimg");
@@ -498,8 +566,11 @@ function importPants() {
   reader.readAsDataURL(file);
 }
 
+// game submit
 form.addEventListener('submit', function (event) {
   event.preventDefault();
+  form.style.display = 'none';
+
   var title = document.getElementById('title-text').value;
   var desc = document.getElementById('descbox').value;
 
@@ -507,37 +578,42 @@ form.addEventListener('submit', function (event) {
     if (imagedataurl === undefined) return;
     if (gamejson === undefined) return;
 
-    var today = new Date();
-    var dd = String(today.getDate()).padStart(2, '0');
-    var mm = String(today.getMonth() + 1).padStart(2, '0');
-    var yyyy = today.getFullYear();
+    const today = new Date();
+    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const yyyy = today.getFullYear();
 
-    today = mm + '/' + dd + '/' + yyyy;
+    const displayName = firebase.auth().currentUser.displayName;
+    const userid = firebase.auth().currentUser.uid;
+    const storageRef = database.ref('storage').push({ file: gamejson, uid: userid });
 
-    var displayName = firebase.auth().currentUser.displayName;
-
-    var userid = firebase.auth().currentUser.uid;
-
-    var game = {
+    const game = {
       title: title,
       desc: desc,
       thumbnail: imagedataurl,
-      createdAt: today,
-      hhls: gamejson,
+      createdAt: mm + '/' + dd + '/' + yyyy,
+      hhls: storageRef.key,
       createdBy: displayName,
       uid: userid
     };
 
     database.ref('games').push(game);
-
     form.reset();
+    form.style.display = 'block';
+
+    document.getElementById("thumbnail-label").innerHTML = '<i class="fa-solid fa-upload"></i> <b>Game thumbnail</b>';
+    document.getElementById("hhls-label").innerHTML = '<i class="fa-solid fa-upload"></i> <b>HHLS file</b>';
+    openTab(event, 'Home');
   }
 });
 
+//shirt submit
 shirtform.addEventListener('submit', async function (event) {
+  event.preventDefault();
+  shirtform.style.display = 'none';
+
   var name = document.getElementById('name-shirt').value;
   var price = document.getElementById('price-shirt').value;
-  event.preventDefault();
 
   if (name && price && typeof shirtdataurl !== undefined) {
     firebase.database().ref('catalog/').once('value')
@@ -552,15 +628,22 @@ shirtform.addEventListener('submit', async function (event) {
         };
 
         database.ref(`catalog/${Object.keys(snapshot.val()).length}`).set(shirt);
+        shirtform.style.display = 'block';
         shirtform.reset();
+
+        document.getElementById("shirtimg-label").innerHTML = '<i class="fa-solid fa-upload"></i> <b>Shirt Image</b>';
+        openTab(event, 'Catalog');
       });
   }
 });
 
+// pants submit
 pantsform.addEventListener('submit', function (event) {
+  event.preventDefault();
+  pantsform.style.display = 'none';
+  
   var name = document.getElementById('name-pants').value;
   var price = document.getElementById('price-pants').value;
-  event.preventDefault();
 
   if (name && price && typeof pantsdataurl !== undefined) {
     firebase.database().ref('catalog/').once('value')
@@ -575,13 +658,18 @@ pantsform.addEventListener('submit', function (event) {
         };
 
         database.ref(`catalog/${Object.keys(snapshot.val()).length}`).set(pants);
+        pantsform.style.display = 'block';
         pantsform.reset();
+
+        document.getElementById("pantsimg-label").innerHTML = '<i class="fa-solid fa-upload"></i> <b>Pants Image</b>';
+        openTab(event, 'Catalog');
       });
   }
 });
 
 // ----------------------------------------------------------------------------------------------------------------------------
 
+// player avatar preview renderer
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(75, 200 / 300, 0.1, 700);
 var renderer = new THREE.WebGLRenderer({ antialias: true });
