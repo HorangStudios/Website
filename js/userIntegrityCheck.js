@@ -32,6 +32,8 @@ firebase.auth().onAuthStateChanged(async function (user) {
             "bio": "HorangHill Player",
             "checkbook": [],
             "uid": firebase.auth().currentUser.uid,
+            "signup": firebase.auth().currentUser.metadata.creationTime,
+            "login": firebase.auth().currentUser.metadata.lastSignInTime
         };
 
         database.ref(`players/${firebase.auth().currentUser.uid}`).once('value', async function (snapshot) {

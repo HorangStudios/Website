@@ -14,6 +14,7 @@
     <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-database.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <script src="https://kit.fontawesome.com/970a0290cd.js"></script>
 
     <script src="js/login.js" defer></script>
@@ -26,6 +27,7 @@
             <h1>HorangHill</h1>
         </div>
     </div>
+    <div class="g-recaptcha" data-sitekey="6LejRf8rAAAAAHgkRlKWd_M6P9IUDp5JJCc0ttCB" data-size="invisible"></div>
     <div id="main">
         <div id="loader" class="tabcontent loginloader">
             <i class="fa-solid fa-spinner fa-spin"></i> Please Wait...
@@ -57,12 +59,6 @@
                 <input type="email" id="email" placeholder="Email" autocomplete="one-time-code">
                 <input type="password" id="password" placeholder="Password" autocomplete="one-time-code">
 
-                <div id="captchaContainer" onclick="captcha.generate()">
-                    <canvas id="captchaCanvas" width="2000" height="200"></canvas>
-                </div>
-
-                <input type="text" id="captchaInput" placeholder="Enter the code here." autocomplete="one-time-code">
-
                 <button onclick="createacc();" id="signupbtn">Sign up</button><br><br>
                 <p id="error" style="color: red; text-align: center;"></p>
             </form>
@@ -72,19 +68,22 @@
     <footer>
         <div class="sidebar-contain">
             <h1>
-                Horang Studios •
-                <a href="https://x.com/HorangHill" title="HorangHill on Twitter">
-                    <i class="fa-brands fa-x-twitter"></i></a>
-                <a href="https://discord.gg/MYzDy2JvgZ" title="HorangHill Official Discord Channel">
-                    <i class="fa-brands fa-discord"></i></a>
-                <a href="https://github.com/HorangStudios" title="HorangHill Source Code">
-                    <i class="fa-brands fa-github"></i></a>
-                <a href="https://youtube.com/@HorangHill" title="HorangHill on YouTube">
-                    <i class="fa-brands fa-youtube"></i></a>
+                Horang Studios&nbsp; •
+                <a href="https://x.com/HorangHill" title="HorangHill on Twitter"><i
+                        class="fa-brands fa-x-twitter"></i></a>
+                <a href="https://youtube.com/@HorangHill" title="HorangHill on YouTube"><i
+                        class="fa-brands fa-youtube"></i></a>
+                <a href="https://discord.gg/MYzDy2JvgZ" title="HorangHill Official Discord Channel"><i
+                        class="fa-brands fa-discord"></i></a>
+                <a href="https://github.com/HorangStudios" title="HorangHill Source Code"><i
+                        class="fa-brands fa-github"></i></a>
             </h1>
             <br>
-            &copy; 2025 HorangHill - Since 2022 - <a
-                href="https://suitedcoder.github.io/Privacy/md.htm?src=Privacy.md">Privacy Policy</a>
+            &copy; 2022 - 2025 HorangHill - 
+            <a href="https://suitedcoder.github.io/Privacy/md.htm?src=Privacy.md">Privacy Policy</a><br>
+            This site is protected by reCAPTCHA and the Google
+            <a href="https://policies.google.com/privacy">Privacy Policy</a> and
+            <a href="https://policies.google.com/terms">Terms of Service</a> apply.
         </div>
     </footer>
 </body>

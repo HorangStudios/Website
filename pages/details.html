@@ -10,10 +10,13 @@
 
 	<link rel="icon" type="image/x-icon" href="logo.png">
 	<link rel="stylesheet" href="../css/home.css">
+
 	<script src="https://kit.fontawesome.com/970a0290cd.js" crossorigin="anonymous"></script>
+	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 
 <body>
+	<div class="g-recaptcha" data-sitekey="6LejRf8rAAAAAHgkRlKWd_M6P9IUDp5JJCc0ttCB" data-size="invisible"></div>
 	<div id="sidebar">
 		<div class="sidebar-contain">
 			<h1 id="gamename">
@@ -21,7 +24,7 @@
 			</h1>
 		</div>
 	</div>
-	<div id="main">
+	<div id="main" class="tabcontent">
 		<div id="form" style="display: none;">
 			<input type="file" accept=".hhls" id="file-input" onchange="importScene()" style="display: none;">
 			<input type="file" accept="image/*" id="thumbnail" onchange="importIMG()" style="display: none;">
@@ -40,6 +43,27 @@
 			</button>
 		</div>
 	</div>
+	<footer>
+		<div class="sidebar-contain">
+			<h1>
+				Horang Studios&nbsp; •
+				<a href="https://x.com/HorangHill" title="HorangHill on Twitter"><i
+						class="fa-brands fa-x-twitter"></i></a>
+				<a href="https://youtube.com/@HorangHill" title="HorangHill on YouTube"><i
+						class="fa-brands fa-youtube"></i></a>
+				<a href="https://discord.gg/MYzDy2JvgZ" title="HorangHill Official Discord Channel"><i
+						class="fa-brands fa-discord"></i></a>
+				<a href="https://github.com/HorangStudios" title="HorangHill Source Code"><i
+						class="fa-brands fa-github"></i></a>
+			</h1>
+			<br>
+			&copy; 2022 - 2025 HorangHill -
+			<a href="https://suitedcoder.github.io/Privacy/md.htm?src=Privacy.md">Privacy Policy</a><br>
+			This site is protected by reCAPTCHA and the Google
+			<a href="https://policies.google.com/privacy">Privacy Policy</a> and
+			<a href="https://policies.google.com/terms">Terms of Service</a> apply.
+		</div>
+	</footer>
 
 	<script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-database.js"></script>
@@ -71,15 +95,21 @@
 			if (item.uid == firebase.auth().currentUser.uid) {
 				document.getElementById('form').style.display = "block";
 
-				document.getElementById('title').addEventListener("input", function () {
-					ref.update({
-						title: document.getElementById('title').value,
+				document.getElementById('title').addEventListener("change", function () {
+					grecaptcha.execute().then(() => {
+						if (!grecaptcha.getResponse()) return;
+						ref.update({
+							title: document.getElementById('title').value,
+						})
 					})
 				});
 
-				document.getElementById('desc').addEventListener("input", function () {
-					ref.update({
-						desc: document.getElementById('desc').value,
+				document.getElementById('desc').addEventListener("change", function () {
+					grecaptcha.execute().then(() => {
+						if (!grecaptcha.getResponse()) return;
+						ref.update({
+							desc: document.getElementById('desc').value,
+						})
 					})
 				});
 			}
@@ -108,11 +138,13 @@
 					const contents = event.target.result;
 					const json = JSON.parse(contents);
 
-					ref.update({
-						hhls: json
+					grecaptcha.execute().then(() => {
+						if (!grecaptcha.getResponse()) return;
+						ref.update({
+							hhls: json
+						})
+						label.innerText = 'Updated!'
 					})
-
-					label.innerText = 'Updated!'
 				};
 
 				reader.readAsText(file);
@@ -127,10 +159,13 @@
 
 			const reader = new FileReader();
 			reader.onload = function (event) {
-				ref.update({
-					thumbnail: reader.result
+				grecaptcha.execute().then(() => {
+					if (!grecaptcha.getResponse()) return;
+					ref.update({
+						thumbnail: reader.result
+					})
+					label.innerText = 'Thumbnail Updated!'
 				})
-				label.innerText = 'Thumbnail Uploaded!'
 			};
 
 			reader.readAsDataURL(file);
