@@ -8,11 +8,16 @@
 
 	<title>HorangHill</title>
 
-	<link rel="icon" type="image/x-icon" href="logo.png">
+	<link rel="icon" type="image/x-icon" href="../css/HorangHill.png">
 	<link rel="stylesheet" href="../css/home.css">
 
 	<script src="https://kit.fontawesome.com/970a0290cd.js" crossorigin="anonymous"></script>
 	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+	<script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-database.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-auth.js"></script>
+
+	<script src="../js/firebaseConfig.js"></script>
 </head>
 
 <body>
@@ -26,6 +31,13 @@
 	</div>
 	<div id="main" class="tabcontent">
 		<div id="form" style="display: none;">
+			<center>
+				This site is protected by reCAPTCHA and the Google
+				<a href="https://policies.google.com/privacy">Privacy Policy</a> and
+				<a href="https://policies.google.com/terms">Terms of Service</a> apply.
+				<br>
+			</center>
+
 			<input type="file" accept=".hhls" id="file-input" onchange="importScene()" style="display: none;">
 			<input type="file" accept="image/*" id="thumbnail" onchange="importIMG()" style="display: none;">
 
@@ -58,29 +70,11 @@
 			</h1>
 			<br>
 			&copy; 2022 - 2025 HorangHill -
-			<a href="https://suitedcoder.github.io/Privacy/md.htm?src=Privacy.md">Privacy Policy</a><br>
-			This site is protected by reCAPTCHA and the Google
-			<a href="https://policies.google.com/privacy">Privacy Policy</a> and
-			<a href="https://policies.google.com/terms">Terms of Service</a> apply.
+			<a href="https://suitedcoder.github.io/Privacy/md.htm?src=Privacy.md">Privacy Policy</a>
 		</div>
 	</footer>
 
-	<script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js"></script>
-	<script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-database.js"></script>
-	<script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-auth.js"></script>
-	<script>
-		var firebaseConfig = {
-			apiKey: "AIzaSyDE-mQcJoquJxLrHAcS1kZbpjUbHYQmzsE",
-			authDomain: "horanghill.firebaseapp.com",
-			databaseURL: "https://horanghill-default-rtdb.firebaseio.com",
-			projectId: "horanghill",
-			storageBucket: "horanghill.appspot.com",
-			messagingSenderId: "710235265347",
-			appId: "1:710235265347:web:37fb53fe0bb9c4ecdab7f6",
-			measurementId: "G-S1JMDFPGL0"
-		};
-		firebase.initializeApp(firebaseConfig);
-
+	<script defer>
 		var database = firebase.database();
 		var id = new URLSearchParams(window.location.search).get('id');
 		var ref = firebase.database().ref(`games/${id}`);
@@ -140,9 +134,7 @@
 
 					grecaptcha.execute().then(() => {
 						if (!grecaptcha.getResponse()) return;
-						ref.update({
-							hhls: json
-						})
+						firebase.database().ref(`storage/${item.hhls}/file`).set(json);
 						label.innerText = 'Updated!'
 					})
 				};
@@ -150,7 +142,6 @@
 				reader.readAsText(file);
 			}
 		}
-
 
 		function importIMG() {
 			var input = document.getElementById("thumbnail");

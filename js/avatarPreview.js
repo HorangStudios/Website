@@ -38,7 +38,7 @@ async function setAvatarPreview(avatarData) {
 };
 
 // player avatar picture in players tab
-async function generateAvatarPicture(avatarData) {
+async function generateAvatarPicture(avatarData, urlasset = false) {
   var previewScene = new THREE.Scene();
   var previewCamera = new THREE.PerspectiveCamera(75, 1, 0.1, 700);
   previewScene.add(dirLight.clone());
@@ -58,7 +58,7 @@ async function generateAvatarPicture(avatarData) {
       if (avatarvalue === false) {
         previewAvatar[avatarkey] = false;
       } else {
-        previewAvatar[avatarkey] = (await firebaseFetch(`catalog/${avatarvalue}`)).asset;
+        previewAvatar[avatarkey] = urlasset ? avatarvalue : (await firebaseFetch(`catalog/${avatarvalue}`)).asset;
       }
     }
   }

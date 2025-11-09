@@ -20,18 +20,6 @@ document.getElementById("defaultOpen").click();
 
 // ----------------------------------------------------------------------------------------------------------------------------
 
-const firebaseConfig = {
-  apiKey: "AIzaSyDE-mQcJoquJxLrHAcS1kZbpjUbHYQmzsE",
-  authDomain: "horanghill.firebaseapp.com",
-  databaseURL: "https://horanghill-default-rtdb.firebaseio.com",
-  projectId: "horanghill",
-  storageBucket: "horanghill.appspot.com",
-  messagingSenderId: "710235265347",
-  appId: "1:710235265347:web:37fb53fe0bb9c4ecdab7f6",
-  measurementId: "G-S1JMDFPGL0"
-};
-firebase.initializeApp(firebaseConfig);
-
 var database = firebase.database();
 var gamescontainer = document.getElementById('gamelist');
 var playercontainer = document.getElementById('playerlist');
@@ -124,13 +112,21 @@ database.ref('players').on('value', function (snapshot) {
     playercontainer.prepend(card);
 
     card.onclick = async function () {
-      document.getElementById("playerProfileLeft").innerHTML = '';
-      document.getElementById("playerProfileRight").innerHTML = '';
+      const playerProfileRight = document.getElementById("playerProfileRight");
+      const playerProfileLeft = document.getElementById("playerProfileLeft");
+
+      const contentRight = document.createElement("div");
+      const contentLeft = document.createElement("div");
+      contentRight.innerHTML = '<center><br><i class="fa-solid fa-spinner fa-spin"></i></center>';
+      contentLeft.innerHTML = '<center><br><i class="fa-solid fa-spinner fa-spin"></i></center>';
+
+      playerProfileLeft.innerHTML = '';
+      playerProfileRight.innerHTML = '';
       document.getElementById("playerdetailbutton").click();
 
       const avatar = document.createElement("img");
       avatar.src = avatarImg;
-      document.getElementById("playerProfileLeft").appendChild(avatar);
+      playerProfileLeft.appendChild(avatar);
 
       const username = document.createElement("label");
       username.innerHTML = `
@@ -139,11 +135,69 @@ database.ref('players').on('value', function (snapshot) {
         Last Online: ${sanitizeHtml(login)}<br>
         Registered: ${sanitizeHtml(signup)}
       `
-      document.getElementById("playerProfileLeft").appendChild(username);
+      playerProfileLeft.appendChild(username);
+
+      if (firebase.auth().currentUser.uid == player.uid) {
+        const bio = document.createElement("textarea");
+        bio.value = `${sanitizeHtml(player.bio)}`;
+        bio.onchange = function () {
+          grecaptcha.execute().then(() => {
+            if (!grecaptcha.getResponse()) return;
+            database.ref(`players/${firebase.auth().currentUser.uid}/bio`).set(bio.value);
+          })
+        };
+        playerProfileRight.appendChild(bio);
+
+        const addRight = document.createElement("button");
+        addRight.innerHTML = `<i class="fa fa-plus"></i>`;
+        addRight.className = `dashedAdd`;
+        addRight.onclick = function () {
+          document.getElementById("customprofilebutton").click();
+          document.getElementById("right-side").click();
+        };
+
+        const addLeft = document.createElement("button");
+        addLeft.innerHTML = `<i class="fa fa-plus"></i>`;
+        addLeft.className = `dashedAdd`;
+        addLeft.onclick = function () {
+          document.getElementById("customprofilebutton").click();
+          document.getElementById("left-side").click();
+        };
+
+        playerProfileRight.appendChild(contentRight);
+        playerProfileLeft.appendChild(contentLeft);
+        playerProfileRight.appendChild(addRight);
+        playerProfileLeft.appendChild(addLeft);
+      } else {
+        const bio = document.createElement("label");
+        bio.innerHTML = `${sanitizeHtml(player.bio)}`
+        playerProfileRight.appendChild(bio);
+
+        playerProfileRight.appendChild(contentRight);
+        playerProfileLeft.appendChild(contentLeft);
+      }
+
+      const editmode = (firebase.auth().currentUser.uid == player.uid) ? true : false;
+
+      const left = await firebaseFetch(`profile/${playerId}/left`);
+      const right = await firebaseFetch(`profile/${playerId}/right`);
       
-      const bio = document.createElement("label");
-      bio.innerHTML = `${sanitizeHtml(player.bio)}`
-      document.getElementById("playerProfileRight").appendChild(bio);
+      contentRight.innerHTML = '';
+      contentLeft.innerHTML = '';
+
+      if (right != null) {
+        const sorted = Object.entries(right).sort((a, b) => a[1].order - b[1].order);
+        Object.values(sorted).forEach(e => {
+          loadProfileTiles(e[1], contentRight, editmode, e[0], "right", card, player.uid)
+        });
+      }
+
+      if (left != null) {
+        const sorted = Object.entries(left).sort((a, b) => a[1].order - b[1].order);
+        Object.values(sorted).forEach(e => {
+          loadProfileTiles(e[1], contentLeft, editmode, e[0], "left", card, player.uid)
+        });
+      }
     }
   });
 });
@@ -154,20 +208,22 @@ database.ref('catalog').on('value', function (snapshot) {
   catalogcontainer.innerHTML = ''
   catalogSidebar.innerHTML = ''
 
-  Object.keys(items).forEach(function (itemId) {
+  Object.keys(items).forEach(async function (itemId) {
     var item = items[itemId];
-    var priceString
+    var avatarImg = item.asset;
+    var avatarData = {};
+    var priceString = (item.price == 0) ? 'Free' : (item.price + ' Bits');
 
-    if (item.price == 0) {
-      priceString = 'Free'
-    } else {
-      priceString = item.price + ' Bits'
-    }
+    try {
+      avatarData["colors"] = (await firebaseFetch(`players/${firebase.auth().currentUser.uid}/avatar/colors`));
+      avatarData[item.type] = item.asset;
+      avatarImg = await generateAvatarPicture(avatarData, true)
+    } catch (error) { }
 
     var card = document.createElement('div');
     card.className = 'catalogItem';
     card.innerHTML = `
-      <img src="${sanitizeHtml(item.asset)}"><br>
+      <img src="${sanitizeHtml(avatarImg)}"><br>
       <b>${sanitizeHtml(item.name)}</b><br>
       ${sanitizeHtml(item.type.charAt(0).toUpperCase() + item.type.slice(1))} - ${sanitizeHtml(priceString)}
     `
@@ -177,7 +233,7 @@ database.ref('catalog').on('value', function (snapshot) {
       document.getElementById('itemDesc').innerText = item.description || "No Description";
       document.getElementById('itemPublisher').innerText = 'By ' + (await firebaseFetch('/players/' + item.uid)).displayName;
       document.getElementById("itemdetailbutton").click();
-      document.getElementById("itemImage").src = item.asset;
+      document.getElementById("itemImage").src = avatarImg;
       document.getElementById("buyButton").innerText = priceString;
 
       document.getElementById("buyButton").onclick = async function () {
@@ -221,9 +277,7 @@ database.ref('catalog').on('value', function (snapshot) {
       label.prepend(createcategoryinput)
 
       createcategoryinput.onchange = function () {
-        Object.values(document.getElementsByClassName("catalogitemcategory")).forEach((item) => {
-          item.style.display = 'none'
-        })
+        Object.values(document.getElementsByClassName("catalogitemcategory")).forEach((item) => { item.style.display = 'none' })
         createcategory.style.display = 'block'
       }
 
@@ -234,8 +288,7 @@ database.ref('catalog').on('value', function (snapshot) {
         createcategory.style.display = 'none'
       }
 
-      if (!item.moderated && item.uid != firebase.auth().currentUser.uid) return;
-      createcategory.appendChild(card)
+      if (item.moderated || item.uid == firebase.auth().currentUser.uid) createcategory.appendChild(card);
     }
   });
 });

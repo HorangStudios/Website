@@ -1,14 +1,13 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 
 <head>
-  <title>HorangHill</title>
-
   <meta charset='utf-8'>
   <meta http-equiv='X-UA-Compatible' content='IE=edge'>
   <meta name='viewport' content='width=device-width, initial-scale=1'>
 
-  <link rel="icon" type="image/x-icon" href="HorangHill.png">
+  <title>HorangHill</title>
+
   <link rel="stylesheet" href="../css/home.css">
   <link rel="icon" type="image/x-icon" href="../css/HorangHill.png">
 
@@ -25,6 +24,8 @@
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   <script src="https://kit.fontawesome.com/970a0290cd.js"></script>
 
+  <script src="../js/firebaseConfig.js"></script>
+  <script src="../js/profileEditor.js" defer></script>
   <script src="../js/index.js" defer></script>
   <script src="../js/forms.js" defer></script>
   <script src="../js/avatarPreview.js" defer></script>
@@ -46,12 +47,13 @@
         <a class="tablinks" onclick="openTab(event, 'Home')" id="defaultOpen">Home</a>
         <a class="tablinks" onclick="openTab(event, 'Avatar')">Avatar</a>
         <a class="tablinks" onclick="openTab(event, 'Catalog')">Catalog</a>
-        <a class="tablinks" onclick="openTab(event, 'Players')">Players</a>
+        <a class="tablinks" onclick="openTab(event, 'Players')" id="players">Players</a>
         <a class="tablinks" onclick="openTab(event, 'Create')">Create</a>
         <a class="tablinks" onclick="openTab(event, 'Account')">Account</a>
         <a class="tablinks hidden" onclick="openTab(event, 'Details')" id="gamedetailstabtogglebutton">game.details</a>
         <a class="tablinks hidden" onclick="openTab(event, 'ItemDetails')" id="itemdetailbutton">item.details</a>
         <a class="tablinks hidden" onclick="openTab(event, 'playerDetails')" id="playerdetailbutton">player.details</a>
+        <a class="tablinks hidden" onclick="openTab(event, 'customProfile')" id="customprofilebutton">add.profile</a>
 
         <a class="tablinks rightNav">
           <span id="myBits">0</span> <i class="fa-solid fa-coins"></i>
@@ -116,11 +118,11 @@
       </div>
 
       <div id="create-shirt" class="createmenuts" style="display: none;">
-        <img src="https://horangstudios.github.io/LigmaForge/resources/Shirt%20Template.png">
+        <br><img src="https://horangstudios.github.io/LigmaForge/resources/Shirt%20Template.png">
       </div>
 
       <div id="create-pants" class="createmenuts" style="display: none;">
-        <img src="https://horangstudios.github.io/LigmaForge/resources/Pants%20Template.png">
+        <br><img src="https://horangstudios.github.io/LigmaForge/resources/Pants%20Template.png">
       </div>
 
       <div id="submit-shirt" class="createmenuts" style="display: none;">
@@ -135,6 +137,12 @@
           <label for="shirtimg" id="shirtimg-label"><i class="fa-solid fa-upload"></i> <b>Shirt Image</b></label>
           <br>
           <button type="submit">Publish</button>
+          <center>
+            <br>
+            This site is protected by reCAPTCHA and the Google
+            <a href="https://policies.google.com/privacy">Privacy Policy</a> and
+            <a href="https://policies.google.com/terms">Terms of Service</a> apply.
+          </center>
         </form>
       </div>
 
@@ -150,6 +158,12 @@
           <label for="pantsimg" id="pantsimg-label"><i class="fa-solid fa-upload"></i> <b>Pants Image</b></label>
           <br>
           <button type="submit">Publish</button>
+          <center>
+            <br>
+            This site is protected by reCAPTCHA and the Google
+            <a href="https://policies.google.com/privacy">Privacy Policy</a> and
+            <a href="https://policies.google.com/terms">Terms of Service</a> apply.
+          </center>
         </form>
       </div>
 
@@ -168,6 +182,12 @@
           <textarea id="descbox" placeholder="Description"></textarea>
           <br>
           <button type="submit">Publish</button>
+          <center>
+            <br>
+            This site is protected by reCAPTCHA and the Google
+            <a href="https://policies.google.com/privacy">Privacy Policy</a> and
+            <a href="https://policies.google.com/terms">Terms of Service</a> apply.
+          </center>
         </form>
       </div>
     </div>
@@ -291,6 +311,42 @@
       <div class="catalogPrevRight" id="playerProfileRight">
       </div>
     </div>
+
+    <div id="customProfile" class="tabcontent">
+      <h1><i class="fa fa-plus"></i> Add to profile</h1>
+      <div class="preview" id="profileItemTypes">
+        <div>
+          <label>
+            <input type="radio" name="side-selector" id="right-side">
+            Right
+          </label>
+          <label>
+            <input type="radio" name="side-selector" id="left-side" checked>
+            Left
+          </label>
+        </div>
+        <div>
+          <label>
+            <input type="radio" name="profile-selector" id="html-category-profile" checked>
+            HTML Code
+          </label>
+          <label>
+            <input type="radio" name="profile-selector" id="iframe-category-profile">
+            Iframe
+          </label>
+        </div>
+      </div>
+      <div class="selector">
+        <div id="html-category" class="categorytabs">
+          <textarea placeholder="Code here..." id="htmlEditor"></textarea>
+          <button onclick="addhtml()">Add</button>
+        </div>
+        <div id="iframe-category" class="categorytabs" style="display: none;">
+          <input placeholder="Page URL Here..." id="pageUrl"></input>
+          <button onclick="addiframe()">Add</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <footer>
@@ -306,10 +362,7 @@
       </h1>
       <br>
       &copy; 2022 - 2025 HorangHill -
-      <a href="https://suitedcoder.github.io/Privacy/md.htm?src=Privacy.md">Privacy Policy</a><br>
-      This site is protected by reCAPTCHA and the Google
-      <a href="https://policies.google.com/privacy">Privacy Policy</a> and
-      <a href="https://policies.google.com/terms">Terms of Service</a> apply.
+      <a href="https://suitedcoder.github.io/Privacy/md.htm?src=Privacy.md">Privacy Policy</a>
     </div>
   </footer>
 </body>

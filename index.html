@@ -6,10 +6,10 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
 
-    <link rel="stylesheet" href="css/home.css">
-    <link rel="icon" type="image/x-icon" href="css/HorangHill.png">
-
     <title>HorangHill</title>
+
+    <link rel="stylesheet" href="css/home.css">
+    <link rel="icon" type="image/x-icon" href="../css/HorangHill.png">
 
     <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-auth.js"></script>
@@ -17,6 +17,7 @@
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <script src="https://kit.fontawesome.com/970a0290cd.js"></script>
 
+    <script src="js/firebaseConfig.js"></script>
     <script src="js/login.js" defer></script>
     <script src="js/userIntegrityCheck.js" defer></script>
 </head>
@@ -59,7 +60,16 @@
                 <input type="email" id="email" placeholder="Email" autocomplete="one-time-code">
                 <input type="password" id="password" placeholder="Password" autocomplete="one-time-code">
 
-                <button onclick="createacc();" id="signupbtn">Sign up</button><br><br>
+                <button onclick="createacc();" id="signupbtn">Sign up</button>
+                <br><br>
+
+                <center>
+                    This site is protected by reCAPTCHA and the Google
+                    <a href="https://policies.google.com/privacy">Privacy Policy</a> and
+                    <a href="https://policies.google.com/terms">Terms of Service</a> apply.
+                </center>
+                <br>
+
                 <p id="error" style="color: red; text-align: center;"></p>
             </form>
         </div>
@@ -79,11 +89,8 @@
                         class="fa-brands fa-github"></i></a>
             </h1>
             <br>
-            &copy; 2022 - 2025 HorangHill - 
-            <a href="https://suitedcoder.github.io/Privacy/md.htm?src=Privacy.md">Privacy Policy</a><br>
-            This site is protected by reCAPTCHA and the Google
-            <a href="https://policies.google.com/privacy">Privacy Policy</a> and
-            <a href="https://policies.google.com/terms">Terms of Service</a> apply.
+            &copy; 2022 - 2025 HorangHill -
+            <a href="https://suitedcoder.github.io/Privacy/md.htm?src=Privacy.md">Privacy Policy</a>
         </div>
     </footer>
 </body>
