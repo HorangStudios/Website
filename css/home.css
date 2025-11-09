@@ -338,10 +338,8 @@ details {
   min-height: fit-content;
 }
 
-.categorytabs textarea {
-  resize: vertical;
-}
-
+.categorytabs textarea,
+.profileCard textarea,
 iframe {
   resize: vertical;
 }
