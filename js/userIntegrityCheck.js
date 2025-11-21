@@ -81,7 +81,14 @@ firebase.auth().onAuthStateChanged(async function (user) {
             }
         });
     } else if (typeof isLoginPage !== 'undefined') {
-        document.getElementById("loader").style.display = 'none'
-        document.getElementById("Login").style.display = 'block'
+        document.getElementById("loader").style.display = 'none';
+        document.getElementById("landing").style.display = 'block';
     }
 });
+
+// fetch from firebase
+async function firebaseFetch(dir) {
+  var ref = firebase.database().ref(dir);
+  const snapshot = await ref.once('value');
+  return snapshot.val();
+}

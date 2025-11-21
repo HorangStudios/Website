@@ -366,7 +366,118 @@ form label {
   opacity: 25%;
 }
 
+.promo1 {
+  z-index: 1;
+  position: relative;
+  pointer-events: none;
+}
+
+.promo1 img {
+  height: 320px;
+}
+
+.createexplore {
+  text-align: right;
+  position: absolute;
+  margin-left: 45px;
+  overflow: hidden;
+}
+
+.create,
+.explore {
+  width: 90px;
+  display: inline-block;
+  margin-right: 5px;
+  font-size: 24px;
+}
+
+.create {
+  animation: slideInUp 10s linear infinite;
+}
+
+.explore {
+  animation: slideInDown 10s linear infinite;
+}
+
+.slash {
+  width: 20px;
+  display: inline-block;
+  margin-right: 5px;
+  font-size: 24px;
+}
+
+.promo2 {
+  position: relative;
+  text-align: right;
+  height: 0;
+}
+
+.toLogin {
+  display: inline-block;
+  padding: 80px;
+  text-align: center;
+}
+
+.loginMain {
+  min-height: calc(100dvh - 205px);
+}
+
+.showLogin {
+  padding: 10px;
+  background: #3d3d3d;
+  border-radius: 10px;
+  text-decoration: none;
+}
+
+#featuredUser {
+  opacity: 0.25;
+}
+
+@keyframes slideInUp {
+  0% {
+    transform: translateY(25%);
+  }
+
+  50% {
+    transform: translateY(-25%);
+  }
+
+  100% {
+    transform: translateY(25%);
+  }
+}
+
+@keyframes slideInDown {
+  0% {
+    transform: translateY(-25%);
+  }
+
+  50% {
+    transform: translateY(25%);
+  }
+
+  100% {
+    transform: translateY(-25%);
+  }
+}
+
 @media (max-width: 800px) {
+  .promo2 {
+    position: absolute;
+    z-index: 10;
+  }
+
+  .toLogin {
+    width: calc(100% - 20px);
+    text-shadow: 0px 0px 10px #000000;
+    margin-right: 20px;
+    padding-top: 115px;
+  }
+
+  .loginMain {
+    min-height: calc(100dvh - 235px);
+  }
+
   #playerProfileLeft {
     width: 100%;
   }
@@ -455,6 +566,7 @@ form label {
 }
 
 @media (prefers-color-scheme: light) {
+
   .quickcard,
   .catalogItem,
   h1 select,

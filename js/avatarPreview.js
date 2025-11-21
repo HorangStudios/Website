@@ -1,5 +1,5 @@
 // avatar preview in avatar tab
-async function setAvatarPreview(avatarData) {
+async function setAvatarPreview(avatarData, renderSky) {
   while (scene.children.length > 0) {
     scene.remove(scene.children[0]);
   }
@@ -7,7 +7,7 @@ async function setAvatarPreview(avatarData) {
   scene.add(dirLight);
   scene.add(light);
   scene.add(hemiLight);
-  scene.add(sky);
+  if (renderSky) scene.add(sky);
 
   let avatarData2 = {}
   let avatarKeys = Object.keys(avatarData);
@@ -38,13 +38,13 @@ async function setAvatarPreview(avatarData) {
 };
 
 // player avatar picture in players tab
-async function generateAvatarPicture(avatarData, urlasset = false) {
+async function generateAvatarPicture(avatarData, urlasset = false, renderSky) {
   var previewScene = new THREE.Scene();
   var previewCamera = new THREE.PerspectiveCamera(75, 1, 0.1, 700);
   previewScene.add(dirLight.clone());
   previewScene.add(light.clone());
   previewScene.add(hemiLight.clone());
-  previewScene.add(sky.clone());
+  if (renderSky) previewScene.add(sky.clone());
 
   let previewAvatar = {};
   let avatarKeys = Object.keys(avatarData);
@@ -79,7 +79,8 @@ async function generateAvatarPicture(avatarData, urlasset = false) {
 // ----------------------------------------------------------------------------------------------------------------------------
 
 // renderer for generateAvatarPicture()
-var previewRenderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+var previewRenderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true, alpha: true });
+previewRenderer.setClearColor(0x000000, 0);
 previewRenderer.setSize(256, 256);
 previewRenderer.setPixelRatio(window.devicePixelRatio);
 previewRenderer.outputEncoding = THREE.sRGBEncoding;
@@ -93,10 +94,11 @@ previewRenderer.shadowMap.type = THREE.PCFSoftShadowMap;
 // player avatar preview renderer
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(75, 200 / 300, 0.1, 700);
-var renderer = new THREE.WebGLRenderer({ antialias: true });
+var renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
 var controls = new THREE.OrbitControls(camera, renderer.domElement);
 
-document.getElementById("canvascontainer").prepend(renderer.domElement)
+if (typeof isLoginPage == 'undefined') document.getElementById("canvascontainer").prepend(renderer.domElement);
+renderer.setClearColor(0x000000, 0);
 renderer.setSize(200, 300);
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.outputEncoding = THREE.sRGBEncoding;
@@ -138,3 +140,42 @@ function animate() {
   requestAnimationFrame(animate);
 }
 animate()
+
+// ----------------------------------------------------------------------------------------------------------------------------
+
+// landing page 3d character
+async function generatePromotional() {
+  let titleelem = document.getElementById("adtitle");
+  let titles = [
+    "Sandbox on the web",
+    "App-free experience!",
+    "It's all on the browser!",
+    "Embed-able creations!",
+    "User-driven sandbox game",
+    "Free and Open-Source!",
+    "With customizable profiles!",
+    "We're on GitHub"
+  ];
+
+  titleelem.innerText = titles[Math.floor(Math.random() * titles.length)];
+  setInterval(() => {
+    titleelem.innerText = titles[Math.floor(Math.random() * titles.length)];
+  }, 5000);
+
+  let imgElem = document.getElementById("playerShowcase");
+  imgElem.src = await generateAvatarPicture({ colors: {} }, false, false);
+
+  let players = Object.values(await firebaseFetch('players'));
+  let selectedplayer = players[Math.floor(Math.random() * players.length)];
+
+  let character = await generateAvatarPicture(selectedplayer.avatar, false, false);
+  imgElem.src = character;
+  document.getElementById("featuredUser").innerText = `Player of the day: ${selectedplayer.displayName}`;
+}
+
+function showLogin() {
+  document.getElementById("landing").style.display = 'none';
+  document.getElementById("Login").style.display = 'block';
+}
+
+if (typeof isLoginPage != 'undefined') generatePromotional();

@@ -17,9 +17,16 @@
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <script src="https://kit.fontawesome.com/970a0290cd.js"></script>
 
+    <script src="https://horangstudios.github.io/LigmaForge/js/three/three.min.js"></script>
+    <script src="https://horangstudios.github.io/LigmaForge/js/three/OrbitControls.js"></script>
+    <script src="https://horangstudios.github.io/LigmaForge/js/three/sky.js"></script>
+    <script src="https://horangstudios.github.io/LigmaForge/js/three/gltfLoader.js"></script>
+    <script src="https://horangstudios.github.io/LigmaForge/player/js/playerModel.js"></script>
+
     <script src="js/firebaseConfig.js"></script>
-    <script src="js/login.js" defer></script>
     <script src="js/userIntegrityCheck.js" defer></script>
+    <script src="js/login.js" defer></script>
+    <script src="../js/avatarPreview.js" defer></script>
 </head>
 
 <body>
@@ -29,11 +36,41 @@
         </div>
     </div>
     <div class="g-recaptcha" data-sitekey="6LejRf8rAAAAAHgkRlKWd_M6P9IUDp5JJCc0ttCB" data-size="invisible"></div>
-    <div id="main">
+    <div id="main" class="loginMain">
         <div id="loader" class="tabcontent loginloader">
             <i class="fa-solid fa-spinner fa-spin"></i> Please Wait...
         </div>
-        <div id="Login" class="tabcontent" style="display: none;">
+        <div id="landing" style="display: none;">
+            <div class="topPromotion">
+                <div class="createexplore">
+                    <span class="create">
+                        CREATE CREATE CREATE CREATE CREATE CREATE CREATE CREATE CREATE CREATE
+                    </span>
+                    <span class="slash">
+                        // // // // // // // // // // 
+                    </span>
+                    <span class="explore">
+                        EXPLORE EXPLORE EXPLORE EXPLORE EXPLORE EXPLORE EXPLORE EXPLORE EXPLORE EXPLORE
+                    </span>
+                </div>
+                <section class="promo2">
+                    <div class="toLogin">
+                        <h1 id="adtitle"></h1>
+                        <br>
+                        <a class="showLogin" onclick="showLogin()">Sign me up</a>
+                        <a class="showLogin" href="https://github.com/HorangStudios">Source Code</a>
+                        <br><br>
+                        <span id="featuredUser"></span>
+                    </div>
+                </section>
+                <section class="promo1">
+                    <img id="playerShowcase">
+                </section>
+            </div>
+        </div>
+        <div id="Login" style="display: none;">
+            <div>
+            </div>
             <form class="form" id="signupbox">
                 <p>To continue, Create an account or sign in to an existing one</p>
 

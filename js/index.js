@@ -49,13 +49,12 @@ function truncate(str, num) {
 }
 
 // load games
-database.ref('games').on('value', function (snapshot) {
-  let games = snapshot.val();
+async function loadGames() {
+  let games = await firebaseFetch('games');
   gamescontainer.innerHTML = '';
 
   Object.keys(games).forEach(function (gameId) {
     var game = games[gameId];
-
     var card = document.createElement('div');
     card.id = 'game';
 
@@ -88,16 +87,17 @@ database.ref('games').on('value', function (snapshot) {
 
     gamescontainer.prepend(card);
   });
-});
+}
+loadGames();
 
 // load players
-database.ref('players').on('value', function (snapshot) {
-  let players = snapshot.val();
+async function loadPlayers() {
+  let players = await firebaseFetch('players');
   playercontainer.innerHTML = '';
 
   Object.keys(players).forEach(async function (playerId) {
     var player = players[playerId];
-    var avatarImg = await generateAvatarPicture(player.avatar);
+    var avatarImg = await generateAvatarPicture(player.avatar, false, true);
     var signup = player.signup ? formatDate(new Date(player.signup)) : "-";
     var login = player.login ? formatDate(new Date(player.login)) : "-";
 
@@ -181,7 +181,7 @@ database.ref('players').on('value', function (snapshot) {
 
       const left = await firebaseFetch(`profile/${playerId}/left`);
       const right = await firebaseFetch(`profile/${playerId}/right`);
-      
+
       contentRight.innerHTML = '';
       contentLeft.innerHTML = '';
 
@@ -200,11 +200,14 @@ database.ref('players').on('value', function (snapshot) {
       }
     }
   });
-});
+
+  loadingPlayers = false;
+}
+loadPlayers();
 
 // load catalog
-database.ref('catalog').on('value', function (snapshot) {
-  let items = snapshot.val();
+async function loadCatalog() {
+  let items = await firebaseFetch('catalog');;
   catalogcontainer.innerHTML = ''
   catalogSidebar.innerHTML = ''
 
@@ -217,7 +220,7 @@ database.ref('catalog').on('value', function (snapshot) {
     try {
       avatarData["colors"] = (await firebaseFetch(`players/${firebase.auth().currentUser.uid}/avatar/colors`));
       avatarData[item.type] = item.asset;
-      avatarImg = await generateAvatarPicture(avatarData, true)
+      avatarImg = await generateAvatarPicture(avatarData, true, false)
     } catch (error) { }
 
     var card = document.createElement('div');
@@ -291,7 +294,8 @@ database.ref('catalog').on('value', function (snapshot) {
       if (item.moderated || item.uid == firebase.auth().currentUser.uid) createcategory.appendChild(card);
     }
   });
-});
+}
+loadCatalog();
 
 //checkbook system
 var calculatedBits = 0;
@@ -305,7 +309,7 @@ function userCheckLoop() {
     var inventory = [];
 
     if (Object.keys(inventoryObj).length == 0) {
-      setAvatarPreview(items.avatar);
+      setAvatarPreview(items.avatar, true);
       procInventory(inventory, items.avatar.colors);
 
       calculatedBits = bits
@@ -334,7 +338,7 @@ function userCheckLoop() {
         }
 
         if (i == (Object.keys(inventoryObj).length - 1)) {
-          setAvatarPreview(items.avatar);
+          setAvatarPreview(items.avatar, true);
           procInventory(inventory, items.avatar.colors);
 
           calculatedBits = bits
@@ -426,13 +430,6 @@ function updateCreate() {
 }
 
 // ----------------------------------------------------------------------------------------------------------------------------
-
-// fetch from firebase
-async function firebaseFetch(dir) {
-  var ref = firebase.database().ref(dir);
-  const snapshot = await ref.once('value');
-  return snapshot.val();
-}
 
 // change display name
 function updateDisplayName() {
