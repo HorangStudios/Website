@@ -176,12 +176,11 @@ async function generatePromotional() {
   typePromo(titleElem, titles);
 
   let imgElem = document.getElementById("playerShowcase");
-  imgElem.src = await generateAvatarPicture({ colors: {} }, false, false);
-
   let players = Object.values(await firebaseFetch('players'));
   let selectedplayer = players[Math.floor(Math.random() * players.length)];
 
   let character = await generateAvatarPicture(selectedplayer.avatar, false, false);
+  imgElem.style.display = 'block';
   imgElem.src = character;
   document.getElementById("featuredUser").innerText = `Featured player: ${selectedplayer.displayName}`;
 }

@@ -380,6 +380,10 @@ form label {
 
 .promo1 img {
   height: 320px;
+  display: none;
+  animation-name: bounceIn;
+  animation-duration: 1s;
+  animation-fill-mode: both;
 }
 
 .createexplore {
@@ -443,6 +447,51 @@ form label {
   opacity: 0.25;
 }
 
+@keyframes bounceIn {
+  0%,
+  20%,
+  40%,
+  60%,
+  80%,
+  100% {
+    -webkit-transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+    transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+  }
+
+  0% {
+    opacity: 0;
+    -webkit-transform: scale3d(.3, .3, .3);
+    transform: scale3d(.3, .3, .3);
+  }
+
+  20% {
+    -webkit-transform: scale3d(1.1, 1.1, 1.1);
+    transform: scale3d(1.1, 1.1, 1.1);
+  }
+
+  40% {
+    -webkit-transform: scale3d(.9, .9, .9);
+    transform: scale3d(.9, .9, .9);
+  }
+
+  60% {
+    opacity: 1;
+    -webkit-transform: scale3d(1.03, 1.03, 1.03);
+    transform: scale3d(1.03, 1.03, 1.03);
+  }
+
+  80% {
+    -webkit-transform: scale3d(.97, .97, .97);
+    transform: scale3d(.97, .97, .97);
+  }
+
+  100% {
+    opacity: 1;
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+}
+
 @keyframes slideInUp {
   0% {
     transform: translateY(25%);
@@ -475,7 +524,7 @@ form label {
   #landing {
     height: 465px;
   }
-  
+
   .promo2 {
     position: absolute;
     z-index: 10;
@@ -585,7 +634,7 @@ form label {
     background: lightgray;
     color: black;
   }
-  
+
   .quickcard,
   .catalogItem,
   h1 select,
@@ -601,7 +650,7 @@ form label {
     color: black;
   }
 
-  #catalogSidebar label, 
+  #catalogSidebar label,
   #profileItemTypes label {
     border-bottom-color: #a8a8a8 !important;
     border-top-color: #a8a8a8 !important;
