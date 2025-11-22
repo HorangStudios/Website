@@ -14,7 +14,7 @@ body {
   height: fit-content;
   background-size: cover !important;
   box-shadow: 0px 0px 15px 5px rgba(0, 0, 0, 0.1);
-  text-shadow: 0px 0px 10px #1d1d1d90;
+  text-shadow: 0px 0px 10px #3d3d3d90;
 }
 
 .grecaptcha-badge {
@@ -54,7 +54,7 @@ a:hover {
 
 #game {
   padding: 25px;
-  background-color: #1d1d1d;
+  background-color: #3d3d3d;
   color: white;
   margin-top: 25px !important;
   box-shadow: 200px -1px 136px 8px rgba(0, 0, 0, 0.67) inset;
@@ -101,7 +101,7 @@ button,
 label,
 iframe {
   padding: 14px;
-  background-color: #1d1d1d;
+  background-color: #3d3d3d;
   border: #4d4d4d solid;
   border-radius: 10px;
   width: 100%;
@@ -140,7 +140,7 @@ input[type=file] {
 
 .gameThumbnail {
   padding: 25px;
-  background-color: #1d1d1d;
+  background-color: #3d3d3d;
   border: none;
   border: #4d4d4d solid 1px;
   border-radius: 10px;
@@ -277,7 +277,8 @@ button {
   background-repeat: no-repeat;
   background-color: #1d1d1d;
   border-radius: 10px;
-  border: #4d4d4d solid 1px;
+  border: #4d4d4d solid;
+  border-width: 1px 1px 3px 1px;
 }
 
 #toggle:checked+#nav {
@@ -369,6 +370,10 @@ form label {
   margin: 10px;
   margin-bottom: 0px;
   display: inline-block;
+  opacity: 25%;
+}
+
+.stuckLoading {
   opacity: 25%;
 }
 
