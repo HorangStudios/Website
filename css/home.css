@@ -675,10 +675,9 @@ form label {
   }
 
   button {
-    background: rgba(0, 0, 0, .20) url('horanghillstartingplace.png');
+    background: #e7e7e7;
     background-position: center;
     font-family: Righteous;
-    color: white;
   }
 
   button i {
