@@ -415,7 +415,9 @@ form label {
 .toLogin {
   display: inline-block;
   padding: 80px;
-  text-align: center;
+  padding-bottom: 0;
+  padding-left: 0;
+  text-align: right;
 }
 
 .loginMain {
@@ -462,16 +464,21 @@ form label {
 }
 
 @media (max-width: 800px) {
+  #landing {
+    height: 465px;
+  }
+  
   .promo2 {
     position: absolute;
     z-index: 10;
   }
 
   .toLogin {
-    width: calc(100% - 20px);
-    text-shadow: 0px 0px 10px #000000;
+    width: calc(100vw - 50px);
     margin-right: 20px;
-    padding-top: 115px;
+    margin-top: 265px;
+    padding-right: 0px;
+    text-align: center;
   }
 
   .loginMain {

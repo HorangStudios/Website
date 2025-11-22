@@ -143,9 +143,25 @@ animate()
 
 // ----------------------------------------------------------------------------------------------------------------------------
 
+function typePromo(titleElem, titles) {
+  let picked = titles[Math.floor(Math.random() * titles.length)];
+  let typed = 0;
+
+  titleElem.innerHTML = '';
+  let typing = setInterval(() => {
+    if (typed == picked.length) {
+      setTimeout(() => {typePromo(titleElem, titles)}, 3500);
+      clearInterval(typing);
+    } else {
+      titleElem.innerHTML = titleElem.innerHTML + picked[typed];
+      typed += 1;
+    }
+  }, 50)
+}
+
 // landing page 3d character
 async function generatePromotional() {
-  let titleelem = document.getElementById("adtitle");
+  let titleElem = document.getElementById("adtitle");
   let titles = [
     "Sandbox on the web",
     "App-free experience!",
@@ -157,10 +173,7 @@ async function generatePromotional() {
     "We're on GitHub"
   ];
 
-  titleelem.innerText = titles[Math.floor(Math.random() * titles.length)];
-  setInterval(() => {
-    titleelem.innerText = titles[Math.floor(Math.random() * titles.length)];
-  }, 5000);
+  typePromo(titleElem, titles);
 
   let imgElem = document.getElementById("playerShowcase");
   imgElem.src = await generateAvatarPicture({ colors: {} }, false, false);
@@ -170,7 +183,7 @@ async function generatePromotional() {
 
   let character = await generateAvatarPicture(selectedplayer.avatar, false, false);
   imgElem.src = character;
-  document.getElementById("featuredUser").innerText = `Player of the day: ${selectedplayer.displayName}`;
+  document.getElementById("featuredUser").innerText = `Featured player: ${selectedplayer.displayName}`;
 }
 
 function showLogin() {
