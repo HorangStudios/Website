@@ -573,7 +573,11 @@ form label {
 }
 
 @media (prefers-color-scheme: light) {
-
+  .showLogin {
+    background: lightgray;
+    color: black;
+  }
+  
   .quickcard,
   .catalogItem,
   h1 select,
