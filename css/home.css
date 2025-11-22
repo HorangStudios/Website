@@ -635,6 +635,11 @@ form label {
 }
 
 @media (prefers-color-scheme: light) {
+  .dashedAdd {
+    color: #a8a8a8;
+    border-color: #a8a8a8;
+  }
+
   .showLogin {
     background: lightgray;
     color: black;
@@ -649,8 +654,10 @@ form label {
   label,
   canvas,
   iframe,
-  .showLogin {
-    background: #e7e7e7;
+  .showLogin,
+  #gamethumbnail,
+  #game {
+    background-color: #e7e7e7;
     border-color: #a8a8a8;
     color: black;
   }

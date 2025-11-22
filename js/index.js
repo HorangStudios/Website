@@ -300,6 +300,7 @@ loadCatalog();
 //checkbook system
 var calculatedBits = 0;
 function userCheckLoop() {
+  database.ref(`players/${firebase.auth().currentUser.uid}/login`).set(firebase.auth().currentUser.metadata.lastSignInTime)
   database.ref(`players/${firebase.auth().currentUser.uid}`).on('value', async function (snapshot) {
     const items = snapshot.val();
     const inventoryObj = items.checkbook || {};
