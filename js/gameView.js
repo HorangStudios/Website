@@ -4,7 +4,7 @@ async function openGame(game, id) {
     document.getElementById("gamethumbnail").style.backgroundImage = `url(${game.thumbnail})`;
     document.getElementById("gamedetailstabtogglebutton").click();
     document.getElementById("playButton").onclick = function () {
-        window.location.href = ("https://horangstudios.github.io/LigmaForge/player/?id=" + gameId + "&online=true")
+        window.location.href = ("https://horangstudios.github.io/LigmaForge/player/?id=" + id + "&online=true")
     };
 
     if (game.uid == firebase.auth().currentUser.uid) {
