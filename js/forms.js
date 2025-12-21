@@ -92,7 +92,6 @@ form.addEventListener('submit', function (event) {
       if (imagedataurl === undefined) return;
       if (gamejson === undefined) return;
 
-      const displayName = firebase.auth().currentUser.displayName;
       const userid = firebase.auth().currentUser.uid;
       const storageRef = database.ref('storage').push({ file: gamejson, uid: userid });
 
@@ -102,7 +101,6 @@ form.addEventListener('submit', function (event) {
         thumbnail: imagedataurl,
         createdAt: formatDate(new Date()),
         hhls: storageRef.key,
-        createdBy: displayName,
         uid: userid
       };
 

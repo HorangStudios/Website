@@ -8,7 +8,7 @@ Object.values(profileTypes).forEach(element => {
 });
 
 // add tile to profile
-function loadProfileTiles(data, target, editMode, index, position, card, uuid) {
+function loadProfileTiles(data, target, editMode, index, position, uuid) {
     let container = document.createElement("div");
     container.className = "profileCard";
     target.appendChild(container);
@@ -51,7 +51,7 @@ function loadProfileTiles(data, target, editMode, index, position, card, uuid) {
                 grecaptcha.execute().then(() => {
                     if (!grecaptcha.getResponse()) return;
                     if (editField.value) database.ref(`profile/${uuid}/${position}/${index}/url`).set(editField.value);
-                    card.click();
+                    playerLink(uuid);
                 })
             }
             break;
@@ -82,7 +82,7 @@ function loadProfileTiles(data, target, editMode, index, position, card, uuid) {
                 grecaptcha.execute().then(() => {
                     if (!grecaptcha.getResponse()) return;
                     if (editField.value) database.ref(`profile/${uuid}/${position}/${index}/code`).set(editField.value);
-                    card.click();
+                    playerLink(uuid);
                 })
             }
 
@@ -118,9 +118,9 @@ function loadProfileTiles(data, target, editMode, index, position, card, uuid) {
         upButton.innerHTML = '<i class="fa-solid fa-chevron-up"></i>';
         upButton.title = "Move Up";
         upButton.onclick = async () => {
-            target.innerHTML = '<center><br><i class="fa-solid fa-spinner fa-spin"></i></center>';
+            target.innerHTML = loaderTemplate;
             await moveItem(`profile/${uuid}/${position}/`, index, "up");
-            card.click();
+            playerLink(uuid);
         };
 
         let downButton = document.createElement("span");
@@ -128,9 +128,9 @@ function loadProfileTiles(data, target, editMode, index, position, card, uuid) {
         downButton.innerHTML = '<i class="fa-solid fa-chevron-down"></i>';
         downButton.title = "Move Down";
         downButton.onclick = async () => {
-            target.innerHTML = '<center><br><i class="fa-solid fa-spinner fa-spin"></i></center>';
+            target.innerHTML = loaderTemplate;
             await moveItem(`profile/${uuid}/${position}/`, index, "down");
-            card.click();
+            playerLink(uuid);
         };
 
         editButton.style.display = "inline-block";

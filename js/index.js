@@ -21,6 +21,8 @@ document.getElementById("defaultOpen").click();
 // ----------------------------------------------------------------------------------------------------------------------------
 
 var database = firebase.database();
+var playerProfileRight = document.getElementById("playerProfileRight");
+var playerProfileLeft = document.getElementById("playerProfileLeft");
 var gamescontainer = document.getElementById('gamelist');
 var playercontainer = document.getElementById('playerlist');
 var catalogcontainer = document.getElementById('cataloglist');
@@ -53,37 +55,17 @@ async function loadGames() {
   let games = await firebaseFetch('games');
   gamescontainer.innerHTML = '';
 
-  Object.keys(games).forEach(function (gameId) {
+  Object.keys(games).forEach(async function (gameId) {
     var game = games[gameId];
+    var devName = (await firebaseFetch('/players/' + game.uid)).displayName;
+    var gamedetails = "<div id='gamecard1'><b>" + sanitizeHtml(game.title) + "</b><br>" + sanitizeHtml(devName) + "</div>";
+    var gamename = "<br><div id='gamecard2'>" + sanitizeHtml(truncate(game.desc, 100)) + "</div>";
+
     var card = document.createElement('div');
     card.id = 'game';
-
-    gamedetails = "<div id='gamecard1'><b>" + sanitizeHtml(game.title) + "</b><br>" + sanitizeHtml(game.createdBy) + "</div>";
-    gamename = "<br><div id='gamecard2'>" + sanitizeHtml(truncate(game.desc, 100)) + "</div>"
-
     card.innerHTML = gamedetails + gamename;
     card.style.backgroundImage = `url(${game.thumbnail})`;
-
-    card.onclick = function () {
-      document.getElementById('gameTitle').innerText = game.title;
-      document.getElementById('gamePublisher').innerText = game.createdBy;
-      document.getElementById('gameDescription').innerText = game.desc;
-      document.getElementById("gamethumbnail").style.backgroundImage = `url(${game.thumbnail})`;
-      document.getElementById("gamedetailstabtogglebutton").click();
-
-      document.getElementById("playButton").onclick = function () {
-        window.location.href = ("https://horangstudios.github.io/LigmaForge/player/?id=" + gameId + "&online=true")
-      };
-
-      if (game.uid == firebase.auth().currentUser.uid) {
-        document.getElementById('editButton').removeAttribute("hidden");
-        document.getElementById("editButton").onclick = function () {
-          window.open(("details.html?id=" + gameId), "_blank").focus();
-        };
-      } else {
-        document.getElementById('editButton').setAttribute("hidden", "")
-      }
-    }
+    card.onclick = () => { openGame(game, gameId) };
 
     gamescontainer.prepend(card);
   });
@@ -98,110 +80,17 @@ async function loadPlayers() {
   Object.keys(players).forEach(async function (playerId) {
     var player = players[playerId];
     var avatarImg = await generateAvatarPicture(player.avatar, false, true);
-    var signup = player.signup ? formatDate(new Date(player.signup)) : "-";
-    var login = player.login ? formatDate(new Date(player.login)) : "-";
+    var gamedetails = "<div id='gamecard1'><b>" + sanitizeHtml(player.displayName) + "</b><br></div>";
+    var gamename = "<div id='gamecard2'>" + sanitizeHtml(truncate(player.bio, 100)) + "</div>"
 
     var card = document.createElement('div');
     card.id = 'game';
-
-    gamedetails = "<div id='gamecard1'><b>" + sanitizeHtml(player.displayName) + "</b><br></div>";
-    gamename = "<div id='gamecard2'>" + sanitizeHtml(truncate(player.bio, 100)) + "</div>"
     card.innerHTML = gamedetails + gamename;
     card.style.backgroundImage = `url(${avatarImg})`;
+    card.onclick = async () => { openProfile(player, playerId) }
 
     playercontainer.prepend(card);
-
-    card.onclick = async function () {
-      const playerProfileRight = document.getElementById("playerProfileRight");
-      const playerProfileLeft = document.getElementById("playerProfileLeft");
-
-      const contentRight = document.createElement("div");
-      const contentLeft = document.createElement("div");
-      contentRight.innerHTML = '<center><br><i class="fa-solid fa-spinner fa-spin"></i></center>';
-      contentLeft.innerHTML = '<center><br><i class="fa-solid fa-spinner fa-spin"></i></center>';
-
-      playerProfileLeft.innerHTML = '';
-      playerProfileRight.innerHTML = '';
-      document.getElementById("playerdetailbutton").click();
-
-      const avatar = document.createElement("img");
-      avatar.src = avatarImg;
-      playerProfileLeft.appendChild(avatar);
-
-      const username = document.createElement("label");
-      username.innerHTML = `
-        <b>${sanitizeHtml(player.displayName)}</b><br>
-        <p>@${sanitizeHtml(player.uid)}</p><br>
-        Last Online: ${sanitizeHtml(login)}<br>
-        Registered: ${sanitizeHtml(signup)}
-      `
-      playerProfileLeft.appendChild(username);
-
-      if (firebase.auth().currentUser.uid == player.uid) {
-        const bio = document.createElement("textarea");
-        bio.value = `${sanitizeHtml(player.bio)}`;
-        bio.onchange = function () {
-          grecaptcha.execute().then(() => {
-            if (!grecaptcha.getResponse()) return;
-            database.ref(`players/${firebase.auth().currentUser.uid}/bio`).set(bio.value);
-          })
-        };
-        playerProfileRight.appendChild(bio);
-
-        const addRight = document.createElement("button");
-        addRight.innerHTML = `<i class="fa fa-plus"></i>`;
-        addRight.className = `dashedAdd`;
-        addRight.onclick = function () {
-          document.getElementById("customprofilebutton").click();
-          document.getElementById("right-side").click();
-        };
-
-        const addLeft = document.createElement("button");
-        addLeft.innerHTML = `<i class="fa fa-plus"></i>`;
-        addLeft.className = `dashedAdd`;
-        addLeft.onclick = function () {
-          document.getElementById("customprofilebutton").click();
-          document.getElementById("left-side").click();
-        };
-
-        playerProfileRight.appendChild(contentRight);
-        playerProfileLeft.appendChild(contentLeft);
-        playerProfileRight.appendChild(addRight);
-        playerProfileLeft.appendChild(addLeft);
-      } else {
-        const bio = document.createElement("label");
-        bio.innerHTML = `${sanitizeHtml(player.bio)}`
-        playerProfileRight.appendChild(bio);
-
-        playerProfileRight.appendChild(contentRight);
-        playerProfileLeft.appendChild(contentLeft);
-      }
-
-      const editmode = (firebase.auth().currentUser.uid == player.uid) ? true : false;
-
-      const left = await firebaseFetch(`profile/${playerId}/left`);
-      const right = await firebaseFetch(`profile/${playerId}/right`);
-
-      contentRight.innerHTML = '';
-      contentLeft.innerHTML = '';
-
-      if (right != null) {
-        const sorted = Object.entries(right).sort((a, b) => a[1].order - b[1].order);
-        Object.values(sorted).forEach(e => {
-          loadProfileTiles(e[1], contentRight, editmode, e[0], "right", card, player.uid)
-        });
-      }
-
-      if (left != null) {
-        const sorted = Object.entries(left).sort((a, b) => a[1].order - b[1].order);
-        Object.values(sorted).forEach(e => {
-          loadProfileTiles(e[1], contentLeft, editmode, e[0], "left", card, player.uid)
-        });
-      }
-    }
   });
-
-  loadingPlayers = false;
 }
 loadPlayers();
 
@@ -213,51 +102,23 @@ async function loadCatalog() {
 
   Object.keys(items).forEach(async function (itemId) {
     var item = items[itemId];
-    var avatarImg = item.asset;
     var avatarData = {};
     var priceString = (item.price == 0) ? 'Free' : (item.price + ' Bits');
 
     try {
       avatarData["colors"] = (await firebaseFetch(`players/${firebase.auth().currentUser.uid}/avatar/colors`));
       avatarData[item.type] = item.asset;
-      avatarImg = await generateAvatarPicture(avatarData, true, false)
+      item.asset = await generateAvatarPicture(avatarData, true, false)
     } catch (error) { }
 
     var card = document.createElement('div');
+    card.onclick = () => { catalogView(item, itemId) };
     card.className = 'catalogItem';
     card.innerHTML = `
-      <img src="${sanitizeHtml(avatarImg)}"><br>
+      <img src="${sanitizeHtml(item.asset)}"><br>
       <b>${sanitizeHtml(item.name)}</b><br>
       ${sanitizeHtml(item.type.charAt(0).toUpperCase() + item.type.slice(1))} - ${sanitizeHtml(priceString)}
     `
-
-    card.onclick = async function () {
-      document.getElementById('itemTitle').innerText = item.name;
-      document.getElementById('itemDesc').innerText = item.description || "No Description";
-      document.getElementById('itemPublisher').innerText = 'By ' + (await firebaseFetch('/players/' + item.uid)).displayName;
-      document.getElementById("itemdetailbutton").click();
-      document.getElementById("itemImage").src = avatarImg;
-      document.getElementById("buyButton").innerText = priceString;
-
-      document.getElementById("buyButton").onclick = async function () {
-        if (item.price <= calculatedBits) {
-          const currentUser = firebase.auth().currentUser;
-          const playerData = await firebaseFetch('/players/' + currentUser.uid);
-
-          if (playerData.checkbook && Object.values(playerData.checkbook).some(entry => entry.product === parseInt(itemId))) {
-            document.getElementById("buyButton").innerText = "You already have it!"
-          } else {
-            firebase.database().ref(`players/${firebase.auth().currentUser.uid}/checkbook/${Date.now()}`).set({
-              type: "catalogPurchase",
-              product: parseInt(itemId)
-            })
-            document.getElementById("buyButton").innerText = "Bought!"
-          }
-        } else {
-          document.getElementById("buyButton").innerText = "Not enough Bits!"
-        }
-      };
-    }
 
     if (document.getElementById(item.type + "-avatar-catalog-category")) {
       if (!item.moderated && item.uid != firebase.auth().currentUser.uid) return;
@@ -296,6 +157,8 @@ async function loadCatalog() {
   });
 }
 loadCatalog();
+
+// ----------------------------------------------------------------------------------------------------------------------------
 
 //checkbook system
 var calculatedBits = 0;
@@ -354,7 +217,7 @@ function userCheckLoop() {
 
 // avatar loader
 function procInventory(items, skinCLR) {
-  inventorycontainer.innerHTML = ''
+  inventorycontainer.innerHTML = '';
 
   Object.keys(skinCLR).forEach(async element => {
     document.getElementById(element + "Input").value = skinCLR[element];
@@ -368,21 +231,19 @@ function procInventory(items, skinCLR) {
   } else {
     items.forEach(async (itemObj, key) => {
       var itemdata = await firebaseFetch(`catalog/${itemObj}`)
-
       var card = document.createElement('div');
       card.className = 'catalogItem';
       card.innerHTML = `
         <img src="${sanitizeHtml(itemdata.asset)}"><br>
-        <b>${sanitizeHtml(itemdata.name)}</b><br>
+        <b title="${itemObj}">${sanitizeHtml(itemdata.name)}</b><br>
         By ${sanitizeHtml((await firebaseFetch('/players/' + itemdata.uid)).displayName)}
       `
 
       card.onclick = () => {
-        firebase.database().ref(`players/${firebase.auth().currentUser.uid}/avatar/${itemdata.type}`).set(parseInt(key))
+        firebase.database().ref(`players/${firebase.auth().currentUser.uid}/avatar/${itemdata.type}`).set(parseInt(itemObj))
       }
 
       if (!itemdata.moderated && itemdata.uid != firebase.auth().currentUser.uid) return;
-
       if (document.getElementById(itemdata.type + "-avatar-inventory-category")) {
         document.getElementById(itemdata.type + "-avatar-inventory-category").append(card)
       } else {
@@ -402,17 +263,18 @@ function procInventory(items, skinCLR) {
         var unapplyButton = document.createElement("div")
         unapplyButton.className = 'catalogItem'
         unapplyButton.innerHTML = `
-        <img src="../css/none.png"><br>
-        <b>No ${sanitizeHtml(itemdata.type)}</b><br>
-        Use solid color
-      `
+          <img src="../css/none.png"><br>
+          <b>No ${sanitizeHtml(itemdata.type)}</b><br>
+          Use solid color
+        `
+
         categoryElem.append(unapplyButton)
+        categoryElem.append(card)
 
         unapplyButton.onclick = () => {
           firebase.database().ref(`players/${firebase.auth().currentUser.uid}/avatar/${itemdata.type}`).set(false)
         }
 
-        categoryElem.append(card)
       }
     })
   }
@@ -435,9 +297,7 @@ function updateCreate() {
 // change display name
 function updateDisplayName() {
   try {
-    firebase.auth().currentUser.updateProfile({
-      displayName: document.getElementById('displayName').value
-    });
+    firebase.auth().currentUser.updateProfile({displayName: document.getElementById('displayName').value});
     firebase.database().ref(`players/${firebase.auth().currentUser.uid}/displayName`).set(document.getElementById('displayName').value)
   } catch (error) {
     alert(error.message);

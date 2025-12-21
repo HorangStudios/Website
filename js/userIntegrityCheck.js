@@ -88,7 +88,14 @@ firebase.auth().onAuthStateChanged(async function (user) {
 
 // fetch from firebase
 async function firebaseFetch(dir) {
-  var ref = firebase.database().ref(dir);
-  const snapshot = await ref.once('value');
-  return snapshot.val();
+    var ref = firebase.database().ref(dir);
+    const snapshot = await ref.once('value');
+    return snapshot.val();
 }
+
+var loaderTemplate = `
+    <center>
+        <br><i class="fa-solid fa-spinner fa-spin"></i><br>
+        <span class="stuckLoading">Taking forever? Try reloading this page</span>
+    </center>
+`;
