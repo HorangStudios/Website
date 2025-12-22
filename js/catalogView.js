@@ -26,6 +26,7 @@ async function catalogView(item, itemId) {
         }
     };
 
+    document.getElementById('itemPublisher').onclick = () => { playerLink(item.uid) };
+    document.getElementById('itemPublisher').innerText = ``;
     document.getElementById('itemPublisher').innerText = 'By ' + (await firebaseFetch('/players/' + item.uid)).displayName;
-    document.getElementById('itemPublisher').onclick = () => { playerLink(item.uid) }
 }

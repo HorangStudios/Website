@@ -21,7 +21,11 @@ async function setAvatarPreview(avatarData, renderSky) {
       if (avatarvalue === false) {
         avatarData2[avatarkey] = false;
       } else {
-        avatarData2[avatarkey] = (await firebaseFetch(`catalog/${avatarvalue}`)).asset;
+        if (typeof avatarCache !== "undefined") {
+          avatarData2[avatarkey] = (avatarCache[avatarvalue] ??= await firebaseFetch(`catalog/${avatarvalue}`)).asset;
+        } else {
+          avatarData2[avatarkey] = (await firebaseFetch(`catalog/${avatarvalue}`)).asset;
+        }
       }
     }
   }
@@ -58,7 +62,14 @@ async function generateAvatarPicture(avatarData, urlasset = false, renderSky) {
       if (avatarvalue === false) {
         previewAvatar[avatarkey] = false;
       } else {
-        previewAvatar[avatarkey] = urlasset ? avatarvalue : (await firebaseFetch(`catalog/${avatarvalue}`)).asset;
+        let avatarItemData = '';
+        if (typeof avatarCache !== "undefined") {
+          avatarItemData = avatarCache[avatarvalue] ??= await firebaseFetch(`catalog/${avatarvalue}`);
+        } else {
+          avatarItemData = await firebaseFetch(`catalog/${avatarvalue}`);
+        }
+
+        previewAvatar[avatarkey] = urlasset ? avatarvalue : avatarItemData.asset;
       }
     }
   }
@@ -72,7 +83,7 @@ async function generateAvatarPicture(avatarData, urlasset = false, renderSky) {
     setTimeout(() => {
       previewRenderer.render(previewScene, previewCamera);
       resolve(previewRenderer.domElement.toDataURL());
-    }, 1000);
+    }, 250);
   });
 }
 
@@ -150,7 +161,7 @@ function typePromo(titleElem, titles) {
   titleElem.innerHTML = '';
   let typing = setInterval(() => {
     if (typed == picked.length) {
-      setTimeout(() => {typePromo(titleElem, titles)}, 3500);
+      setTimeout(() => { typePromo(titleElem, titles) }, 3500);
       clearInterval(typing);
     } else {
       titleElem.innerHTML = titleElem.innerHTML + picked[typed];

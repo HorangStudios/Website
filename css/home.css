@@ -99,7 +99,8 @@ input,
 textarea,
 button,
 label,
-iframe {
+iframe,
+.viewTile {
   padding: 14px;
   background-color: #3d3d3d;
   border: #4d4d4d solid;
@@ -217,16 +218,19 @@ input[type=color] {
 .catalogPrevLeft {
   float: left;
   margin-right: 25px;
+  text-align: center;
+  width: 200px;
+  word-wrap: break-word;
 }
 
 .catalogPrevLeft img {
   width: 250px;
   border-radius: 15px;
+  width: 100%;
 }
 
 .catalogPrevRight {
   float: left;
-  padding: 22px;
 }
 
 .catalogPrevRight {
@@ -271,16 +275,6 @@ button {
   display: none !important;
 }
 
-#gamethumbnail {
-  height: 50dvh;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-color: #1d1d1d;
-  border-radius: 10px;
-  border: #4d4d4d solid;
-  border-width: 1px 1px 3px 1px;
-}
-
 #toggle:checked+#nav {
   display: block;
 }
@@ -323,9 +317,10 @@ details {
   border-radius: 0px 0px 10px 10px;
 }
 
-#playerProfileLeft {
-  width: 200px;
-  word-wrap: break-word;
+.catalogPrevLeft img {
+  border: #4d4d4d solid;
+  background: #3d3d3d;
+  border-width: 1px 1px 3px 1px;
 }
 
 #playerProfileLeft img {
@@ -346,6 +341,10 @@ details {
   margin-top: 0;
   resize: vertical;
   min-height: fit-content;
+}
+
+.catalogPrevRight div:first-child {
+  margin-top: 0;
 }
 
 .categorytabs textarea,
@@ -455,12 +454,14 @@ form label {
   opacity: 0.25;
 }
 
-#gamePublisher, #itemPublisher {
+#gamePublisher,
+#itemPublisher {
   text-decoration: underline;
   cursor: pointer;
 }
 
 @keyframes bounceIn {
+
   0%,
   20%,
   40%,
@@ -665,7 +666,8 @@ form label {
   .showLogin,
   #gamethumbnail,
   #game,
-  #playerProfileLeft img {
+  #playerProfileLeft img,
+  .viewTile {
     background-color: #e7e7e7;
     border-color: #a8a8a8;
     color: black;

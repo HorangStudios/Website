@@ -66,6 +66,7 @@
   </div>
 
   <div id="main">
+    <!-- homepage -->
     <div id="Home" class="tabcontent">
       <h1 id="greetings">
       </h1>
@@ -98,6 +99,7 @@
       </div>
     </div>
 
+    <!-- create page -->
     <div id="Create" class="tabcontent">
       <h1>
         I want to
@@ -129,6 +131,7 @@
         <br><img src="https://horangstudios.github.io/LigmaForge/resources/Pants%20Template.png">
       </div>
 
+      <!-- shirt submit form -->
       <div id="submit-shirt" class="createmenuts" style="display: none;">
         <form id="shirtPublishForm">
           <input id="name-shirt" name="name-shirt" placeholder="Name" required="" autocomplete="one-time-code">
@@ -150,6 +153,7 @@
         </form>
       </div>
 
+      <!-- pants submit form -->
       <div id="submit-pants" class="createmenuts" style="display: none;">
         <form id="pantsPublishForm">
           <input id="name-pants" name="name-pants" placeholder="Name" required="" autocomplete="one-time-code">
@@ -171,6 +175,7 @@
         </form>
       </div>
 
+      <!-- game submit form -->
       <div id="submit-game" class="createmenuts" style="display: none;">
         <form id="publishForm">
           <input id="title-text" name="title-text" placeholder="Title" required="" autocomplete="one-time-code">
@@ -196,6 +201,7 @@
       </div>
     </div>
 
+    <!-- avatar editor page -->
     <div id="Avatar" class="tabcontent">
       <div class="preview" id="preview">
         <h1>Avatar</h1><br>
@@ -237,6 +243,7 @@
       </div>
     </div>
 
+    <!-- catalog list -->
     <div id="Catalog" class="tabcontent">
       <h1>Catalog</h1>
       <div class="preview" id="catalogSidebar">
@@ -254,6 +261,7 @@
       </div>
     </div>
 
+    <!-- players list -->
     <div id="Players" class="tabcontent">
       <h1>Players</h1>
       <div id="playerlist">
@@ -264,6 +272,7 @@
       </div>
     </div>
 
+    <!-- account settings -->
     <div id="Account" class="tabcontent">
       <h1><i class="fa-solid fa-user"></i> Account</h1>
       <div id="form">
@@ -288,31 +297,46 @@
       </div>
     </div>
 
+    <!-- Game details page -->
     <div id="Details" class="tabcontent">
-      <div id="gamethumbnail"></div>
-      <br>
-      <h1 id="gameTitle">Game Title</h1>
-      <p id="gamePublisher">Game Publisher</p>
-      <br>
-      <p id="gameDescription">Game Description</p>
-      <button id="playButton"><i class="fa fa-play"></i> Play</button>
-      <button id="editButton" hidden><i class="fa fa-pencil"></i> Edit</button>
+      <div class="catalogPrevLeft">
+        <img id="gamethumbnail">
+        <div class="viewTile">
+          <p id="gamecreation"></p>
+          <p id="gameupdated"></p>
+          <p id="visits"></p>
+          <p id="active"></p>
+        </div>
+      </div>
+      <div class="catalogPrevRight">
+        <div class="viewTile">
+          <h1 id="gameTitle"></h1>
+          <p id="gamePublisher"></p>
+          <br>
+          <p id="gameDescription"></p>
+        </div>
+        <button id="playButton"><i class="fa fa-play"></i> Play</button>
+        <button id="editButton" hidden><i class="fa fa-pencil"></i> Edit</button>
+      </div>
     </div>
 
+    <!-- catalog item details page -->
     <div id="ItemDetails" class="tabcontent">
       <div class="catalogPrevLeft">
         <img id="itemImage">
       </div>
       <div class="catalogPrevRight">
-        <h1 id="itemTitle">Catalog Item</h1>
-        <p id="itemPublisher">Item Creator</p>
-        <br>
-        <p id="itemDesc">Item Description</p>
-        <br>
+        <div class="viewTile">
+          <h1 id="itemTitle"></h1>
+          <p id="itemPublisher"></p>
+          <br>
+          <p id="itemDesc"></p>
+        </div>
         <button id="buyButton">Buy</button>
       </div>
     </div>
 
+    <!-- player profile page -->
     <div id="playerDetails" class="tabcontent">
       <div class="catalogPrevLeft" id="playerProfileLeft">
       </div>
@@ -320,6 +344,7 @@
       </div>
     </div>
 
+    <!-- insert to player profile page -->
     <div id="customProfile" class="tabcontent">
       <h1><i class="fa fa-plus"></i> Add to profile</h1>
       <div class="preview" id="profileItemTypes">

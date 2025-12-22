@@ -162,56 +162,39 @@ loadCatalog();
 
 //checkbook system
 var calculatedBits = 0;
+var avatarCache = {};
 function userCheckLoop() {
-  database.ref(`players/${firebase.auth().currentUser.uid}/login`).set(firebase.auth().currentUser.metadata.lastSignInTime)
+  database.ref(`players/${firebase.auth().currentUser.uid}/login`).set(firebase.auth().currentUser.metadata.lastSignInTime);
   database.ref(`players/${firebase.auth().currentUser.uid}`).on('value', async function (snapshot) {
-    const items = snapshot.val();
-    const inventoryObj = items.checkbook || {};
-    const bitsSpentElem = document.getElementById("myBits")
-
+    var items = snapshot.val();
+    var inventoryObj = items.checkbook || {};
     var bits = 100;
     var inventory = [];
 
-    if (Object.keys(inventoryObj).length == 0) {
-      setAvatarPreview(items.avatar, true);
-      procInventory(inventory, items.avatar.colors);
-
-      calculatedBits = bits
-      if (bitsSpentElem) {
-        bitsSpentElem.innerText = bits;
-      };
-    } else {
-      Object.keys(inventoryObj).forEach(async (key, i) => {
-        const item = inventoryObj[key]
-        switch (item.type) {
-          case "catalogPurchase":
-            const catalogItem = await firebaseFetch(`catalog/${item.product}`);
-            if ((bits - catalogItem.price) < 0) {
-              firebase.database().ref(`players/${firebase.auth().currentUser.uid}/checkbook/${key}`).remove();
-            } else {
-              bits -= catalogItem.price
-              inventory.push(item.product);
-            }
-            break;
-          case "loginBonus":
-            bits += 10;
-            break;
-          case "purchaseBits":
-            bits += item.val;
-            break;
-        }
-
-        if (i == (Object.keys(inventoryObj).length - 1)) {
-          setAvatarPreview(items.avatar, true);
-          procInventory(inventory, items.avatar.colors);
-
-          calculatedBits = bits
-          if (bitsSpentElem) {
-            bitsSpentElem.innerText = bits;
-          };
-        }
-      })
+    for (let i = 0; i < Object.keys(inventoryObj).length; i++) {
+      const item = Object.values(inventoryObj)[i];
+      switch (item.type) {
+        case "catalogPurchase":
+          const catalogItem = avatarCache[item.product] ??= await firebaseFetch(`catalog/${item.product}`);
+          if ((bits - catalogItem.price) < 0) { database.ref(`players/${firebase.auth().currentUser.uid}/checkbook/${key}`).remove(); break; }
+          bits -= catalogItem.price
+          inventory.push(item.product);
+          break;
+        case "loginBonus":
+          bits += 10;
+          break;
+        case "purchaseBits":
+          bits += item.val;
+          break;
+      }
     }
+
+    calculatedBits = bits;
+    setAvatarPreview(items.avatar, true);
+    procInventory(inventory, items.avatar.colors);
+
+    const bitsSpentElem = document.getElementById("myBits");
+    if (bitsSpentElem) bitsSpentElem.innerText = bits;
   })
 }
 
@@ -230,7 +213,7 @@ function procInventory(items, skinCLR) {
     inventorycontainer.innerHTML = '<h1>Empty!</h1><br>You have nothing inside your inventory. Start by exploring the catalog.'
   } else {
     items.forEach(async (itemObj, key) => {
-      var itemdata = await firebaseFetch(`catalog/${itemObj}`)
+      var itemdata = avatarCache[itemObj] ??= await firebaseFetch(`catalog/${itemObj}`);
       var card = document.createElement('div');
       card.className = 'catalogItem';
       card.innerHTML = `
@@ -297,7 +280,7 @@ function updateCreate() {
 // change display name
 function updateDisplayName() {
   try {
-    firebase.auth().currentUser.updateProfile({displayName: document.getElementById('displayName').value});
+    firebase.auth().currentUser.updateProfile({ displayName: document.getElementById('displayName').value });
     firebase.database().ref(`players/${firebase.auth().currentUser.uid}/displayName`).set(document.getElementById('displayName').value)
   } catch (error) {
     alert(error.message);
