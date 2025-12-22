@@ -79,14 +79,13 @@
           <h3>Create & Publish</h3>
           <div class="author">Create with HorangHill editor</div>
         </a>
+        <a href="#greetings" onclick="playerLink(firebase.auth().currentUser.uid)" class="quickcard">
+          <h3>Profile Page</h3>
+          <div class="author">Customize your profile & description</div>
+        </a>
         <a href="https://discord.gg/MYzDy2JvgZ" target="_blank" class="quickcard">
           <h3>Discord Server</h3>
           <div class="author">Talk with the community</div>
-        </a>
-        <a href="#greetings" onclick="firebase.auth().signOut(); window.location.replace('../index.html')"
-          class="quickcard">
-          <h3>Log out</h3>
-          <div class="author">Log out from your account</div>
         </a>
       </div>
       <hr>
@@ -206,32 +205,42 @@
       <div class="preview" id="preview">
         <h1>Avatar</h1><br>
 
-        <div id="canvascontainer"></div>
+        <div id="canvascontainer"></div><br>
 
-        <label for="head">
+        <h1>Colors</h1>
+
+        <label for="headInput">
           Head
           <input type="color" id="headInput">
         </label>
 
-        <label for="eyes">
+        <label for="eyeInput">
           Eyes
           <input type="color" id="eyeInput">
         </label>
 
-        <label for="head">
+        <label for="torsoInput">
           Torso
           <input type="color" id="torsoInput">
         </label>
 
-        <label for="head">
-          Arms
+        <label for="leftArmInput">
+          Left Arm
           <input type="color" id="leftArmInput">
+        </label>
+
+        <label for="rightArmInput">
+          Right Arm
           <input type="color" id="rightArmInput">
         </label>
 
-        <label for="head">
-          Legs
+        <label for="leftLegInput">
+          Left Leg
           <input type="color" id="leftLegInput">
+        </label>
+
+        <label for="rightLegInput">
+          Right Leg
           <input type="color" id="rightLegInput">
         </label>
       </div>
@@ -294,6 +303,9 @@
           <input id="mailbox" name="mailbox" placeholder="Email" type="email" autocomplete="one-time-code"><br>
           <button onclick="updateMail()">Update Email</button><br>
         </details>
+        <button onclick="firebase.auth().signOut(); window.location.replace('../index.html')">
+          Log Out
+        </button>
       </div>
     </div>
 

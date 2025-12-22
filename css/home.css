@@ -212,7 +212,17 @@ canvas {
 }
 
 input[type=color] {
-  height: 50px !important;
+  width: 25px;
+  height: 25px;
+  padding: 0;
+  margin: 0;
+  border: none;
+  float: left;
+  margin-right: 10px;
+}
+
+#Avatar label {
+  cursor: pointer;
 }
 
 .catalogPrevLeft {
@@ -622,8 +632,16 @@ form label {
     padding: 0;
   }
 
+  .catalogPrevRight {
+    margin-top: 25px;
+  }
+
   .catalogItem {
-    width: calc(100% - 10px);
+    width: calc(50% - 10px);
+  }
+
+  #Avatar label {
+    width: fit-content;
   }
 
   #game {

@@ -83,6 +83,8 @@ firebase.auth().onAuthStateChanged(async function (user) {
     } else if (typeof isLoginPage !== 'undefined') {
         document.getElementById("loader").style.display = 'none';
         document.getElementById("landing").style.display = 'block';
+    } else {
+        window.location.href = "../index.html";
     }
 });
 
