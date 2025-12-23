@@ -8,6 +8,10 @@ body {
   src: url("../css/Righteous-Regular.ttf");
 }
 
+#logotext {
+  cursor: pointer;
+}
+
 #sidebar {
   background: rgba(0, 0, 0, .20) url('horanghillstartingplace.png');
   background-position: center !important;
@@ -148,13 +152,6 @@ input[type=file] {
   width: 100%;
   box-sizing: border-box;
   margin-bottom: 25px;
-}
-
-#migrationNotice {
-  background: darkred;
-  padding: 15px;
-  border-radius: 10px;
-  margin-top: 25px;
 }
 
 hr {
@@ -739,11 +736,6 @@ form label {
     color: white;
   }
 
-  #migrationNotice,
-  #migrationNotice i {
-    color: white;
-  }
-
   #sidebar h1,
   #sidebar a,
   #sidebar i {
@@ -752,9 +744,5 @@ form label {
 
   footer a {
     color: black;
-  }
-
-  #migrationNotice a {
-    color: white;
   }
 }

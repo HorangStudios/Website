@@ -201,4 +201,9 @@ function showLogin() {
   document.getElementById("Login").style.display = 'block';
 }
 
+function showIntro() {
+  document.getElementById("landing").style.display = 'block';
+  document.getElementById("Login").style.display = 'none';
+}
+
 if (typeof isLoginPage != 'undefined') generatePromotional();

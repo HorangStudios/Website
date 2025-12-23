@@ -32,13 +32,13 @@ var inventorycontainer = document.getElementById('selector');
 //greeting in homescreen
 let today = new Date();
 let hour = today.getHours();
-let greetings
+let greetingMessage
 if (hour >= 5 && hour < 12) {
-  greetings = ("<i class='fa-solid fa-sun'></i> Good morning");
+  greetingMessage = ("<i class='fa-solid fa-sun'></i> Good morning");
 } else if (hour >= 12 && hour < 18) {
-  greetings = ("<i class='fa-regular fa-sun'></i> Good afternoon");
+  greetingMessage = ("<i class='fa-regular fa-sun'></i> Good afternoon");
 } else {
-  greetings = ("<i class='fa-solid fa-sun'></i> Good evening");
+  greetingMessage = ("<i class='fa-solid fa-sun'></i> Good evening");
 }
 
 //shorten
@@ -218,7 +218,7 @@ function procInventory(items, skinCLR) {
       card.className = 'catalogItem';
       card.innerHTML = `
         <img src="${sanitizeHtml(itemdata.asset)}"><br>
-        <b title="${itemObj}">${sanitizeHtml(itemdata.name)}</b><br>
+        <b title="${sanitizeHtml(itemObj)}">${sanitizeHtml(itemdata.name)}</b><br>
         By ${sanitizeHtml((await firebaseFetch('/players/' + itemdata.uid)).displayName)}
       `
 
