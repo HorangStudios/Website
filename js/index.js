@@ -28,6 +28,7 @@ var playercontainer = document.getElementById('playerlist');
 var catalogcontainer = document.getElementById('cataloglist');
 var catalogSidebar = document.getElementById('catalogSidebar');
 var inventorycontainer = document.getElementById('selector');
+let games = {};
 
 //greeting in homescreen
 let today = new Date();
@@ -52,7 +53,9 @@ function truncate(str, num) {
 
 // load games
 async function loadGames() {
-  let games = await firebaseFetch('games');
+  if (Object.keys(games).length == 0) {
+    games = await firebaseFetch('games');
+  }
   gamescontainer.innerHTML = '';
 
   Object.keys(games).forEach(async function (gameId) {
@@ -69,8 +72,38 @@ async function loadGames() {
 
     gamescontainer.prepend(card);
   });
+  document.getElementById("searchbar").style.display = "block";
 }
 loadGames();
+
+// search games
+// make sure to ignore outdated searches
+let currentSearchVersion = 0;
+// function starts here
+function searchGames(searchTerm) {
+  currentSearchVersion++;
+  if (searchTerm == "") {loadGames(); return;}
+  var searchTerm = searchTerm.toLowerCase();
+  gamescontainer.innerHTML = '';
+  const searchVersion = currentSearchVersion;
+  Object.keys(games).forEach(async function (gameId) {
+    if (searchVersion !== currentSearchVersion) return;
+    var game = games[gameId];
+    var devName = (await firebaseFetch('/players/' + game.uid)).displayName;
+    if (searchVersion !== currentSearchVersion) return;
+    if (searchTerm && !game.title.toLowerCase().includes(searchTerm)) return;
+    var gamedetails = "<div id='gamecard1'><b>" + sanitizeHtml(game.title) + "</b><br>" + sanitizeHtml(devName) + "</div>";
+    var gamename = "<br><div id='gamecard2'>" + sanitizeHtml(truncate(game.desc, 100)) + "</div>";
+
+    var card = document.createElement('div');
+    card.id = 'game';
+    card.innerHTML = gamedetails + gamename;
+    card.style.backgroundImage = `url(${game.thumbnail})`;
+    card.onclick = () => { openGame(game, gameId) };
+
+    gamescontainer.prepend(card);
+  });
+}
 
 // load players
 async function loadPlayers() {
