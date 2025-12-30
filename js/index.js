@@ -26,6 +26,8 @@ function clearParams() {
 }
 
 //open respective tabs for shared links
+var playerProfileRight = document.getElementById("playerProfileRight");
+var playerProfileLeft = document.getElementById("playerProfileLeft");
 switch (new URLSearchParams(window.location.search).keys().next().value) {
   case 'game': gameLink(new URLSearchParams(window.location.search).values().next().value); break;
   case 'player': playerLink(new URLSearchParams(window.location.search).values().next().value); break;
@@ -36,8 +38,6 @@ switch (new URLSearchParams(window.location.search).keys().next().value) {
 // ----------------------------------------------------------------------------------------------------------------------------
 
 var database = firebase.database();
-var playerProfileRight = document.getElementById("playerProfileRight");
-var playerProfileLeft = document.getElementById("playerProfileLeft");
 var gamescontainer = document.getElementById('gamelist');
 var playercontainer = document.getElementById('playerlist');
 var catalogcontainer = document.getElementById('cataloglist');
