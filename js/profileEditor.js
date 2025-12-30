@@ -182,7 +182,7 @@ async function addhtml() {
         if (!grecaptcha.getResponse()) return;
         if (htmlcode) database.ref(`profile/${firebase.auth().currentUser.uid}/${position}`).push(data);
         document.getElementById("htmlEditor").value = "";
-        document.getElementById("players").click();
+        playerLink(firebase.auth().currentUser.uid);
     })
 }
 
@@ -197,6 +197,6 @@ async function addiframe() {
         if (!grecaptcha.getResponse()) return;
         if (url) database.ref(`profile/${firebase.auth().currentUser.uid}/${position}`).push(data);
         document.getElementById("pageUrl").value = "";
-        document.getElementById("players").click();
+        playerLink(firebase.auth().currentUser.uid);
     })
 }
