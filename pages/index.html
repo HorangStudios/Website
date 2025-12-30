@@ -57,7 +57,8 @@
         <a class="tablinks hidden" onclick="openTab(event, 'Details');" id="gamedetailstabtogglebutton">game.details</a>
         <a class="tablinks hidden" onclick="openTab(event, 'ItemDetails');" id="itemdetailbutton">item.details</a>
         <a class="tablinks hidden" onclick="openTab(event, 'playerDetails');" id="playerdetailbutton">player.details</a>
-        <a class="tablinks hidden" onclick="openTab(event, 'customProfile'); clearParams()" id="customprofilebutton">add.profile</a>
+        <a class="tablinks hidden" onclick="openTab(event, 'customProfile'); clearParams()"
+          id="customprofilebutton">add.profile</a>
 
         <a class="tablinks rightNav">
           <span id="myBits">0</span> <i class="fa-solid fa-coins"></i>
@@ -89,8 +90,7 @@
         </a>
       </div>
       <h1><i class="fa-solid fa-earth-americas"></i> Explore</h1>
-      <input type="search" id="searchbar" class="search" placeholder="Search games..."
-        onkeyup="loadGames(this.value)">
+      <input type="search" id="searchbar" class="search" placeholder="Search games..." onkeyup="loadGames(this.value)">
       <div id="gamelist">
         <center>
           <i class="fa-solid fa-spinner fa-spin"></i><br>
@@ -274,6 +274,7 @@
     <!-- players list -->
     <div id="Players" class="tabcontent" style="display: none;">
       <h1>Players</h1>
+      <input type="search" id="playersearchbar" class="search" placeholder="Search games..." onkeyup="loadPlayers(this.value)">
       <div id="playerlist">
         <center>
           <i class="fa-solid fa-spinner fa-spin"></i><br>

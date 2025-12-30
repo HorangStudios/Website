@@ -44,7 +44,6 @@ var catalogcontainer = document.getElementById('cataloglist');
 var catalogSidebar = document.getElementById('catalogSidebar');
 var inventorycontainer = document.getElementById('selector');
 var redir = true;
-var games = {};
 
 //greeting in homescreen
 let today = new Date();
@@ -68,6 +67,7 @@ function truncate(str, num) {
 }
 
 // load games
+var games = {};
 async function loadGames(query = "") {
   if (Object.keys(games).length == 0) games = await firebaseFetch('games');
   document.getElementById("searchbar").style.display = "block";
@@ -93,23 +93,27 @@ async function loadGames(query = "") {
 loadGames();
 
 // load players
-async function loadPlayers() {
-  let players = await firebaseFetch('players');
+var players = {}, playerthumbnails = {};
+async function loadPlayers(query = "") {
+  if (Object.keys(players).length == 0) players = await firebaseFetch('players');
+  document.getElementById("playersearchbar").style.display = "block";
   playercontainer.innerHTML = '';
 
   Object.keys(players).forEach(async function (playerId) {
     var player = players[playerId];
-    var avatarImg = await generateAvatarPicture(player.avatar, false, true);
     var gamedetails = "<div id='gamecard1'><b>" + sanitizeHtml(player.displayName) + "</b><br></div>";
     var gamename = "<div id='gamecard2'>" + sanitizeHtml(truncate(player.bio, 100)) + "</div>"
 
     var card = document.createElement('div');
     card.id = 'game';
     card.innerHTML = gamedetails + gamename;
-    card.style.backgroundImage = `url(${avatarImg})`;
     card.onclick = async () => { openProfile(player, playerId) }
 
-    playercontainer.prepend(card);
+    if (player.displayName.toLowerCase().includes(query.toLowerCase()) || playerId.toLowerCase().includes(query.toLowerCase())) {
+      playercontainer.prepend(card);
+      if (playerthumbnails[playerId]) { card.style.backgroundImage = `url(${playerthumbnails[playerId]})`; }
+      else { playerthumbnails[playerId] = await generateAvatarPicture(player.avatar, false, true); card.style.backgroundImage = `url(${playerthumbnails[playerId]})` }
+    }
   });
 }
 loadPlayers();
