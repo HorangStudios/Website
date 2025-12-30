@@ -53,7 +53,10 @@ function loginacc() {
     loginBtn.disabled = true;
 
     firebase.auth().signInWithEmailAndPassword(email, password)
-        .then(function (user) { window.location.href = "pages/index.html"; })
+        .then(function (user) {
+            let params = new URLSearchParams(window.location.search).toString();
+            window.location.href = `pages/index.html${params ? "?" + params : ""}`;
+        })
         .catch(function (error) {
             errorMsg.innerText = error.message;
             loginBtn.innerText = "Sign In";

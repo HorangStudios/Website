@@ -99,6 +99,13 @@ h1 select {
   border-bottom: #4d4d4d solid 2px;
 }
 
+.search {
+  margin: 10px;
+  width: calc(100% - 20px);
+  display: none;
+  margin-top: 25px;
+}
+
 input,
 textarea,
 button,

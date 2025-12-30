@@ -28,7 +28,7 @@ var playercontainer = document.getElementById('playerlist');
 var catalogcontainer = document.getElementById('cataloglist');
 var catalogSidebar = document.getElementById('catalogSidebar');
 var inventorycontainer = document.getElementById('selector');
-let games = {};
+var games = {};
 
 //greeting in homescreen
 let today = new Date();
@@ -52,58 +52,29 @@ function truncate(str, num) {
 }
 
 // load games
-async function loadGames() {
-  if (Object.keys(games).length == 0) {
-    games = await firebaseFetch('games');
-  }
+async function loadGames(query = "") {
+  if (Object.keys(games).length == 0) games = await firebaseFetch('games');
+  document.getElementById("searchbar").style.display = "block";
   gamescontainer.innerHTML = '';
 
   Object.keys(games).forEach(async function (gameId) {
     var game = games[gameId];
-    var devName = (await firebaseFetch('/players/' + game.uid)).displayName;
-    var gamedetails = "<div id='gamecard1'><b>" + sanitizeHtml(game.title) + "</b><br>" + sanitizeHtml(devName) + "</div>";
+    var gamedetails = `<div id='gamecard1'><b>${sanitizeHtml(game.title)}</b><br><span id='publisher-${gameId}'>...</span></div>`;
     var gamename = "<br><div id='gamecard2'>" + sanitizeHtml(truncate(game.desc, 100)) + "</div>";
-
     var card = document.createElement('div');
+
     card.id = 'game';
     card.innerHTML = gamedetails + gamename;
     card.style.backgroundImage = `url(${game.thumbnail})`;
     card.onclick = () => { openGame(game, gameId) };
 
-    gamescontainer.prepend(card);
+    if (game.title.toLowerCase().includes(query.toLowerCase()) || game.desc.toLowerCase().includes(query.toLowerCase())) {
+      gamescontainer.prepend(card);
+      firebaseFetch('/players/' + game.uid).then((data) => {try {document.getElementById(`publisher-${gameId}`).innerText = data.displayName} catch (e) {}});
+    };
   });
-  document.getElementById("searchbar").style.display = "block";
 }
 loadGames();
-
-// search games
-// make sure to ignore outdated searches
-let currentSearchVersion = 0;
-// function starts here
-function searchGames(searchTerm) {
-  currentSearchVersion++;
-  if (searchTerm == "") {loadGames(); return;}
-  var searchTerm = searchTerm.toLowerCase();
-  gamescontainer.innerHTML = '';
-  const searchVersion = currentSearchVersion;
-  Object.keys(games).forEach(async function (gameId) {
-    if (searchVersion !== currentSearchVersion) return;
-    var game = games[gameId];
-    var devName = (await firebaseFetch('/players/' + game.uid)).displayName;
-    if (searchVersion !== currentSearchVersion) return;
-    if (searchTerm && !game.title.toLowerCase().includes(searchTerm)) return;
-    var gamedetails = "<div id='gamecard1'><b>" + sanitizeHtml(game.title) + "</b><br>" + sanitizeHtml(devName) + "</div>";
-    var gamename = "<br><div id='gamecard2'>" + sanitizeHtml(truncate(game.desc, 100)) + "</div>";
-
-    var card = document.createElement('div');
-    card.id = 'game';
-    card.innerHTML = gamedetails + gamename;
-    card.style.backgroundImage = `url(${game.thumbnail})`;
-    card.onclick = () => { openGame(game, gameId) };
-
-    gamescontainer.prepend(card);
-  });
-}
 
 // load players
 async function loadPlayers() {

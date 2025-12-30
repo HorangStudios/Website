@@ -1,4 +1,6 @@
 async function openProfile(player, playerId) {
+    if (player == null) window.location.href = '../404.html';
+
     const signup = player.signup ? formatDate(new Date(player.signup)) : "-";
     const login = player.login ? formatDate(new Date(player.login)) : "-";
 
@@ -14,6 +16,16 @@ async function openProfile(player, playerId) {
     generateAvatarPicture(player.avatar, false, true).then((avatarImg) => { avatar.src = avatarImg; });
     const avatar = document.createElement("img");
     playerProfileLeft.appendChild(avatar);
+    
+    const sharebutton = document.createElement("button");
+    sharebutton.innerHTML = `<i class="fa fa-share"></i> Share`;
+    sharebutton.onclick = function () {
+        navigator.share({
+            title: "HorangHill",
+            text: "Check out this profile on HorangHill!",
+            url: "https://horanghill.web.app?player=" + playerId,
+        })
+    }; playerProfileLeft.appendChild(sharebutton);
 
     const username = document.createElement("label");
     username.innerHTML = `
@@ -93,5 +105,5 @@ function playerLink(uuid) {
     playerProfileLeft.appendChild(contentLeft);
 
     document.getElementById("playerdetailbutton").click();
-    firebaseFetch(`players/${uuid}`).then(p => { openProfile(p, uuid) })
+    firebaseFetch(`players/${uuid}`).then(p => { openProfile(p, uuid) });
 }

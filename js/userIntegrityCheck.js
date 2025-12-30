@@ -8,8 +8,15 @@ firebase.auth().onAuthStateChanged(async function (user) {
         } else {
             displayNameData = firebase.auth().currentUser.displayName
             if (typeof isLoginPage == 'undefined') {
-                document.getElementById('main').style.display = "block"
-                document.getElementById('greetings').innerHTML = `${greetingMessage}, ${sanitizeHtml(displayNameData)}!`
+                document.getElementById('main').style.display = "block";
+                document.getElementById('greetings').innerHTML = `${greetingMessage}, ${sanitizeHtml(displayNameData)}!`;
+
+                //share links
+                switch (new URLSearchParams(window.location.search).keys().next().value) {
+                    case 'game': gameLink(new URLSearchParams(window.location.search).values().next().value); break;
+                    case 'player': playerLink(new URLSearchParams(window.location.search).values().next().value); break;
+                    case 'item': catalogLink(new URLSearchParams(window.location.search).values().next().value); break;
+                }
             }
         }
 
@@ -77,7 +84,8 @@ firebase.auth().onAuthStateChanged(async function (user) {
             }
 
             if (typeof isLoginPage !== 'undefined') {
-                window.location.href = "pages/index.html";
+                let params = new URLSearchParams(window.location.search).toString();
+                window.location.href = `pages/index.html${params ? "?" + params : ""}`;
             }
         });
     } else if (typeof isLoginPage !== 'undefined') {

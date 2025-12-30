@@ -89,7 +89,8 @@
         </a>
       </div>
       <h1><i class="fa-solid fa-earth-americas"></i> Explore</h1>
-      <input type="text" id="searchbar" style="display: none;" placeholder="Search games..." onkeyup="searchGames(this.value)">
+      <input type="search" id="searchbar" class="search" placeholder="Search games..."
+        onkeyup="loadGames(this.value)">
       <div id="gamelist">
         <center>
           <i class="fa-solid fa-spinner fa-spin"></i><br>
@@ -312,8 +313,8 @@
     <!-- Game details page -->
     <div id="Details" class="tabcontent">
       <div class="catalogPrevLeft">
-        <img id="gamethumbnail">
-        <div class="viewTile">
+        <img id="gamethumbnail" src="../css/HorangHill.png">
+        <div class="viewTile" id="viewTile" style="display: none;">
           <p id="gamecreation"></p>
           <p id="gameupdated"></p>
           <p id="visits"></p>
@@ -322,29 +323,31 @@
       </div>
       <div class="catalogPrevRight">
         <div class="viewTile">
-          <h1 id="gameTitle"></h1>
-          <p id="gamePublisher"></p>
+          <h1 id="gameTitle">Loading Game...</h1>
+          <p id="gamePublisher">...</p>
           <br>
-          <p id="gameDescription"></p>
+          <p id="gameDescription">Please Wait...</p>
         </div>
-        <button id="playButton"><i class="fa fa-play"></i> Play</button>
-        <button id="editButton" hidden><i class="fa fa-pencil"></i> Edit</button>
+        <button id="playButton" style="display: none;"><i class="fa fa-play"></i> Play</button>
+        <button id="shareGame" style="display: none;"><i class="fa fa-share"></i> Share</button>
+        <button id="editButton" style="display: none;"><i class="fa fa-pencil"></i> Edit</button>
       </div>
     </div>
 
     <!-- catalog item details page -->
     <div id="ItemDetails" class="tabcontent">
       <div class="catalogPrevLeft">
-        <img id="itemImage">
+        <img id="itemImage" src="../css/HorangHill.png">
       </div>
       <div class="catalogPrevRight">
         <div class="viewTile">
-          <h1 id="itemTitle"></h1>
-          <p id="itemPublisher"></p>
+          <h1 id="itemTitle">Loading Item...</h1>
+          <p id="itemPublisher">...</p>
           <br>
-          <p id="itemDesc"></p>
+          <p id="itemDesc">Please Wait...</p>
         </div>
-        <button id="buyButton">Buy</button>
+        <button id="buyButton" style="display: none;"></button>
+        <button id="shareItem" style="display: none;"><i class="fa fa-share"></i> Share</button>
       </div>
     </div>
 

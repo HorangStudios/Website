@@ -1,4 +1,5 @@
 async function catalogView(item, itemId) {
+    if (item == null) window.location.href = '../404.html';
     var priceString = (item.price == 0) ? 'Free' : (item.price + ' Bits');
 
     document.getElementById('itemTitle').innerText = item.name;
@@ -7,6 +8,7 @@ async function catalogView(item, itemId) {
     document.getElementById("itemImage").src = item.asset;
     document.getElementById("buyButton").innerText = priceString;
     
+    document.getElementById("buyButton").style.display = 'block';
     document.getElementById("buyButton").onclick = async function () {
         if (item.price <= calculatedBits) {
             const currentUser = firebase.auth().currentUser;
@@ -26,7 +28,22 @@ async function catalogView(item, itemId) {
         }
     };
 
+    
+    document.getElementById("shareItem").style.display = 'block';
+    document.getElementById("shareItem").onclick = async function () {
+        navigator.share({
+            title: "HorangHill",
+            text: "Check out this item on HorangHill!",
+            url: "https://horanghill.web.app?item=" + itemId,
+        })
+    };
+
     document.getElementById('itemPublisher').onclick = () => { playerLink(item.uid) };
     document.getElementById('itemPublisher').innerText = ``;
     document.getElementById('itemPublisher').innerText = 'By ' + (await firebaseFetch('/players/' + item.uid)).displayName;
+}
+
+function catalogLink(uuid) {
+    document.getElementById("itemdetailbutton").click();
+    firebaseFetch(`catalog/${uuid}`).then(p => { catalogView(p, uuid) });
 }
