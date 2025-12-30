@@ -95,17 +95,8 @@ async function openProfile(player, playerId) {
 }
 
 function playerLink(uuid) {
-    const contentRight = document.createElement("div");
-    const contentLeft = document.createElement("div");
-    contentRight.innerHTML = loaderTemplate;
-    contentLeft.innerHTML = loaderTemplate;
-
-    playerProfileLeft.innerHTML = '';
-    playerProfileRight.innerHTML = '';
-    playerProfileRight.appendChild(contentRight);
-    playerProfileLeft.appendChild(contentLeft);
     document.getElementById("loaderbtn").click();
-
     redir = true;
+    
     firebaseFetch(`players/${uuid}`).then(p => { if (redir) openProfile(p, uuid) });
 }
