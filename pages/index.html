@@ -53,6 +53,7 @@
         <a class="tablinks" onclick="openTab(event, 'Players'); clearParams()" id="players">Players</a>
         <a class="tablinks" onclick="openTab(event, 'Create'); clearParams()">Create</a>
         <a class="tablinks" onclick="openTab(event, 'Account'); clearParams()">Account</a>
+        <a class="tablinks hidden" onclick="openTab(event, 'loader');" id="loaderbtn">wait.loader</a>
         <a class="tablinks hidden" onclick="openTab(event, 'Details');" id="gamedetailstabtogglebutton">game.details</a>
         <a class="tablinks hidden" onclick="openTab(event, 'ItemDetails');" id="itemdetailbutton">item.details</a>
         <a class="tablinks hidden" onclick="openTab(event, 'playerDetails');" id="playerdetailbutton">player.details</a>
@@ -67,9 +68,8 @@
 
   <div id="main">
     <!-- homepage -->
-    <div id="Home" class="tabcontent">
-      <h1 id="greetings">
-      </h1>
+    <div id="Home" class="tabcontent" style="display: none;">
+      <h1 id="greetings"></h1>
       <div class="quickcards">
         <a href="#greetings" onclick="openTab(event, 'Avatar')" class="quickcard">
           <h3>Decorate</h3>
@@ -100,7 +100,7 @@
     </div>
 
     <!-- create page -->
-    <div id="Create" class="tabcontent">
+    <div id="Create" class="tabcontent" style="display: none;">
       <h1>
         I want to
         <select onchange="updateCreate()" id="createorsubmit">
@@ -202,7 +202,7 @@
     </div>
 
     <!-- avatar editor page -->
-    <div id="Avatar" class="tabcontent">
+    <div id="Avatar" class="tabcontent" style="display: none;">
       <div class="preview" id="preview">
         <h1>Avatar</h1><br>
 
@@ -254,7 +254,7 @@
     </div>
 
     <!-- catalog list -->
-    <div id="Catalog" class="tabcontent">
+    <div id="Catalog" class="tabcontent" style="display: none;">
       <h1>Catalog</h1>
       <div class="preview" id="catalogSidebar">
         <center>
@@ -272,7 +272,7 @@
     </div>
 
     <!-- players list -->
-    <div id="Players" class="tabcontent">
+    <div id="Players" class="tabcontent" style="display: none;">
       <h1>Players</h1>
       <div id="playerlist">
         <center>
@@ -283,7 +283,7 @@
     </div>
 
     <!-- account settings -->
-    <div id="Account" class="tabcontent">
+    <div id="Account" class="tabcontent" style="display: none;">
       <h1><i class="fa-solid fa-user"></i> Account</h1>
       <div id="form">
         <br>
@@ -310,8 +310,18 @@
       </div>
     </div>
 
+    <!-- Placeholder loading -->
+    <div id="loader" class="tabcontent">
+      <div id="playerlist">
+        <center>
+          <i class="fa-solid fa-spinner fa-spin"></i><br>
+          <span class="stuckLoading">Taking forever? Try reloading this page</span>
+        </center>
+      </div>
+    </div>
+
     <!-- Game details page -->
-    <div id="Details" class="tabcontent">
+    <div id="Details" class="tabcontent" style="display: none;">
       <div class="catalogPrevLeft">
         <img id="gamethumbnail" src="../css/blank.png">
         <div class="viewTile" id="viewTile" style="display: none;">
@@ -323,10 +333,10 @@
       </div>
       <div class="catalogPrevRight">
         <div class="viewTile">
-          <h1 id="gameTitle">Loading Game...</h1>
-          <p id="gamePublisher">...</p>
+          <h1 id="gameTitle"></h1>
+          <p id="gamePublisher"></p>
           <br>
-          <p id="gameDescription">Please Wait...</p>
+          <p id="gameDescription"></p>
         </div>
         <button id="playButton" style="display: none;"><i class="fa fa-play"></i> Play</button>
         <button id="shareGame" style="display: none;"><i class="fa fa-share"></i> Share</button>
@@ -335,24 +345,24 @@
     </div>
 
     <!-- catalog item details page -->
-    <div id="ItemDetails" class="tabcontent">
+    <div id="ItemDetails" class="tabcontent" style="display: none;">
       <div class="catalogPrevLeft">
         <img id="itemImage" src="../css/blank.png">
       </div>
       <div class="catalogPrevRight">
         <div class="viewTile">
-          <h1 id="itemTitle">Loading Item...</h1>
-          <p id="itemPublisher">...</p>
+          <h1 id="itemTitle"></h1>
+          <p id="itemPublisher"></p>
           <br>
-          <p id="itemDesc">Please Wait...</p>
+          <p id="itemDesc"></p>
         </div>
-        <button id="buyButton" style="display: none;"></button>
+        <button id="buyButton" style="display: none;">Buy</button>
         <button id="shareItem" style="display: none;"><i class="fa fa-share"></i> Share</button>
       </div>
     </div>
 
     <!-- player profile page -->
-    <div id="playerDetails" class="tabcontent">
+    <div id="playerDetails" class="tabcontent" style="display: none;">
       <div class="catalogPrevLeft" id="playerProfileLeft">
       </div>
       <div class="catalogPrevRight" id="playerProfileRight">
@@ -360,7 +370,7 @@
     </div>
 
     <!-- insert to player profile page -->
-    <div id="customProfile" class="tabcontent">
+    <div id="customProfile" class="tabcontent" style="display: none;">
       <h1><i class="fa fa-plus"></i> Add to profile</h1>
       <div class="preview" id="profileItemTypes">
         <div>

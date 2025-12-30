@@ -44,6 +44,8 @@ async function catalogView(item, itemId) {
 }
 
 function catalogLink(uuid) {
-    document.getElementById("itemdetailbutton").click();
-    firebaseFetch(`catalog/${uuid}`).then(p => { catalogView(p, uuid) });
+    document.getElementById("loaderbtn").click();
+    redir = true;
+    
+    firebaseFetch(`catalog/${uuid}`).then(p => { if (redir) catalogView(p, uuid) });
 }

@@ -21,7 +21,16 @@ function clearParams() {
   const url = new URL(window.location.href);
   url.search = '';
   url.hash = '';
+  redir = false;
   window.history.replaceState({}, document.title, url.toString());
+}
+
+//open respective tabs for shared links
+switch (new URLSearchParams(window.location.search).keys().next().value) {
+  case 'game': gameLink(new URLSearchParams(window.location.search).values().next().value); break;
+  case 'player': playerLink(new URLSearchParams(window.location.search).values().next().value); break;
+  case 'item': catalogLink(new URLSearchParams(window.location.search).values().next().value); break;
+  default: document.getElementById("defaultOpen").click(); break;
 }
 
 // ----------------------------------------------------------------------------------------------------------------------------
@@ -34,6 +43,7 @@ var playercontainer = document.getElementById('playerlist');
 var catalogcontainer = document.getElementById('cataloglist');
 var catalogSidebar = document.getElementById('catalogSidebar');
 var inventorycontainer = document.getElementById('selector');
+var redir = true;
 var games = {};
 
 //greeting in homescreen

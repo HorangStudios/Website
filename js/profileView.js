@@ -104,7 +104,8 @@ function playerLink(uuid) {
     playerProfileRight.innerHTML = '';
     playerProfileRight.appendChild(contentRight);
     playerProfileLeft.appendChild(contentLeft);
+    document.getElementById("loaderbtn").click();
 
-    document.getElementById("playerdetailbutton").click();
-    firebaseFetch(`players/${uuid}`).then(p => { openProfile(p, uuid) });
+    redir = true;
+    firebaseFetch(`players/${uuid}`).then(p => { if (redir) openProfile(p, uuid) });
 }

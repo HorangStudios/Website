@@ -54,6 +54,8 @@ async function openGame(game, id) {
 }
 
 function gameLink(uuid) {
-    document.getElementById("gamedetailstabtogglebutton").click();
-    firebaseFetch(`games/${uuid}`).then(p => { openGame(p, uuid) });
+    document.getElementById("loaderbtn").click();
+    redir = true;
+    
+    firebaseFetch(`games/${uuid}`).then(p => { if (redir) openGame(p, uuid) });
 }
