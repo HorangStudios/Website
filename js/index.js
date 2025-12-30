@@ -16,7 +16,13 @@ function openTab(evt, cityName) {
   evt.currentTarget.className += " active";
 }
 
-document.getElementById("defaultOpen").click();
+//clear url parameters
+function clearParams() {
+  const url = new URL(window.location.href);
+  url.search = '';
+  url.hash = '';
+  window.history.replaceState({}, document.title, url.toString());
+}
 
 // ----------------------------------------------------------------------------------------------------------------------------
 
@@ -70,7 +76,7 @@ async function loadGames(query = "") {
 
     if (game.title.toLowerCase().includes(query.toLowerCase()) || game.desc.toLowerCase().includes(query.toLowerCase())) {
       gamescontainer.prepend(card);
-      firebaseFetch('/players/' + game.uid).then((data) => {try {document.getElementById(`publisher-${gameId}`).innerText = data.displayName} catch (e) {}});
+      firebaseFetch('/players/' + game.uid).then((data) => { try { document.getElementById(`publisher-${gameId}`).innerText = data.displayName } catch (e) { } });
     };
   });
 }

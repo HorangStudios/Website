@@ -47,16 +47,16 @@
       <input type="checkbox" id="toggle" class="hidden" checked>
       <div id="nav">
         <br>
-        <a class="tablinks" onclick="openTab(event, 'Home');" id="defaultOpen">Home</a>
-        <a class="tablinks" onclick="openTab(event, 'Avatar')">Avatar</a>
-        <a class="tablinks" onclick="openTab(event, 'Catalog');">Catalog</a>
-        <a class="tablinks" onclick="openTab(event, 'Players');" id="players">Players</a>
-        <a class="tablinks" onclick="openTab(event, 'Create')">Create</a>
-        <a class="tablinks" onclick="openTab(event, 'Account')">Account</a>
-        <a class="tablinks hidden" onclick="openTab(event, 'Details')" id="gamedetailstabtogglebutton">game.details</a>
-        <a class="tablinks hidden" onclick="openTab(event, 'ItemDetails')" id="itemdetailbutton">item.details</a>
-        <a class="tablinks hidden" onclick="openTab(event, 'playerDetails')" id="playerdetailbutton">player.details</a>
-        <a class="tablinks hidden" onclick="openTab(event, 'customProfile')" id="customprofilebutton">add.profile</a>
+        <a class="tablinks" onclick="openTab(event, 'Home'); clearParams()" id="defaultOpen">Home</a>
+        <a class="tablinks" onclick="openTab(event, 'Avatar'); clearParams()">Avatar</a>
+        <a class="tablinks" onclick="openTab(event, 'Catalog'); clearParams()">Catalog</a>
+        <a class="tablinks" onclick="openTab(event, 'Players'); clearParams()" id="players">Players</a>
+        <a class="tablinks" onclick="openTab(event, 'Create'); clearParams()">Create</a>
+        <a class="tablinks" onclick="openTab(event, 'Account'); clearParams()">Account</a>
+        <a class="tablinks hidden" onclick="openTab(event, 'Details');" id="gamedetailstabtogglebutton">game.details</a>
+        <a class="tablinks hidden" onclick="openTab(event, 'ItemDetails');" id="itemdetailbutton">item.details</a>
+        <a class="tablinks hidden" onclick="openTab(event, 'playerDetails');" id="playerdetailbutton">player.details</a>
+        <a class="tablinks hidden" onclick="openTab(event, 'customProfile'); clearParams()" id="customprofilebutton">add.profile</a>
 
         <a class="tablinks rightNav">
           <span id="myBits">0</span> <i class="fa-solid fa-coins"></i>
