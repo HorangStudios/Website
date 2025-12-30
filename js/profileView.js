@@ -15,6 +15,7 @@ async function openProfile(player, playerId) {
 
     generateAvatarPicture(player.avatar, false, true).then((avatarImg) => { avatar.src = avatarImg; });
     const avatar = document.createElement("img");
+    avatar.src = '../css/blank.png';
     playerProfileLeft.appendChild(avatar);
     
     const sharebutton = document.createElement("button");
