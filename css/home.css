@@ -12,6 +12,12 @@ body {
   cursor: pointer;
 }
 
+#gamecard1,
+#gamecard2 {
+  text-align: center;
+  text-shadow: 0px 0px 10px black;
+}
+
 #sidebar {
   background: rgba(0, 0, 0, .20) url('horanghillstartingplace.png');
   background-position: center !important;
@@ -60,10 +66,9 @@ a:hover {
   padding: 25px;
   background-color: #3d3d3d;
   color: white;
-  margin-top: 25px !important;
-  box-shadow: 200px -1px 136px 8px rgba(0, 0, 0, 0.67) inset;
-  -webkit-box-shadow: 200px -1px 136px 8px rgb(0 0 0 / 67%) inset;
-  -moz-box-shadow: 200px -1px 136px 8px rgba(0, 0, 0, 0.7) inset;
+  box-shadow: 200px -1px 136px 8px rgba(0, 0, 0, 0.35) inset;
+  -webkit-box-shadow: 200px -1px 136px 8px rgb(0 0 0 / 35%) inset;
+  -moz-box-shadow: 200px -1px 136px 8px rgba(0, 0, 0, 0.35) inset;
   border-radius: 10px;
   border: #4d4d4d solid;
   background-repeat: no-repeat;
@@ -74,6 +79,10 @@ a:hover {
   aspect-ratio: 1/1;
   float: left;
   border-width: 1px 1px 3px 1px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 h1 {
