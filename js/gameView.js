@@ -23,7 +23,7 @@ async function openGame(game, id) {
         navigator.share({
             title: "HorangHill",
             text: "Check out this game on HorangHill!",
-            url: "https://horanghill.web.app?game=" + id,
+            url: `https://${window.location.origin + window.location.pathname}?game=` + id,
         })
     };
 
@@ -51,11 +51,12 @@ async function openGame(game, id) {
     var filterActive = Object.values(gameSession).filter(item => (new Date()).getTime() - (new Date(item.age)).getTime() < 10000)
     document.getElementById('visits').innerText = 'Unique Visits: ' + Object.keys(gameSession).length;
     document.getElementById('active').innerText = 'Playing: ' + filterActive.length;
+    history.pushState({ page: id }, game.title, `${window.location.origin + window.location.pathname}?game=${id}`);
 }
 
 function gameLink(uuid) {
     document.getElementById("loaderbtn").click();
     redir = true;
-    
+
     firebaseFetch(`games/${uuid}`).then(p => { if (redir) openGame(p, uuid) });
 }

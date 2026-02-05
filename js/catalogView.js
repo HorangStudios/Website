@@ -34,13 +34,14 @@ async function catalogView(item, itemId) {
         navigator.share({
             title: "HorangHill",
             text: "Check out this item on HorangHill!",
-            url: "https://horanghill.web.app?item=" + itemId,
+            url: `https://${window.location.origin + window.location.pathname}?item=` + itemId,
         })
     };
 
     document.getElementById('itemPublisher').onclick = () => { playerLink(item.uid) };
     document.getElementById('itemPublisher').innerText = ``;
     document.getElementById('itemPublisher').innerText = 'By ' + (await firebaseFetch('/players/' + item.uid)).displayName;
+    history.pushState({ page: itemId }, item.name, `${window.location.origin + window.location.pathname}?item=${itemId}`);
 }
 
 function catalogLink(uuid) {

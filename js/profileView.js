@@ -24,7 +24,7 @@ async function openProfile(player, playerId) {
         navigator.share({
             title: "HorangHill",
             text: "Check out this profile on HorangHill!",
-            url: "https://horanghill.web.app?player=" + playerId,
+            url: `https://${window.location.origin + window.location.pathname}?player=` + playerId,
         })
     }; playerProfileLeft.appendChild(sharebutton);
 
@@ -92,6 +92,8 @@ async function openProfile(player, playerId) {
         const sorted = Object.values(Object.entries(right).sort((a, b) => a[1].order - b[1].order));
         sorted.forEach(e => { loadProfileTiles(e[1], contentRight, editmode, e[0], "right", player.uid) });
     });
+    
+    history.pushState({ page: playerId }, player.displayName, `${window.location.origin + window.location.pathname}?player=${playerId}`);
 }
 
 function playerLink(uuid) {
